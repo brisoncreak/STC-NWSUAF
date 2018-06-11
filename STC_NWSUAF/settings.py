@@ -1,3 +1,4 @@
+
 """
 Django settings for STC_NWSUAF project.
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mywebsite',
 ]
 
 MIDDLEWARE = [
@@ -118,5 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'mywebsite/static/')
 
 #TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
