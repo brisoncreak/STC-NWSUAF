@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}有点东西</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/base.css'%}">
+    <script src="{% static 'js/jquery-3.2.1.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-default">
+
+    <div class="navbar-header">
+        <a class="navbar-brand" id="header-img" href="#"></a>
+        <div class="brand-name"><a href="#">有点东西</a></div>
+    </div>
+    <ul class="tabmenu">
+            <li class="selected"><a href="#">热门</a></li>
+            <li><a href="#">市场</a></li>
+            <li><a href="#">讨论</a></li>
+            <li><a href="#">网盘</a></li>
+    </ul>
+
+      <div class="header-bottom-right">
+          {% if not user %}
+              <span><a href="#">{{ user.username }}</a>|<a href="#">消息</a>|<a href="#">退出</a></span>
+          {% else %}
+              <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册或登录</a>。</span>
+          {% endif %}
+      </div>
+
+</nav>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+				</h4>
+			</div>
+			<div class="modal-body">
+                <p>用户名 密码 确认密码</p>
+				<form action="#" method="POST">
+                    <input type="text" name="username">
+                    <input type="password" name="password1">
+                    <input type="password" name="password2">
+                    <button type="submit" class="btn btn-primary">注册</button>
+                </form>
+			</div>
+			<div class="modal-footer">
+				<p>注册即表示您同意</p>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+<div class="side">
+    {% block side %}{% endblock %}
+</div>
+
+<div class="content">
+{% block body %}
+
+{% endblock %}
+</div>
+
+</body>
+</html>

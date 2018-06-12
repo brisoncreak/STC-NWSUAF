@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+   <div class="jumbotron">
+        <h1>欢迎登陆页面！</h1>
+        <p>这是一个超大屏幕（Jumbotron）的实例。</p>
+        <p><a class="btn btn-primary btn-lg" role="button">
+        学习更多</a>
+      </p>
+   </div>
+</div>
+{% endblock %}
+
+
+{% block side %}
+    <div class="spacer">
+        <form action="#" id="search">
+            <input type="text" name="wd" placeholder="搜索">
+            <button type="submit" value="" tabindex="22">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </form>
+    </div>
+
+    <div class="spacer">
+        <form action="#" method="POST" class="login-form-side">
+            <input class="user" type="text" name="username" placeholder="用户名">
+            <input class="pwd" type="password" name="password" placeholder="密码">
+            <div class="blank">
+                <!--显示登录错误信息-->
+            </div>
+            <div class="remember-me">
+                <input class="rem" type="checkbox" name="rem" id="rem-login-main">
+                <label for="rem-login-main">记住我</label>
+                <a class="recover-password" href="#">忘记密码</a>
+            </div>
+            <div class="submit">
+                <button type="submit" >登录</button>
+            </div>
+            <div class="clear"></div>
+        </form>
+    </div>
+
+    <div class="spacer"><br></div>
+    <div class="spacer">
+        <form action="#" method="POST" id="search">
+            <input type="text" name="title" maxlength="50" placeholder="发起新讨论">
+            <button type="submit" value="" tabindex="22">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        </form>
+    </div>
+{% endblock %}
