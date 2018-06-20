@@ -25,7 +25,7 @@
     </ul>
 
       <div class="header-bottom-right">
-          {% if not user %}
+          {% if request.user.is_authenticated %}
               <span><a href="#">{{ user.username }}</a>|<a href="#">消息</a>|<a href="#">退出</a></span>
           {% else %}
               <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册或登录</a>。</span>
