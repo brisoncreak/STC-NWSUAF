@@ -17,13 +17,14 @@
         <a class="navbar-brand" id="header-img" href="#"></a>
         <div class="brand-name"><a href="#">有点东西</a></div>
     </div>
+    {%block tabmenu%}
     <ul class="tabmenu">
             <li class="selected"><a href="#">热门</a></li>
-            <li><a href="#">市场</a></li>
+            <li><a href="http://127.0.0.1:8000/market">市场</a></li>
             <li><a href="#">讨论</a></li>
             <li><a href="#">网盘</a></li>
     </ul>
-
+    {%endblock%}
       <div class="header-bottom-right">
           {% if request.user.is_authenticated %}
               <span><a href="#">{{ user.username }}</a>|<a href="#">消息</a>|<a href="#">退出</a></span>

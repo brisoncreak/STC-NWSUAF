@@ -23,3 +23,6 @@ def index_login(request):
 def index_logout(request):
     logout(request)
     return redirect('/')
+def market_views(request):
+    if request.method == 'GET':
+        return render(request,'market.html',locals())
