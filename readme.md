@@ -14,3 +14,6 @@
 数据库名：stcdb
 用户名:root
 密码：123456
+
+遇到table’*.djang_session‘doesn't exist
+报错 运行指令manage.py migrate
