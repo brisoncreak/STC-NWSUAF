@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
 {% endblock %}
 
+{% block navbar %}
+    <li class="selected"><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="#">讨论</a></li>
+    <li><a href="#">网盘</a></li>
+{% endblock %}
+
 
 {% block body %}
 
@@ -16,8 +23,7 @@
    <div class="jumbotron">
         <h1>欢迎登陆页面！</h1>
         <p>这是一个超大屏幕（Jumbotron）的实例。</p>
-        <p><a class="btn btn-primary btn-lg" role="button">
-        学习更多</a>
+        <p><a class="btn btn-primary btn-lg" role="button">学习更多</a>
       </p>
    </div>
 </div>
