@@ -8,7 +8,7 @@ class Good(models.Model):
     pay_way_list = ((0, '支付宝'), (1, '微信'), (2, '当面交易'))
 
     name = models.CharField(max_length = 30)
-    good = models.ForeignKey(File, null=True)
+    file = models.ForeignKey(File, null=True)
     image = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
     create_time = models.DateTimeField(default=datetime.now)
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='商品价格')
@@ -31,7 +31,6 @@ class Good(models.Model):
 class Order(models.Model):
 
     status_list = ((0, '等待支付'), (1, '交易完成'), (2, '投诉中'), (3, '交易取消'))
-    
     creater = models.ForeignKey(User, null=False)
     good = models.ForeignKey(Good, null=False)
     create_time = models.DateTimeField(default=datetime.now)
