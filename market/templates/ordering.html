@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}市场 - {% endblock %}
+{% block title %}订单 - {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
@@ -17,7 +17,35 @@
 
 
 {% block body %}
-<label>考试答案</label><a href="{% url 'ordering' 1 %}" class="btn btn-default">购买</a>
+
+<table class="table table-striped">
+<tr>
+  <td>卖家信息</td>
+  <td>用户名 交易次数 好评度 评价数</td>
+</tr>
+<tr>
+  <td>金额</td>
+  <td>123元</td>
+</tr>
+<tr>
+  <td>支付方式</td>
+  <td>支付宝</td>
+</tr>
+
+</table>
+
+<form> 
+<input type="checkbox" id="confirm-buy">
+<label for="confirm-buy" class="text-muted">我已经阅读并确认以上交易信息</label>
+<button class="btn btn-default">立即购买</button>
+</form>
+
+<a href="{% url 'paying' 1 %}" class="btn btn-default">购买</a>
+
+
+
+
+
 
 {% endblock %}
 
@@ -36,12 +64,12 @@
 
 
 {% block side %}
-<a class='btn btn-default sidebtn active'>校园二手</a>
-<a class='btn btn-default sidebtn'>付费文档</a>
+<!--<a class='btn btn-default sidebtn active'>等待付款中</a>-->
+<!--<a class='btn btn-default sidebtn'>付费文档</a>-->
 
 <br>
 <br>
 <br>
 
-<a class='btn btn-info sidebtn'>添加新商品</a>
+<a class='btn btn-warning sidebtn'>返回</a>
 {% endblock %}
