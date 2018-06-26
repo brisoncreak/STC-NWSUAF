@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'index',
+    'share',
     'market',
+
 ]
 
 MIDDLEWARE = [
@@ -80,10 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'stcdb',
-	'USER': 'root',
-	'PASSWORD': '123456',
-	'HOST': 'localhost',
-	'PORT': '3306',
+	    'USER': 'root',
+	    'PASSWORD': '123456',
+	    'HOST': 'localhost',
+	    'PORT': '3306',
     }
 }
 
