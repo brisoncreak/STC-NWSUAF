@@ -1,11 +1,15 @@
 from django.shortcuts import render
 
 # Create your views here.
-<<<<<<< HEAD
-def market_views(request):
-    if request.method == 'GET':
-        return render(request,'market.html',locals())
-=======
 def index_views(request):
-    return render(request,'market_index.html')
->>>>>>> main/master
+    if request.method == 'GET':
+        return render(request,'market_index.html',locals())
+
+def docs_views(request):
+    if request.method == 'GET':
+        return render(request,'docs_index.html',locals())
+def goods_views(request):
+    if request.method == 'GET':
+        return render(request,'goods_index.html',locals())
+
+
