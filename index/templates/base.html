@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}有点东西</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/base.css'%}">
+    <script src="{% static 'js/jquery-3.2.1.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -19,12 +19,10 @@
     </div>
     {%block tabmenu%}
     <ul class="tabmenu">
-        {% block navbar %}
-            <li><a href="#">热门</a></li>
-            <li><a href="#">市场</a></li>
+            <li class="selected"><a href="#">热门</a></li>
+            <li><a href="http://127.0.0.1:8000/market">市场</a></li>
             <li><a href="#">讨论</a></li>
             <li><a href="#">网盘</a></li>
-        {% endblock %}
     </ul>
     {%endblock%}
       <div class="header-bottom-right">
@@ -66,11 +64,8 @@
 	</div><!-- /.modal -->
 </div>
 
+
 <div class="side">
-
-<!--搜索框不放在基类 各个子应用分别实现搜索 -->
-
-    {% block side-search %}
     <div class="spacer">
         <form action="#" id="search">
             <div class="input-group">
@@ -80,8 +75,7 @@
                 </span>
             </div>
         </form>
-    </div> 
-    {% endblock %}
+    </div>
   
     <div class="spacer">
     {% if request.user.is_authenticated %}
@@ -108,7 +102,8 @@
         </form>
     </div>
 
-<!--
+    <div class="spacer"><br></div>
+
     <div class="spacer">
         <form action="#" id="search">
             <div class="input-group">
@@ -119,9 +114,7 @@
             </div>
         </form>
     </div>
--->
     <div class="spacer">
-    <!--此处添加各app功能-->
     {% block side %}
     {% endblock %}
     </div>

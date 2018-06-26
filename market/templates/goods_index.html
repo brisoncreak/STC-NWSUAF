@@ -1,0 +1,29 @@
+{% extends 'market_index.html'%}
+{% block body %}
+    <h2 class="title">二手商品</h2>
+    {% for i in 'abcdefghijklmno'%}
+    <div class = "goodlist" >
+        <p>{{i}}</p>
+    </div>
+    {%endfor%}
+    <div class="pageJeep">
+    <div class="embed">
+        <nav aria-label="Page navigation">
+         <ul class="pagination">
+         <li>
+         <a href="#" aria-label="Previous">
+         <span aria-hidden="true">&laquo;</span>
+         </a>
+         </li>
+         {% for i in '123456'%}
+         <li><a href="#">{{i}}</a></li>
+          {%endfor%}
+      <li>
+        <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+        </li>
+    </ul>
+    </nav>
+    </div>
+{% endblock %}

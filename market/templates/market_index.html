@@ -17,7 +17,14 @@
 
 
 {% block body %}
+
 <label>考试答案</label><a href="{% url 'ordering' 1 %}" class="btn btn-default">购买</a>
+    <h2 class="title">最新发布</h2>
+    {% for i in 'abcdefg'%}
+    <div class = "goodlist">
+        <p>{{i}}</p>
+    </div>
+    {%endfor%}
 
 {% endblock %}
 
