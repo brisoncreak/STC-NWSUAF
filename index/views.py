@@ -23,3 +23,11 @@ def index_login(request):
 def index_logout(request):
     logout(request)
     return redirect('/')
+
+
+def test(request):
+    if request.method == 'GET':
+        return render(request, 'test.html')
+    a = request.POST.get('list')
+    print(a)
+    return render(request, 'test.html')
