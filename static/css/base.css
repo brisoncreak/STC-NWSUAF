@@ -247,7 +247,7 @@ li.selected a {
     border-bottom-right-radius:6px ;
     border-bottom-left-radius:6px; 
     background-color: green;
-    margin-left:12px;
+    margin-left:8px;
     margin-bottom: 10px;
 
 }
@@ -277,4 +277,7 @@ li.selected a {
     width: 300px;
     margin: auto;
     position: relative;
+}
+.docs{
+    width: 100%;
 }

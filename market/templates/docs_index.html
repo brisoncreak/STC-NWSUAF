@@ -1,1 +1,46 @@
 {% extends 'market_index.html'%}
+{%block body%}
+    <h2 class="title">电子文档</h2>
+    <div class="docs">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <th>docname</th>
+        <th>size</th>
+        <th>money</th>
+        <th>createtime</th>
+    </tr>
+    </thead>
+    {%for i in '1 2 3 4 5 6 7 8 9 10'%}
+    <tbody>
+    <tr>
+        <td>{{i}}name</td>
+        <td>{{i}}size</td>
+        <td>{{i}}money</td>
+        <td>{{i}}createtime</td>
+    </tr>
+    {%endfor%}
+    </tbody>
+    </table>
+    </div>
+    <div class="pageJeep">
+    <div class="embed">
+        <nav aria-label="Page navigation">
+         <ul class="pagination">
+         <li>
+         <a href="#" aria-label="Previous">
+         <span aria-hidden="true">&laquo;</span>
+         </a>
+         </li>
+         {% for i in '123456'%}
+         <li><a href="#">{{i}}</a></li>
+          {%endfor%}
+      <li>
+        <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+        </li>
+    </ul>
+    </nav>
+    </div>
+{%endblock%}
