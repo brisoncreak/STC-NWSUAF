@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}市场 - {% endblock %}
+{% block title %}订单 - {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
@@ -18,13 +18,28 @@
 
 {% block body %}
 
-<label>考试答案</label><a href="{% url 'ordering' 1 %}" class="btn btn-default">购买</a>
-    <h2 class="title">最新发布</h2>
-    {% for i in 'abcdefg'%}
-    <div class = "goodlist">
-        <p>{{i}}</p>
-    </div>
-    {%endfor%}
+<table class="table table-striped">
+
+  <td>支付方式</td>
+  <td>支付宝</td>
+</tr>
+<tr>
+  <td>支付信息</td>
+  <td><button class="btn btn-info">收款二维码</button></td>
+</tr>
+</table>
+
+<img src="{% static 'timg.jpg' %}" alt="alipay" style="width:400px;" />
+<form> 
+<textarea class="form-control" rows="10" name=textarea></textarea>
+<button class="btn btn-default">发送</button>
+</form>
+
+<button class="btn btn-default">确认已经付款</button>
+
+
+
+
 
 {% endblock %}
 
@@ -43,12 +58,12 @@
 
 
 {% block side %}
-<a class='btn btn-default sidebtn active'>校园二手</a>
-<a class='btn btn-default sidebtn'>付费文档</a>
+<a class='btn btn-default sidebtn active'>等待付款中</a>
+<!--<a class='btn btn-default sidebtn'>付费文档</a>-->
 
 <br>
 <br>
 <br>
 
-<a class='btn btn-info sidebtn'>添加新商品</a>
+<a class='btn btn-warning sidebtn'>取消交易</a>
 {% endblock %}
