@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 def index_views(request):
 
-    return render(request,'index.html')
+    return render(request, 'index.html')
 
 def index_login(request):
     if request.method == 'GET':
