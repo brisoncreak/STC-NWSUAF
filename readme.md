@@ -17,3 +17,4 @@
 
 遇到table’*.djang_session‘doesn't exist
 报错 运行指令manage.py migrate
+
