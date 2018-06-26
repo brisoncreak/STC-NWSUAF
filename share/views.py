@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.http import FileResponse
+from django.http import HttpResponseRedirect
 from .models import *
 from index.models import *
 import os
@@ -14,24 +15,16 @@ def upload_file(request):
     if request.method == 'GET':
         return render(request,'file.html')
     else:
-        user1 = request.POST.get('user')
-        fafafa = request.POST.get('inputfile')
-        classify1 = request.POST.get('list')
-        if classify1 !=None:
-            print(classify1)
-        print(user1)
-
-        user2=User.objects.get(username=user1)
-        classify2=FileClassify.objects.get(title=classify1)
+        user_name = request.POST.get('user')
+        classify = request.POST.get('list')
+        user2=User.objects.get(username=user_name)
+        file_classify=FileClassify.objects.get(title=classify)
         userid=user2.id
-        classifyid=classify2.id
-        if userid != '':
+        classifyid= file_classify.id
+        if userid != '' and classifyid!='':
             obj = request.FILES.get('inputfile')
-            filetype=obj.name.split('.')[1]
-            print(type1)
+            filetype=obj.name.split('.')[1]#获取后缀名
             file_path = os.path.join('share','upload',obj.name)
-            print(file_path)
-
             f = open(file_path, 'wb')
             for chunk in obj.chunks():
                 f.write(chunk)
@@ -40,19 +33,16 @@ def upload_file(request):
             return HttpResponse('上传成功')
         return HttpResponse('上传失败')
 #download files
-def bigFileView(request,a):
-    def readFile(fn, buf_size=262144):
-        f = open(fn, "rb")
-        while True:
-            c = f.read(buf_size)
-            if c:
-                yield c
-            else:
-                break
-        f.close()
-    file_name = "big_file.txt"
-    response = HttpResponse(readFile(file_name))
+def download_files(request,fileid):  
+    file=File.objects.get(id=fileid)
+    file_name = file.fileName
+    file_path = os.path.join('share','upload',file_name) 
+    file=open(file_path,'rb')  
+    response =FileResponse(file)  
+    response['Content-Type']='application/octet-stream'  
+    response['Content-Disposition']='attachment;filename='+file_name  
     return response
-
-
 #delete files
+def delete_files(request,fileid):
+    File.objects.get(id=fileid).delete()
+    return HttpResponseRedirect('/show_file')

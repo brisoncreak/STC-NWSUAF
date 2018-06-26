@@ -5,8 +5,8 @@
     <title>文件展示</title>
 </head>
 <body>
-    <form action="" method="post">
     <table class="table table-hover" border=1>
+           <th>文件id</th>
            <th>文件名</th>
            <th>文件大小</th>
            <th>文件扩展名</th>
@@ -17,6 +17,7 @@
            <th>学院类型</th> -->
         {% for file in files %}
                 <tr>
+                    <td>{{file.id}}</td>
                     <td>{{ file.fileName }}</td>
                     {% if file.fileSize >　1048576 %}
                         <td>{% widthratio fileSize 1048576 1 %}M</td>
@@ -28,10 +29,9 @@
                     <td>{{ file.fileType }}</td>
                     <td>{{file.fileBeDown}}</td>
                     <td>{{file.fileCreateTime}}</td>
-                    <td><a href="{%url 'd_files' file.id%}">下载</a></td>
+                    <td><a href="{%url 'd_files' file.id%}">下载</a>|<a href="{%url 'del_files' file.id%}">删除</a></td>
                 </tr>
             {% endfor %}
       </table>
-    </form>
 </body>
 </html>
