@@ -1,9 +1,9 @@
 {% extends 'market_index.html'%}
 {% block body %}
     <h2 class="title">二手商品</h2>
-    {% for i in 'abcdefghijklmno'%}
+    {% for good in goods %}
     <div class = "goodlist" >
-        <p>{{i}}</p>
+        <a href="">{{good.name}}</a>
     </div>
     {%endfor%}
     <div class="pageJeep">

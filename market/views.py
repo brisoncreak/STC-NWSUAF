@@ -1,10 +1,11 @@
 from django.shortcuts import render
-
+from .models import *
 from index.models import User
 
 # Create your views here.
 def index_views(request):
     if request.method == 'GET':
+
         return render(request,'market_index.html',locals())
 
 def docs_views(request):
@@ -12,6 +13,8 @@ def docs_views(request):
         return render(request,'docs_index.html',locals())
 def goods_views(request):
     if request.method == 'GET':
+        goods = Good.objects.all().order_by('create_time')
+        print(goods[0].name)
         return render(request,'goods_index.html',locals())
 
 
