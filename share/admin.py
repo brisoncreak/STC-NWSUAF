@@ -21,4 +21,4 @@ class FileAdmin(admin.ModelAdmin):
     #     }),
     # )
 admin.site.register(File,FileAdmin)
-admin.site.register(FileClassify)
+# admin.site.register(FileClassify)

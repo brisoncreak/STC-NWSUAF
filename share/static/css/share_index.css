@@ -1,0 +1,8 @@
+/*share_index.css*/
+
+table{
+        border:none;   <!-- 边框 -->
+        margin:none;     <!-- 外边距 -->
+        line-height:20px;     <!-- 行高-->
+        padding:0px;               <!-- 内边距-->
+}

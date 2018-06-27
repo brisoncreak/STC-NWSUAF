@@ -26,10 +26,15 @@
                     {% else %}
                         <td>{{ file.file_size }} B</td>
                     {% endif %}
-                    <td>{{ file.file_type }}</td>
-                    <td>{{file.file_bedown}}</td>
-                    <td>{{file.create_time}}</td>
-                    <td><a href="{%url 'd_files' file.id%}">下载</a>|<a href="{%url 'del_files' file.id%}">删除</a></td>
+
+                    <td>{{ file.fileType }}</td>
+                    <td>{{file.fileBeDown}}</td>
+                    <td>{{file.fileCreateTime}}</td>
+                    <td>
+                    <a href="{%url 'd_files' file.id%}">下载</a>|
+                    <a href="{%url 'del_files' file.id%}">删除</a>
+                    </td>
+
                 </tr>
             {% endfor %}
       </table>
