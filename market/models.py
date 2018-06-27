@@ -8,14 +8,14 @@ class Good(models.Model):
     pay_way_list = ((0, '支付宝'), (1, '微信'), (2, '当面交易'))
 
     name = models.CharField(max_length = 30)
-    file = models.ForeignKey(File, null=True)
+    file = models.ForeignKey(File, blank=True, null=True)
     image = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
     create_time = models.DateTimeField(default=datetime.now)
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='商品价格')
     pay_way = models.IntegerField(choices = pay_way_list)
     pay_pic = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
     info = models.CharField(max_length = 200)
-    sell_times  = models.IntegerField(default=1)
+    sell_times  = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
