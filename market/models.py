@@ -47,4 +47,30 @@ class Order(models.Model):
         ordering = ['create_time']
 
 class Feedback(models.Model):
+    creator = models.ForeignKey(User, null=False)
     good = models.ForeignKey(Order, null=False)
+    is_ongoing = models.BooleanField(default=True)
+    create_time = models.DateTimeField(default=datetime.now)
+    info = models.CharField(max_length = 200)
+    def __str__(self):
+        return self.create_time
+    class Meta:
+        #改数据库名
+        #db_table = 'feedback'
+        verbose_name = '投诉'
+        verbose_name_plural = verbose_name
+        ordering = ['create_time']
+
+class Evidence(models.Model):
+    creator = models.ForeignKey(User, null=False)
+    feedback = models.ForeignKey(Feedback, null=False)
+    create_time = models.DateTimeField(default=datetime.now)
+    content = models.ImageField(upload_to='static/upload/evidence', blank=True, default='')
+    def __str__(self):
+        return self.content
+    class Meta:
+        #改数据库名
+        #db_table = 'evidence'
+        verbose_name = '证据'
+        verbose_name_plural = verbose_name
+        ordering = ['create_time']
