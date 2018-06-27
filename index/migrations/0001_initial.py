@@ -33,4 +33,13 @@ class Migration(migrations.Migration):
                 'verbose_name': '用户',
             },
         ),
+<<<<<<< HEAD
     ]
+=======
+        migrations.AddField(
+            model_name='colleges',
+            name='classify',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='index.Collegetype'),
+        ),
+    ]
+>>>>>>> 525969a428c89148e73c454f3a8a33a3a27c04b1
