@@ -19,3 +19,28 @@ class User(models.Model):
         verbose_name = '用户'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
+class Collegetype(models.Model):
+    title=models.CharField(max_length=20)
+    desc=models.TextField()
+    picture = models.ImageField(null=True)
+    
+    def __str__(self):
+        return self.title
+    class Meta:
+        verbose_name='学院类型'
+        verbose_name_plural=verbose_name
+
+class Colleges(models.Model):
+
+    title = models.CharField(max_length=30)
+    classify = models.ForeignKey(Collegetype)
+    desc = models.TextField()
+    picture = models.ImageField(null=True)
+
+    def __str__(self):
+        return self.title
+    class Meta:
+        verbose_name = '学院'
+        verbose_name_plural = verbose_name
+
+

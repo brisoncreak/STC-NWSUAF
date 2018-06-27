@@ -6,6 +6,8 @@ from .models import *
 from index.models import *
 import os
 from django.db.models import F
+import tkinter
+import tkinter.messagebox
 # Create your views here.
 #show files
 def show_files(request):
@@ -24,16 +26,18 @@ def upload_file(request):
         classifyid= file_classify.id
         if userid != '' and classifyid!='':
             obj = request.FILES.get('inputfile')
-            filetype=obj.name.split('.')[1]#获取后缀名
-            if filetype!='':
-                file_path = os.path.join('share','upload',obj.name)
+            file_path = os.path.join('share','upload',obj.name)
+            if os.path.isfile(file_path):
+                filetype=obj.name.split('.')[1]#获取后缀名
+                
                 f = open(file_path, 'wb')
                 for chunk in obj.chunks():
                     f.write(chunk)
                 f.close()
                 File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_type=filetype,file_classify_id=classifyid)
                 return HttpResponseRedirect('/show_file')
-            return HttpResponse('上传文件类型错误')
+            tkinter.messagebox.showerror('错误', '上传文件类型错误')
+            return HttpResponseRedirect('/upload_file')
         return HttpResponse('上传失败')
 #download files
 def download_files(request,fileid):  
