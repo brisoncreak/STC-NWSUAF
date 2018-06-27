@@ -24,6 +24,9 @@ def paying_views(request, good_id):
 
     return render(request, 'paying.html')
 
-def add_good_views(request,username):
+def add_good_views(request):
     if request.method == 'GET':
         return render(request,'new_good.html',locals())
+def good_detail_views(request,good_id):
+    if request.method=='GET':
+        return render(request,'good_detail.html',locals())

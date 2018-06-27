@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^goods/',goods_views,name='goods_index'),
     url(r'^ordering/(\d+)$', ordering_views, name='ordering'),
     url(r'^paying/(\d+)$', paying_views, name='paying'),
-    url(r'^add_good/(\d+)$', add_good_views, name='addgood'),
+    url(r'^add_good/$', add_good_views, name='addgood'),
+    url(r'^good_detail/(\d+)$', good_detail_views, name='good_detail'),
 ]
