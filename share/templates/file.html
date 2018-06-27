@@ -1,20 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>test</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/upload.css' %}">
+
+{% endblock %}
+
+{% block navbar %}
+    <li ><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="#">讨论</a></li>
+    <li class="selected"><a href="{% url 'share_index' %}">网盘</a></li>
+{% endblock %}
+
+
+{% block body %}
+<h2 class="title">上传文件</h2>
+
     <form action="/upload_file/" method="POST" enctype="multipart/form-data">
     {%csrf_token%}
-    用户名:<input type="text" name="user" /><br>
-        上传文件：<input type="file" name="inputfile"/><br>
-    <select class="form-control" name='list'>
-         <option value="信息工程学院">信息工程学院</option>
-         <option value="生命科学院">生命科学院</option>
-    </select>
-    <input type="submit">
+        <div id="outdiv">
+            <div class="indiv">
+                <span>用户名:</span><input type="text" name="user" />
+            </div> 
+            <div class="indiv">
+                <span>上传文件 : </span><input type="file" name="inputfile" maxlength="20" />
+            </div> 
+            <div class="indiv">
+                <span>资源类型 :</span><select name='list'>{% for college in colleges%}<option value="{{college.title}}">{{college.title}}</option>{% endfor %}</select>  
+            </div> 
+            <div class="indiv">
+                <input type="submit" value="提交">
+            </div>
+        </div>
     </form>
+
+
+
     
-</body>
-</html>
+{% endblock %}
+
+
+{% block side-search %}
+    <div class="spacer">
+        <form action="#" id="search">
+            <div class="input-group">
+            <input type="text" class="form-control" placeholder="搜索">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </span>
+            </div>
+        </form>
+    </div> 
+{% endblock %}
+
+{% block side %}
+
+    <div class="spacer">
+        <form action="#" id="search">
+            <div class="input-group">
+            <input type="text" class="form-control" placeholder="发起新讨论">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+index
+
+{% endblock %}

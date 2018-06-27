@@ -4,6 +4,7 @@ from django.http import FileResponse
 from django.http import HttpResponseRedirect
 from .models import *
 from index.models import *
+from index.templates import *
 import os
 # Create your views here.
 #show files
@@ -13,12 +14,15 @@ def show_files(request):
 #upload files
 def upload_file(request):
     if request.method == 'GET':
-        return render(request,'file.html')
+        colleges = Colleges.objects.all()
+        return render(request,'file.html',locals())
     else:
         user_name = request.POST.get('user')
+        # print(user_name)
         classify = request.POST.get('list')
+        print(classify)
         user2=User.objects.get(username=user_name)
-        file_classify=FileClassify.objects.get(title=classify)
+        file_classify=Colleges.objects.get(title=classify)
         userid=user2.id
         classifyid= file_classify.id
         if userid != '' and classifyid!='':
@@ -30,7 +34,9 @@ def upload_file(request):
                 f.write(chunk)
             f.close()
             File.objects.create(fileName=obj.name,user_id=userid,fileSize=obj.size,fileBeDown=0,file=file_path,fileType=filetype,fileClassify_id=classifyid)
-            return HttpResponse('上传成功')
+            # return HttpResponse('上传成功')
+            return HttpResponseRedirect('/share')
+
         return HttpResponse('上传失败')
 #download files
 def download_files(request,fileid):  
@@ -45,4 +51,10 @@ def download_files(request,fileid):
 #delete files
 def delete_files(request,fileid):
     File.objects.get(id=fileid).delete()
-    return HttpResponseRedirect('/show_file')
+    return HttpResponseRedirect('/share')
+
+def index_views(request):
+    sharefileList = File.objects.all()
+    collegetypes = Collegetype.objects.all()
+    # colleges = Colleges.objects.filter(classify_id=collegetypes.id)
+    return render(request,'share_index.html',locals()) 
