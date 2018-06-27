@@ -28,8 +28,8 @@
     </ul>
     {%endblock%}
       <div class="header-bottom-right">
-          {% if request.user.is_authenticated %}
-              <span><a href="#">{{ user.username }}</a>|<a href="#">消息</a>|<a href="#">退出</a></span>
+          {% if request.session.username %}
+              <span><a href="#">{{ request.session.username }}</a>|<a href="#">消息</a>|<a href="/logout/">退出</a></span>
           {% else %}
               <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册</a>
               或<a href="#" data-toggle="modal" data-target="#myModal1">登录</a>
@@ -40,6 +40,15 @@
 
 </nav>
 
+{% if messages %}
+<ul class="messages">
+    {%for message in messages %}
+    <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div class="alert alert-success">
+  <strong>{{message}}</strong> 指定操作成功提示信息。
+</div></li>
+    {%endfor %}
+</ul>
+{% endif %}
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -58,7 +67,7 @@
     <form  action="{%url 'register' %}" method="post">
     {% csrf_token %}
         <div>
-        <p><label>用户名称:</label> <input name="name" type="text" placeholder="请输入用户名" 　></p>
+        <p><label>用户名称:</label> <input name="username" type="text" placeholder="请输入用户名" 　></p>
         </div>
         <br>
         <div >
@@ -99,21 +108,20 @@
             </div>
             <div align="center" class="modal-body">
                <h1> 欢迎登录！</h1>
-    <form  onsubmit="return check_form()">
+    <form  action='/login/' method='post'>
+    {%csrf_token%}
         <div>
-       <p><label>用户名称:</label><input name="name" type="text" placeholder="请输入用户名"></p>
+       <p><label>用户名称:</label><input name="username" type="text" placeholder="请输入用户名"></p>
         </div>
         <br>
         <div>
         <br>
-        <p><label>密　码:</label><input id="password1" type="password" placeholder="请输入口令">
-                <input id="password" name="password" type="hidden" ></p>
+        <p><label>密　码:</label><input name="password" type="password" placeholder="请输入口令">
         </div>
         <br>
         <div>
-            <input type='submit' value='登录'>
-           <a href="{%url 'login'%}">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="submit" class="btn btn-primary">取消</button>
+           <button type="submit" class="btn btn-primary">登录</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary" onsubmit="return">取消</button>
         </div>
     </form>
 </div>

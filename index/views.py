@@ -4,7 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password, check_password
 from .models import *
 from django.http import HttpResponse
-
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+import json
 # Create your views here.
 def index_views(request):
 
@@ -13,49 +15,51 @@ def index_views(request):
 def index_login(request):
 
     if request.method == 'GET':
-        return redirect('/')
+        return redirect('/login')
     username = request.POST.get('username')
     password = request.POST.get('password')
 
-    # try:
-    #     user = User.objects.get(username=username)
-    # except:
-    #     return HttpResponse('用户名或密码不正确')
-
-    # if user.check_password(password):
-    #     return HttpResponse('登录成功')
-    # else:
-    #     return HttpResponse('用户名或密码不正确')
     try:
         user = User.objects.get(username=username)
-        if user.check_password(password):
-            return user
-    except User.DoesNotExist:
-        return None
+    except:
+        messages.error(request,'用户名不存在')
+        return HttpResponseRedirect('/')
+
+    if check_password(password,user.password):
+        request.session['username'] = user.username
+        request.session.set_expiry(600)
+        messages.success(request,'登录成功')
+        return HttpResponseRedirect('/')
+    else:
+        messages.error(request,'密码错误')
+        return HttpResponseRedirect('/')
+
 
 
 def index_logout(request):
-    logout(request)
-    return redirect('/')
+    try:
+        del request.session['username']
+    except Error:
+        pass
+    messages.success(request,'退出成功')
+    return HttpResponseRedirect('/')
+
 
 def index_register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
-        print(password1)
-        print(password2)
         email = request.POST.get('email')
         if password1 == password2:
             password = make_password(password1)
-            User.objects.create(username = username, \
-            password = password, email = email)
-            return HttpResponse('注册成功')
+            User.objects.create(username = username,password = password, email = email)
+            return redirect('/')
         else:
-            return HttpResponse('两次密码不一致')
+            messages.error(request,'密码错误')
+            return redirect('/register')
     else:
         return redirect('/register')
-    # return HttpResponse('跳转出来')
 
 
 
