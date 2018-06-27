@@ -18,14 +18,15 @@
         {% for file in files %}
                 <tr>
                     <td>{{file.id}}</td>
-                    <td>{{ file.fileName }}</td>
-                    {% if file.fileSize >　1048576 %}
-                        <td>{% widthratio fileSize 1048576 1 %}M</td>
+                    <td>{{ file.file_name }}</td>
+                    {% if file.file_size >　1048576 %}
+                        <td>{% widthratio file_size 1048576 1 %}M</td>
                     {% elif file.fileSize >　1024 %}
-                        <td>{% widthratio fileSize 1024 1 %} K</td>
+                        <td>{% widthratio file_size 1024 1 %} K</td>
                     {% else %}
-                        <td>{{ file.fileSize }} B</td>
+                        <td>{{ file.file_size }} B</td>
                     {% endif %}
+
                     <td>{{ file.fileType }}</td>
                     <td>{{file.fileBeDown}}</td>
                     <td>{{file.fileCreateTime}}</td>
@@ -33,6 +34,7 @@
                     <a href="{%url 'd_files' file.id%}">下载</a>|
                     <a href="{%url 'del_files' file.id%}">删除</a>
                     </td>
+
                 </tr>
             {% endfor %}
       </table>

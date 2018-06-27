@@ -23,20 +23,19 @@
 
     <form action="/upload_file/" method="POST" enctype="multipart/form-data">
     {%csrf_token%}
-        <div id="outdiv">
-            <div class="indiv">
-                <span>用户名:</span><input type="text" name="user" />
-            </div> 
-            <div class="indiv">
-                <span>上传文件 : </span><input type="file" name="inputfile" maxlength="20" />
-            </div> 
-            <div class="indiv">
-                <span>资源类型 :</span><select name='list'>{% for college in colleges%}<option value="{{college.title}}">{{college.title}}</option>{% endfor %}</select>  
-            </div> 
-            <div class="indiv">
-                <input type="submit" value="提交">
-            </div>
-        </div>
+    用户名:<input type="text" name="user" /><br>
+        上传文件：<input type="file" name="inputfile"/><br>
+    <select class="form-control" name='list'>
+         <option value="信息工程学院">信息工程学院</option>
+         <option value="生命科学院">生命科学院</option>
+         <!-- <option value="农学院">农学院</option>
+         <option value="植物保护学院">植物保护学院</option>
+         <option value="园艺学院">园艺学院</option>
+         <option value="林学院">林学院</option>
+         <option value="机械与电子工程学院">机械与电子工程学工程学院</option> -->
+
+    </select>
+    <input type="submit" value='提交'>
     </form>
 
 

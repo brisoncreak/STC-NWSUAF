@@ -26,6 +26,7 @@ class GoodAdmin(admin.ModelAdmin):
     #    }),
     #)
 
+# Register your models here.
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['create_time', 'status']
     #添加链接
@@ -97,5 +98,3 @@ class EvidenceAdmin(admin.ModelAdmin):
     #)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Good, GoodAdmin)
-admin.site.register(Feedback, FeedBackAdmin)
-admin.site.register(Evidence, EvidenceAdmin)

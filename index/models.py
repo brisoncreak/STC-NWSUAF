@@ -24,13 +24,13 @@ class Collegetype(models.Model):
     title=models.CharField(max_length=20)
     desc=models.TextField()
     # picture = models.ImageField(null=True)
+
     
     def __str__(self):
         return self.title
     class Meta:
         verbose_name='学院类型'
         verbose_name_plural=verbose_name
-
 
 class Colleges(models.Model):
 

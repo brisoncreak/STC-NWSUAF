@@ -1,0 +1,19 @@
+{% extends 'market_index.html'%}
+{% block body %}
+    <div class="good_inf">
+    <h2 class="title">bulabulabula</h2>
+    <div class="pic">
+    </div>
+    <div class="inf">    
+    <table class="table table-striped">
+    <tbody>
+    <tr>
+        <td style="float: left;">money</td>
+        <td style="float: left;">10</td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    <a class="btn btn-default" href="{% url 'ordering' good.id %}">购买</a>
+    </div>
+{% endblock %}

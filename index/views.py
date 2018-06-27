@@ -1,44 +1,65 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password, check_password
 from .models import *
-
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+import json
 # Create your views here.
 def index_views(request):
 
     return render(request, 'index.html')
 
 def index_login(request):
+
     if request.method == 'GET':
-        return render(request, 'login.html')
+        return redirect('/login')
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
+    try:
+        user = User.objects.get(username=username)
+    except:
+        messages.error(request,'用户名不存在')
+        return HttpResponseRedirect('/')
 
-    user = authenticate(request, username=username, password=password)
-    if user:
-        login(request, user)
-    return redirect('/')
+    if check_password(password,user.password):
+        request.session['username'] = user.username
+        request.session.set_expiry(600)
+        messages.success(request,'登录成功')
+        return HttpResponseRedirect('/')
+    else:
+        messages.error(request,'密码错误')
+        return HttpResponseRedirect('/')
+
+
 
 def index_logout(request):
-    logout(request)
-    return redirect('/')
+    try:
+        del request.session['username']
+    except Error:
+        pass
+    messages.success(request,'退出成功')
+    return HttpResponseRedirect('/')
 
-def signup_views(request):
-    if request.method == 'GET':
-        return redirect(request,'/')
-    username = request.POST.get('username', '')
-    password1 = request.POST.get('password1', '')
-    password2 = request.POST.get('password2', '')
-    email = request.POST.get('email', '')
-    if password1 == password2:
-        password = make_password(password1)
-        User.objects.create(username = username, \
-        password = password, mobile = mobile, \
-        email = email)
-        return HttpResponse('注册成功')
+
+def index_register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        email = request.POST.get('email')
+        if password1 == password2:
+            password = make_password(password1)
+            User.objects.create(username = username,password = password, email = email)
+            return redirect('/')
+        else:
+            messages.error(request,'密码错误')
+            return redirect('/register')
     else:
-        return
+        return redirect('/register')
 
 
 

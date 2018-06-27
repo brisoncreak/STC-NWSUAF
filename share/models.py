@@ -12,14 +12,17 @@ from index.models import *
 #         verbose_name_plural=verbose_name
 
 class File(models.Model):
-    fileName=models.CharField(max_length=20)
-    fileType=models.CharField(max_length=20)
-    fileSize=models.IntegerField()
-    fileBeDown=models.IntegerField()
-    fileCreateTime=models.DateTimeField(auto_now_add=True)
-    fileClassify=models.ForeignKey(Colleges,null=True)
+  
+    file_name=models.CharField(max_length=20)
+    file_type=models.CharField(max_length=20)
+    file_size=models.IntegerField()
+    file_bedown=models.IntegerField()
+    create_time=models.DateTimeField(auto_now_add=True)
+    file_classify=models.ForeignKey(FileClassify)
+
     file=models.FileField(upload_to='share/upload')
-    user=models.ForeignKey(User,null=True)
+    user=models.ForeignKey(User)
+    file_status=models.CharField(max_length=20,null=True)
     def __str__(self):
         return self.fileName
     class Meta:
