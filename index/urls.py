@@ -8,6 +8,5 @@ urlpatterns = [
     url(r'^logout/$', index_logout, name='logout'),
 
     url(r'^test/$', test),
-
     url(r'^modelbase/$',index_modelbase),
 ]

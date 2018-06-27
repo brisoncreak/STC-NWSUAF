@@ -20,7 +20,6 @@ class User(models.Model):
         verbose_name_plural = verbose_name
         ordering = ['create_time']
 
-
 class Collegetype(models.Model):
     title=models.CharField(max_length=20)
     desc=models.TextField()
@@ -31,7 +30,6 @@ class Collegetype(models.Model):
     class Meta:
         verbose_name='学院类型'
         verbose_name_plural=verbose_name
-
 
 class Colleges(models.Model):
 
