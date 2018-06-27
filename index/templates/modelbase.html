@@ -1,0 +1,76 @@
+<!-- modelbase.html -->
+
+
+{%extends 'head.html'%}
+{% load static %}
+{% block title %}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/modelbase.css'%}">
+
+{% endblock %}
+{% block body %}
+<!-- 农科 -->
+    <div class='divcontent'>
+        <hr>
+        <img src="{{nongke.picture}}" alt="{{nongke.title}}">
+        <ul>
+            {%for college in colleges_nongke%}
+            <li>
+                <div class='contentdiv'>
+                    <a href="#"><img src="{{college.picture}}" alt="{{college.title}}"></a>
+                    <a href="#"><p>{{college.title}}</p></a>
+                </div>
+            </li>
+            {%endfor%}
+        </ul>
+    </div>  
+    <br><br><br><br>
+<!-- 工科 -->
+    <div>
+    <hr>
+    <img src="{{gongke.picture}}" alt="{{gongke.title}}">
+        <ul>
+            {%for college in colleges_gongke%}
+            <li>
+                <div class='contentdiv'>
+                    <a href="#"><img src="{{college.picture}}" alt="{{college.title}}"></a>
+                    <a href="#"><p>{{college.title}}</p></a>
+                </div>
+            </li>
+            {%endfor%}
+        </ul>
+    </div>  
+    <br><br><br><br>
+<!-- 理科 -->
+    <hr>
+    <img src="{{like.picture}}" alt="{{like.title}}">
+    <div>
+        <ul>
+            {%for college in colleges_like%}
+            <li>
+                <div class='contentdiv'>
+                    <a href="#"><img src="{{college.picture}}" alt="{{college.title}}"></a>
+                    <a href="#"><p>{{college.title}}</p></a>
+                </div>
+            </li>
+            {%endfor%}
+        </ul>
+    </div>  
+    <br><br><br><br>
+<!-- 文科 -->
+    <hr>
+    <div>
+        
+        <img src="{{wenke.picture}}" alt="{{wenke.title}}">
+        <ul>
+            {%for college in colleges_nongke%}
+            <li>
+                <div class='contentdiv'>
+                    <a href="#"><img src="{{college.picture}}" alt="{{college.title}}"></a>
+                    <a href="#"><p>{{college.title}}</p></a>
+                </div>
+            </li>
+            {%endfor%}
+        </ul>
+    </div>  
+{% endblock %}
