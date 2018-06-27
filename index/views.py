@@ -24,6 +24,22 @@ def index_logout(request):
     logout(request)
     return redirect('/')
 
+def signup_views(request):
+    if request.method == 'GET':
+        return redirect(request,'/')
+    username = request.POST.get('username', '')
+    password1 = request.POST.get('password1', '')
+    password2 = request.POST.get('password2', '')
+    email = request.POST.get('email', '')
+    if password1 == password2:
+        password = make_password(password1)
+        User.objects.create(username = username, \
+        password = password, mobile = mobile, \
+        email = email)
+        return HttpResponse('注册成功')
+    else:
+        return
+
 
 
 def test(request):
