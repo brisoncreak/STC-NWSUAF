@@ -5,10 +5,9 @@ from datetime import datetime
 class User(models.Model):
     username = models.CharField(max_length = 30)
     password = models.CharField(max_length = 100)
+    email = models.EmailField(null=True)
     create_time = models.DateTimeField(default=datetime.now)
     profile_photo = models.ImageField(upload_to='static/upload/profile_photo', blank=True, default='')
-    alipay = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
-    wechatpay = models.ImageField(upload_to='static/upload/wechatpay', blank=True, default='')
     good_mark = models.IntegerField(default=0)
     bad_mark = models.IntegerField(default=0)
 

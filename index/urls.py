@@ -9,4 +9,5 @@ urlpatterns = [
 
     url(r'^test/$', test),
 
+    url(r'^modelbase/$',index_modelbase),
 ]
