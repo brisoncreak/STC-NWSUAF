@@ -6,8 +6,7 @@ from .models import *
 from index.models import *
 import os
 from django.db.models import F
-import tkinter
-import tkinter.messagebox
+from django.contrib import messages
 # Create your views here.
 #show files
 def show_files(request):
@@ -36,7 +35,7 @@ def upload_file(request):
                 f.close()
                 File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_type=filetype,file_classify_id=classifyid)
                 return HttpResponseRedirect('/show_file')
-            tkinter.messagebox.showerror('错误', '上传文件类型错误')
+            messages.error(request,'密码错误')
             return HttpResponseRedirect('/upload_file')
         return HttpResponse('上传失败')
 #download files
