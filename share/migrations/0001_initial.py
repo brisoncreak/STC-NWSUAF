@@ -27,8 +27,8 @@ class Migration(migrations.Migration):
                 ('file', models.FileField(upload_to='share/upload')),
             ],
             options={
-                'verbose_name': '文件',
                 'verbose_name_plural': '文件',
+                'verbose_name': '文件',
             },
         ),
         migrations.CreateModel(
@@ -39,8 +39,8 @@ class Migration(migrations.Migration):
                 ('desc', models.TextField()),
             ],
             options={
-                'verbose_name': '文件类型',
                 'verbose_name_plural': '文件类型',
+                'verbose_name': '文件类型',
             },
         ),
         migrations.AddField(
