@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .models import *
+from django.http import HttpResponse
 
 # Create your views here.
 def index_views(request):
@@ -12,39 +13,48 @@ def index_login(request):
 
     if request.method == 'GET':
         return redirect('/')
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
+    # try:
+    #     user = User.objects.get(username=username)
+    # except:
+    #     return HttpResponse('用户名或密码不正确')
+
+    # if user.check_password(password):
+    #     return HttpResponse('登录成功')
+    # else:
+    #     return HttpResponse('用户名或密码不正确')
     try:
         user = User.objects.get(username=username)
-    except:
-        return HttpResponse('用户名或密码不正确')
-
-    if check_password(password,user.password):
-        return HttpResponse('登录成功')
-    else:
-        return HttpResponse('用户名或密码不正确')
+        if user.check_password(password):
+            return user
+    except User.DoesNotExist:
+        return None
 
 
 def index_logout(request):
     logout(request)
     return redirect('/')
 
-def signup_views(request):
-    if request.method == 'GET':
-        return redirect(request,'/')
-    username = request.POST.get('username', '')
-    password1 = request.POST.get('password1', '')
-    password2 = request.POST.get('password2', '')
-    email = request.POST.get('email', '')
-    if password1 == password2:
-        password = make_password(password1)
-        User.objects.create(username = username, \
-        password = password, mobile = mobile, \
-        email = email)
-        return HttpResponse('注册成功')
+def index_register(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        print(password1)
+        print(password2)
+        email = request.POST.get('email')
+        if password1 == password2:
+            password = make_password(password1)
+            User.objects.create(username = username, \
+            password = password, email = email)
+            return HttpResponse('注册成功')
+        else:
+            return HttpResponse('两次密码不一致')
     else:
-        return HttpResponse('两次密码不一致')
+        return redirect('/register')
+    # return HttpResponse('跳转出来')
 
 
 
