@@ -38,6 +38,7 @@ class Migration(migrations.Migration):
                 ('file', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='share.File')),
             ],
             options={
+
                 'verbose_name': '商品',
                 'ordering': ['create_time'],
                 'verbose_name_plural': '商品',
