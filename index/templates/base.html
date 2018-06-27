@@ -17,16 +17,15 @@
         <a class="navbar-brand" id="header-img" href="#"></a>
         <div class="brand-name"><a href="#">有点东西</a></div>
     </div>
-    {%block tabmenu%}
     <ul class="tabmenu">
             <li class="selected"><a href="#">热门</a></li>
-            <li><a href="http://127.0.0.1:8000/market">市场</a></li>
+            <li><a href="#">市场</a></li>
             <li><a href="#">讨论</a></li>
             <li><a href="#">网盘</a></li>
     </ul>
-    {%endblock%}
+
       <div class="header-bottom-right">
-          {% if request.user.is_authenticated %}
+          {% if not user %}
               <span><a href="#">{{ user.username }}</a>|<a href="#">消息</a>|<a href="#">退出</a></span>
           {% else %}
               <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册或登录</a>。</span>
@@ -66,58 +65,7 @@
 
 
 <div class="side">
-    <div class="spacer">
-        <form action="#" id="search">
-            <div class="input-group">
-            <input type="text" class="form-control" placeholder="搜索">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                </span>
-            </div>
-        </form>
-    </div>
-  
-    <div class="spacer">
-    {% if request.user.is_authenticated %}
-    <h1>已登录</h1>
-    <a href="{% url 'logout'%}">logout</a>
-
-    {% endif %}
-        <form action="{% url 'login' %}" method="POST" class="login-form-side">
-        {% csrf_token %}
-            <input class="user form-control" type="text" name="username" placeholder="用户名">
-            <input class="pwd form-control" type="password" name="password" placeholder="密码">
-            <div class="blank">
-                <!--显示登录错误信息-->
-            </div>
-            <div class="remember-me">
-                <input class="rem" type="checkbox" name="rem" id="rem-login-main">
-                <label for="rem-login-main" class="text-muted">记住我</label>
-                <a class="recover-password" class="text-muted" href="#">忘记密码</a>
-            </div>
-            <div class="submit">
-                <button type="submit" class="btn btn-default" >登录</button>
-            </div>
-            <div class="clear"></div>
-        </form>
-    </div>
-
-    <div class="spacer"><br></div>
-
-    <div class="spacer">
-        <form action="#" id="search">
-            <div class="input-group">
-            <input type="text" class="form-control" placeholder="发起新讨论">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                </span>
-            </div>
-        </form>
-    </div>
-    <div class="spacer">
-    {% block side %}
-    {% endblock %}
-    </div>
+    {% block side %}{% endblock %}
 </div>
 
 <div class="content">
