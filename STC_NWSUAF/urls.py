@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^',include('share.urls')),
     url(r'^', include('index.urls')),
     url(r'^market/', include('market.urls')),
+    url(r'^chat/',include('chat.urls')),
 
 ]

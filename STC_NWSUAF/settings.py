@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'index',
     'share',
     'market',
+    'chat',
 
 ]
 
