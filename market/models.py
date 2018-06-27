@@ -13,6 +13,7 @@ class Good(models.Model):
     create_time = models.DateTimeField(default=datetime.now)
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='商品价格')
     pay_way = models.IntegerField(choices = pay_way_list)
+    pay_pic = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
     info = models.CharField(max_length = 200)
     sell_times  = models.IntegerField(default=1)
 
@@ -44,3 +45,6 @@ class Order(models.Model):
         verbose_name = '订单'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
+
+class Feedback(models.Model):
+    good = models.ForeignKey(Order, null=False)
