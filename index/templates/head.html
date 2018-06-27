@@ -1,0 +1,45 @@
+<!-- head.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}有点东西{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/base.css'%}">
+    <script src="{% static 'js/jquery-3.2.1.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-default">
+
+    <div class="navbar-header">
+        <a class="navbar-brand" id="header-img" href="#"></a>
+        <div class="brand-name"><a href="#">有点东西</a></div>
+    </div>
+    <ul class="tabmenu">
+            {%block tabmenu%}
+              <li><a href="#">热门</a></li>
+              <li><a href="#">市场</a></li>
+              <li><a href="#">讨论</a></li>
+              <li><a href="#">网盘</a></li>
+            {%endblock%}
+    </ul>
+
+      <div class="header-bottom-right">
+          {% if request.user.is_authenticated %}
+              <span><a href="#">{{ user.username }}</a>|<a href="#">消息</a>|<a href="#">退出</a></span>
+          {% else %}
+              <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册或登录</a>。</span>
+          {% endif %}
+      </div>
+
+</nav>
+
+{% block body %}
+
+{% endblock %}
+
+</body>
+</html>
