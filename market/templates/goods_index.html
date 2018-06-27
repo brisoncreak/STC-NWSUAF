@@ -3,7 +3,7 @@
     <h2 class="title">二手商品</h2>
     {% for good in goods %}
     <div class = "goodlist" >
-        <a href="">{{good.name}}</a>
+        <a href="{% url 'good_detail' good.id %}">{{good.name}}</a>
     </div>
     {%endfor%}
     <div class="pageJeep">
