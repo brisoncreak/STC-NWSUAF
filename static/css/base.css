@@ -130,17 +130,17 @@ li.selected a {
     margin:20px;
 }
 .login-form-side .user{
-    width:142px;
-    border:1px solid gray; 
-    margin:5px 0px 0px 0px;
+    width:140px;
+    //border:1px solid gray; 
+    margin:5px 0px 0px 5px;
     padding:6px;
     font-size:11px;
     display: inline;
 }
 .login-form-side .pwd{
-    width:148px;
-    border:1px solid gray;
-    margin:5px 0px 0px 5px;
+    width:140px;
+    //border:1px solid gray;
+    margin:5px 0px 0px 2px;
     padding:6px;
     font-size:11px;
     display: inline;
