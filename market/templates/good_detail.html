@@ -1,18 +1,53 @@
-{% extends 'market_index.html'%}
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}市场 - {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+{% endblock %}
+
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="#">讨论</a></li>
+    <li><a href="#">网盘</a></li>
+{% endblock %}
 {% block body %}
     <div class="good_inf">
     <h2 class="title">bulabulabula</h2>
     <div class="pic">
     </div>
     <div class="inf">    
-    <table class="table table-striped">
-    <tbody>
+    <table class="table table-striped" style="width:100%;">
+    <tbody> 
     <tr>
-        <td style="float: left;">money</td>
-        <td style="float: left;">10</td>
+        <td class="alone_inf" style="border:0px;">money:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">number:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">支付方式:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+    <tr>
+        <td class="alone_inf"  style="border:0px;">商品信息:</td>
+        <td class="desc" style="border:0px;">1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</td>
     </tr>
     </tbody>
     </table>
+    <a href="{% url 'ordering' 1 %}" class="btn btn-default">购买</a>
     </div>
     </div>
+{% endblock %}
+{% block side %}
+<a class='btn btn-default sidebtn active'>校园二手</a>
+<a class='btn btn-default sidebtn'>付费文档</a>
+
+<br>
+<br>
+<br>
 {% endblock %}

@@ -40,17 +40,10 @@ class Migration(migrations.Migration):
                 ('file', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='share.File')),
             ],
             options={
-<<<<<<< HEAD
 
                 'verbose_name': '商品',
                 'ordering': ['create_time'],
                 'verbose_name_plural': '商品',
-=======
-                'verbose_name': '商品',
-                'ordering': ['create_time'],
-                'verbose_name_plural': '商品',
-
->>>>>>> 0fd8a64df33621c030ea15998a298c4da34922bd
             },
         ),
         migrations.CreateModel(
@@ -66,10 +59,8 @@ class Migration(migrations.Migration):
                 'verbose_name': '订单',
                 'ordering': ['create_time'],
                 'verbose_name_plural': '订单',
-<<<<<<< HEAD
-=======
 
->>>>>>> 0fd8a64df33621c030ea15998a298c4da34922bd
+
             },
         ),
         migrations.AddField(
