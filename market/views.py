@@ -51,3 +51,22 @@ def paying_views(request, order_id):
 def add_good_views(request):
     if request.method == 'GET':
         return render(request,'new_good.html',locals())
+
+def order_views(request,orderstate):
+    if request.method == 'GET':
+        return render(request,'order_view.html',locals())
+def order_finished_views(request,orderstate):
+    if request.method == 'GET':
+        return render(request,'order_finish.html',locals())
+def order_complaint_views(request,orderstate):
+    if request.method == 'GET':
+        return render(request,'order_complaint.html',locals())
+def order_cancel_views(request,orderstate):
+    if request.method == 'GET':
+        return render(request,'order_cancel.html',locals())
+def order_detail_views(request,goodname):
+    if request.method == 'GET':
+        return render(request,'order_detail.html',locals())
+def complaint_views(request,orderid):
+    if request.method == 'GET':
+        return render(request,'complaint.html',locals())
