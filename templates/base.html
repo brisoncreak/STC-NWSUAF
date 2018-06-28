@@ -42,9 +42,23 @@
 
 {% if messages %}
 <ul class="messages">
-    {%for message in messages %}
-    <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div class="alert alert-success">
-  <strong>{{message}}</strong> 指定操作成功提示信息。
+    {% for message in messages %}
+    <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div
+    {% if message.tags == 'info' %}
+    class="alert alert-info"
+    {% elif message.tags == 'success' %}
+    class="alert alert-success"
+    {% elif message.tags == 'warning' %}
+    class="alert alert-warning"
+    {% elif message.tags == 'error' %}
+    class="alert alert-danger"
+    {% else %}
+    class="alert alert-success"
+    {% endif %} class="alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;</button>
+        <strong>{{message}}</strong> 指定操作成功提示信息。
 </div></li>
     {%endfor %}
 </ul>

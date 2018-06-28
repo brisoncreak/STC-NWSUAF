@@ -40,7 +40,7 @@ def index_login(request):
 def index_logout(request):
     try:
         del request.session['username']
-    except Error:
+    except:
         pass
     messages.success(request,'退出成功')
     return HttpResponseRedirect('/')
@@ -82,4 +82,5 @@ def index_modelbase(request):
     colleges_wenke = Colleges.objects.filter(classify_id=wenke.id)
 
     return render(request,'modelbase.html',locals())
+
 

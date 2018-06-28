@@ -36,7 +36,7 @@ class CollegetypeAdmin(admin.ModelAdmin):
 admin.site.register(Collegetype, CollegetypeAdmin)
 
 class CollegesAdmin(admin.ModelAdmin):
-    list_display = ['title','classify','desc']
+    list_display = ['title','desc']
     list_display_links = ['title']
     search_fields = ['title']
     list_filter = ['title']

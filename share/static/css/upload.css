@@ -1,0 +1,23 @@
+/*upload.css*/
+li{
+    list-style: none;
+
+}
+
+.indiv{
+
+    width:500px;
+    padding: 20px;
+}
+#outdiv{
+    margin: 0 auto;
+    width: 100%;
+    background-image: url(/static/img/bk1.jpg);
+}
+span{
+    font-size: 20px;
+}
+
+input,select{
+    width:200px;
+}
