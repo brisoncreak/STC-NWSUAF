@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout,login
 from django.contrib.auth.hashers import make_password, check_password
 from .models import *
 from django.http import HttpResponse
@@ -39,7 +39,7 @@ def index_login(request):
 def index_logout(request):
     try:
         del request.session['username']
-    except Error:
+    except:
         pass
     messages.success(request,'退出成功')
     return HttpResponseRedirect('/')
@@ -54,6 +54,7 @@ def index_register(request):
         if password1 == password2:
             password = make_password(password1)
             User.objects.create(username = username,password = password, email = email)
+            messages.success(request,'注册成功')
             return redirect('/')
         else:
             messages.error(request,'密码错误')
@@ -81,4 +82,5 @@ def index_modelbase(request):
     colleges_wenke = Colleges.objects.filter(classify_id=wenke.id)
 
     return render(request,'modelbase.html',locals())
+
 

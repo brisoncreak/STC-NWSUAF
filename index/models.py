@@ -5,7 +5,7 @@ from datetime import datetime
 class User(models.Model):
     username = models.CharField(max_length = 30)
     password = models.CharField(max_length = 100)
-    email = models.EmailField(null=True)
+    email = models.EmailField(blank=True)
     create_time = models.DateTimeField(default=datetime.now)
     profile_photo = models.ImageField(upload_to='static/upload/profile_photo', blank=True, default='')
     good_mark = models.IntegerField(default=0)
