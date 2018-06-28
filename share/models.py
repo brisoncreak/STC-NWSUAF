@@ -18,7 +18,7 @@ class File(models.Model):
     file_size=models.IntegerField()
     file_bedown=models.IntegerField()
     create_time=models.DateTimeField(auto_now_add=True)
-    file_classify=models.ForeignKey(FileClassify)
+    file_classify=models.ForeignKey(Colleges)
 
     file=models.FileField(upload_to='share/upload')
     user=models.ForeignKey(User)
