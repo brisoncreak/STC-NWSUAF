@@ -55,14 +55,23 @@
     width: 70%;
     position: relative;
     margin: auto;
+    overflow: hidden;
 
 }
 .inf{
     float:right;
     width:50%;
     min-height:350px; 
-    background-color: blue;
     margin-left:20px;
     margin-right:8px;
     margin-bottom: 10px; 
+}
+.desc{
+    word-wrap:break-word;
+    word-break:break-all;
+    float: left; 
+    min-height: 150px;
+}
+.alone_inf{
+    float: left;
 }
