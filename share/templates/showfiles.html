@@ -9,7 +9,6 @@
            <th>文件id</th>
            <th>文件名</th>
            <th>文件大小</th>
-           <th>文件扩展名</th>
            <th>下载次数</th>
            <th>创建时间</th>
            <th>操作</th>
@@ -26,8 +25,6 @@
                     {% else %}
                         <td>{{ file.file_size }} B</td>
                     {% endif %}
-
-                    <td>{{ file.fileType }}</td>
                     <td>{{file.fileBeDown}}</td>
                     <td>{{file.fileCreateTime}}</td>
                     <td>
