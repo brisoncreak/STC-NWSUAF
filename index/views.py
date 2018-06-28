@@ -6,6 +6,7 @@ from .models import *
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.core.mial import send_email
 import json
 # Create your views here.
 def index_views(request):
