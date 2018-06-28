@@ -44,3 +44,4 @@ class Colleges(models.Model):
     class Meta:
         verbose_name = '学院/文件类型'
         verbose_name_plural = verbose_name
+

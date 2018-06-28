@@ -27,7 +27,7 @@ def index_login(request):
 
     if check_password(password,user.password):
         request.session['username'] = user.username
-        request.session.set_expiry(600)
+        request.session.set_expiry(7200)
         messages.success(request,'登录成功')
         return HttpResponseRedirect('/')
     else:

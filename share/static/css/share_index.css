@@ -6,3 +6,9 @@ table{
         line-height:20px;     <!-- 行高-->
         padding:0px;               <!-- 内边距-->
 }
+
+.sidebtn
+{
+    width:100%;
+    margin-top: 5px;
+}

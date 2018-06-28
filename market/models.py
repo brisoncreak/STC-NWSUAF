@@ -42,7 +42,7 @@ class Order(models.Model):
     status = models.IntegerField(choices=status_list)
 
     def __str__(self):
-        return self.create_time
+         return str(self.id)
     class Meta:
         #改数据库名
         #db_table = 'order'
@@ -76,5 +76,20 @@ class Evidence(models.Model):
         #改数据库名
         #db_table = 'evidence'
         verbose_name = '证据'
+        verbose_name_plural = verbose_name
+        ordering = ['create_time']
+
+class TradeMessage(models.Model):
+    sender = models.ForeignKey(User, related_name='sender')
+    receiver = models.ForeignKey(User, related_name='receiver')
+    order = models.ForeignKey(Order, null=False)
+    create_time = models.DateTimeField(default=datetime.now)
+    content = models.CharField(max_length = 200)
+    def __str__(self):
+        return self.content
+    class Meta:
+        #改数据库名
+        #db_table = 'trade_message'
+        verbose_name = '交易消息'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
