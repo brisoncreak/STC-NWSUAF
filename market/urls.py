@@ -10,6 +10,11 @@ urlpatterns = [
     url(r'^add_good/$', add_good_views, name='addgood'),
     url(r'^good_detail/(\d+)$', good_detail_views, name='good_detail'),
     url(r'^add_order/(\d+)$', new_order_views, name='add_order'),
+    url(r'^order_view/(\d)',order_views,name="ordershow"),
+    url(r'^order_finished/(\d)',order_finished_views,name="finished"),
+    url(r'^order_complaint_view/(\d)',order_complaint_views,name="complaint"),
+    url(r'^order_cancel/(\d)',order_cancel_views,name="cancel"),
+    url(r'^order_detail/(\d+)',order_detail_views,name="orderdetail"),
+    url(r'^complaint/(\d+)',complaint_views,name="complaint"),
     url(r'^add_tmessage/(\d+)$', add_tmessage_views, name='add_tmessage'),
-    
 ]
