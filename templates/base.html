@@ -28,43 +28,124 @@
     </ul>
     {%endblock%}
       <div class="header-bottom-right">
-          {% if request.user.is_authenticated %}
-              <span><a href="#">{{ user.username }}</a>|<a href="#">消息</a>|<a href="#">退出</a></span>
+          {% if request.session.username %}
+              <span><a href="#">{{ request.session.username }}</a>|<a href="#">消息</a>|<a href="/logout/">退出</a></span>
           {% else %}
-              <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册或登录</a>。</span>
+              <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册</a>
+              或<a href="#" data-toggle="modal" data-target="#myModal1">登录</a>
+
+              </span>
           {% endif %}
       </div>
 
 </nav>
 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div
+    {% if message.tags == 'info' %}
+    class="alert alert-info"
+    {% elif message.tags == 'success' %}
+    class="alert alert-success"
+    {% elif message.tags == 'warning' %}
+    class="alert alert-warning"
+    {% elif message.tags == 'error' %}
+    class="alert alert-danger"
+    {% else %}
+    class="alert alert-success"
+    {% endif %} class="alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;</button>
+        <strong>{{message}}</strong> 指定操作成功提示信息。
+</div></li>
+    {%endfor %}
+</ul>
+{% endif %}
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
                  <!--这里显示错误信息-->
 
-				</h4>
-			</div>
-			<div class="modal-body">
-                <p>用户名 密码 确认密码</p>
-				<form action="#" method="POST">
-                    <input type="text" name="username">
-                    <input type="password" name="password1">
-                    <input type="password" name="password2">
-                    <button type="submit" class="btn btn-primary">注册</button>
-                </form>
-			</div>
-			<div class="modal-footer">
-				<p>注册即表示您同意</p>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
+                </h4>
+            </div>
+            <div align="center" class="modal-body" >
+               <h1>欢迎注册！</h1>
+    <form  action="{%url 'register' %}" method="post">
+    {% csrf_token %}
+        <div>
+        <p><label>用户名称:</label> <input name="username" type="text" placeholder="请输入用户名" 　></p>
+        </div>
+        <br>
+        <div >
+        <p><label>电子邮件:</label><input name="email" type="text" placeholder="请输入电子邮件 "　></p>
+        </div>
+        <div>
+        <br>
+        <p><label>密码:</label><input name="password1" type="password" placeholder="请输入口令">
+        <p>
+        </div>
+        <br>
+             <div>
+        <p><label>确认密码:</label><input name="password2" type="password" maxlength="50" placeholder="请再次输入口令" >
+            </div></p>
+        <div>
+         <button type="submit" class="btn btn-primary">注册</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary" onsubmit="return">取消</button>
+        </div>
+    </form>
 </div>
+            <div class="modal-footer">
+                <p>注册即表示您同意</p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div align="center" class="modal-body">
+               <h1> 欢迎登录！</h1>
+    <form  action='/login/' method='post'>
+    {%csrf_token%}
+        <div>
+       <p><label>用户名称:</label><input name="username" type="text" placeholder="请输入用户名"></p>
+        </div>
+        <br>
+        <div>
+        <br>
+        <p><label>密　码:</label><input name="password" type="password" placeholder="请输入口令">
+        </div>
+        <br>
+        <div>
+           <button type="submit" class="btn btn-primary">登录</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary" onsubmit="return">取消</button>
+        </div>
+    </form>
+</div>
+            <div class="modal-footer">
+                <p>我们为您带来最快捷的服务</p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 
 <div class="side">
 

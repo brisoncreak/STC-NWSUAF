@@ -1,0 +1,2 @@
+1、建立Colleges表
+2、建立CollegeType表

@@ -4,10 +4,10 @@ from django.http import FileResponse
 from django.http import HttpResponseRedirect
 from .models import *
 from index.models import *
+from index.templates import *
 import os
 from django.db.models import F
-import tkinter
-import tkinter.messagebox
+from django.contrib import messages
 # Create your views here.
 #show files
 def show_files(request):
@@ -16,28 +16,29 @@ def show_files(request):
 #upload files
 def upload_file(request):
     if request.method == 'GET':
-        return render(request,'file.html')
+        colleges = Colleges.objects.all()
+        return render(request,'file.html',locals())
     else:
         user_name = request.POST.get('user')
+        # print(user_name)
         classify = request.POST.get('list')
+        print(classify)
         user2=User.objects.get(username=user_name)
-        file_classify=FileClassify.objects.get(title=classify)
+        file_classify=Colleges.objects.get(title=classify)
         userid=user2.id
         classifyid= file_classify.id
         if userid != '' and classifyid!='':
             obj = request.FILES.get('inputfile')
             file_path = os.path.join('share','upload',obj.name)
-            if os.path.isfile(file_path):
-                filetype=obj.name.split('.')[1]#获取后缀名
-                
-                f = open(file_path, 'wb')
-                for chunk in obj.chunks():
-                    f.write(chunk)
-                f.close()
-                File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_type=filetype,file_classify_id=classifyid)
-                return HttpResponseRedirect('/show_file')
-            tkinter.messagebox.showerror('错误', '上传文件类型错误')
-            return HttpResponseRedirect('/upload_file')
+
+            f = open(file_path, 'wb')
+            for chunk in obj.chunks():
+                f.write(chunk)
+            f.close()
+            File.objects.create(fileName=obj.name,user_id=userid,fileSize=obj.size,fileBeDown=0,file=file_path,fileType=filetype,fileClassify_id=classifyid)
+            # return HttpResponse('上传成功')
+            return HttpResponseRedirect('/share')
+          
         return HttpResponse('上传失败')
 #download files
 def download_files(request,fileid):  
@@ -59,3 +60,10 @@ def delete_files(request,fileid):
     if os.path.isfile(file_path):
         os.remove(file_path)
     return HttpResponseRedirect('/show_file')
+
+def index_views(request):
+    sharefileList = File.objects.all()
+    collegetypes = Collegetype.objects.all()
+    # colleges = Colleges.objects.filter(classify_id=collegetypes.id)
+    return render(request,'share_index.html',locals()) 
+

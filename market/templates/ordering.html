@@ -25,7 +25,7 @@
 </tr>
 <tr>
   <td>金额</td>
-  <td>123元</td>
+  <td>{{ good.price }}</td>
 </tr>
 <tr>
   <td>支付方式</td>
@@ -34,14 +34,12 @@
 
 </table>
 
-<form> 
-<input type="checkbox" id="confirm-buy">
-<label for="confirm-buy" class="text-muted">我已经阅读并确认以上交易信息</label>
-<button class="btn btn-default">立即购买</button>
+<form action="{% url 'add_order' good.id %}" method="POST"> 
+{% csrf_token %}
+<input type="checkbox" id="confirm-buy" name="confirm-buy">
+<label for="confirm-buy" class="text-muted" >我已经阅读并确认以上交易信息</label>
+<input class="btn btn-default" type="submit">立即购买</button>
 </form>
-
-<a href="{% url 'paying' 1 %}" class="btn btn-default">购买</a>
-
 
 
 

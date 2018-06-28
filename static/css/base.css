@@ -238,3 +238,8 @@ li.selected a {
     vertical-align: middle;
     background-color: transparent;
 }
+
+.messages {
+    padding-left: 0;
+
+}
