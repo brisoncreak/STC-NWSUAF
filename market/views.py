@@ -5,7 +5,7 @@ from index.models import User
 from STC_NWSUAF.tools import login_required
 
 # Create your views here.
-@login_required
+
 def index_views(request):
     if request.method == 'GET':
 
@@ -27,27 +27,30 @@ def good_detail_views(request,good_id):
         return render(request,'good_detail.html',locals())
 
 #确认购买页面
+@login_required
 def ordering_views(request, good_id):
     good = Good.objects.get(id=good_id)
     return render(request, 'ordering.html', locals())
 #创建订单视图
+@login_required
 def new_order_views(request, good_id):
     if request.method == 'POST':
         good = Good.objects.get(id=good_id)
-        user = User.objects.get(id=1)
+        user = User.objects.get(username=request.session['username'])
         new_order = Order(status=0, creator=user, good=good)
         new_order.save()
         return redirect(reverse('paying', args=(new_order.id,)))
 
 #支付页面
+@login_required
 def paying_views(request, order_id):
     if request.method == 'GET':
         return render(request, 'paying.html')
     return redirect('/')
 
 
-
 #创建新商品页面
+@login_required
 def add_good_views(request):
     if request.method == 'GET':
         return render(request,'new_good.html',locals())
