@@ -9,5 +9,7 @@ urlpatterns = [
     url(r'^paying/(\d+)$', paying_views, name='paying'),
     url(r'^add_good/$', add_good_views, name='addgood'),
     url(r'^good_detail/(\d+)$', good_detail_views, name='good_detail'),
-    url(r'^add_order/(\d+)$', new_order_views, name='add_order')
+    url(r'^add_order/(\d+)$', new_order_views, name='add_order'),
+    url(r'^add_tmessage/(\d+)$', add_tmessage_views, name='add_tmessage'),
+    
 ]

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from .models import *
 from index.models import User
 
+from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 
 # Create your views here.
@@ -45,7 +46,11 @@ def new_order_views(request, good_id):
 @login_required
 def paying_views(request, order_id):
     if request.method == 'GET':
-        return render(request, 'paying.html')
+        order = Order.objects.get(id=order_id)
+        good = order.good
+
+        tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
+        return render(request, 'paying.html', locals())
     return redirect('/')
 
 
@@ -53,4 +58,24 @@ def paying_views(request, order_id):
 @login_required
 def add_good_views(request):
     if request.method == 'GET':
-        return render(request,'new_good.html',locals())
+        return render(request,'new_good.html', locals())
+
+def add_tmessage_views(request, order_id):
+    if request.method == 'POST':
+        content = request.POST.get('content', '')
+        order = Order.objects.get(id=order_id)
+        good = order.good
+        user = User.objects.get(username=request.session['username'])
+        buyer = order.creator
+        seller = good.creator
+        if not content == '':
+            if user.id == buyer.id:
+                message = TradeMessage(sender=user, receiver=seller, order=order, content=content)
+            else:
+                message = TradeMessage(sender=user, receiver=buyer, order=order, content=content)
+
+            message.save()
+
+        messages.success(request,'已发送')
+        return render(request, 'paying.html', locals())
+

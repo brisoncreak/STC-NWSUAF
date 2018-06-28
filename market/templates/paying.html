@@ -6,6 +6,14 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/paying.css'%}"/>
+    <!--获取js变量-->
+    <script>
+    var url1 = "{% url 'add_tmessage' order.id %}"
+    var order_id = {{order.id}}
+     </script>
+
+     <script src="{% static 'js/paying.js'%}"></script>
 {% endblock %}
 
 {% block navbar %}
@@ -25,22 +33,63 @@
 </tr>
 <tr>
   <td>支付信息</td>
-  <td><button class="btn btn-info">收款二维码</button></td>
+  <td><button class="btn btn-info" data-toggle="modal" data-target="#mypay">收款二维码</button></td>
+</tr>
+<tr>
+  <td>订单状态</td>
+  <td>等待付款中</td>
 </tr>
 </table>
 
-<img src="{% static 'timg.jpg' %}" alt="alipay" style="width:400px;" />
-<form action="#" method="POST"> 
-<textarea class="form-control" rows="10" name=textarea></textarea>
-<button class="btn btn-default">发送</button>
-</form>
+{{order.create_time}}
+{{good.name}}
+
+{%csrf_token%}
+
+
+
 
 <button class="btn btn-default">确认已经付款</button>
 
+<div id="chatarea-box">
+<div class="chatarea" id="chatarea">
+  {% for tm in tmessages%}
+  {%if tm.sender.username == request.session.username%}
+  <div class="charline-right">
+  {%else%}
+  <div class="charline-left">
+  {%endif%}
+  <p>{{tm.sender.username}} {{tm.create_time}}</p>
+  <h4>{{tm.content}}</h4>
+  </div>
+  {%endfor%}
+   <div id="chatbottom"></div>
+</div>
+</div>
 
+<input type="text" id="new-content" class="form-control">
+<button class="btn btn-default" id="new-message">发送</button>
 
+<div class="modal fade" id="mypay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
 
-
+                </h4>
+            </div>
+            <div align="center" class="modal-body" >
+            <img src="{% static 'timg.jpg' %}" alt="alipay" style="width:450px;" />
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 {% endblock %}
 
 {% block side-search %}
