@@ -93,7 +93,7 @@
                 <div class="clear"> </div>
                 </div>
                   <div class="login-ic">
-                    <i></i>
+                    <i class="icon1"></i>
                     <input type="email"  name="email" onFocus="this.value = '';" onBlur="if (this.value == '') "/>
                 <div class="clear"> </div>
                 </div>
@@ -130,6 +130,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+            <label>登录</label>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
@@ -140,14 +141,12 @@
             </div>
 <div class="login-form" style="background-color: black;">
     <div class="top-login">
+
                     <span><img src="static/img/logo.png" alt=""/></span>
     </div>
             <div class="login_log">
             </div>
-            <br><br><br><br>
-            <div class="login_log">
-            <h1>登录</h1>
-            </div>
+            <br>
             <div class="login-top">
             <form  action='/login/' method='post'>
                 {%csrf_token%}
@@ -167,7 +166,7 @@
                 </div>
                 </form>
             </div>
-            <p class="copy"> 欢迎您假如我们<br>© 2018 STC-NWSAUF　有点东西平台</p>
+            <p class="copy"> 欢迎您加入我们<br>© 2018 STC-NWSAUF　有点东西平台</p>
         </div>  
 </div>    
 

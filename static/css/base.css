@@ -337,6 +337,9 @@ img{max-width:100%;}
 .login-ic i.icon {
     background: url(../img/l.png)no-repeat 6px 6px;  
 }
+.login-ic i.icon1{
+    background: url(../img/g.jpg)no-repeat 8px 6px;
+}
 .login-ic input[type="text"],.login-ic input[type="email"],.login-ic  input[type="password"] {
         float: left;
     background: none;
