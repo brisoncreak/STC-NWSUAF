@@ -133,4 +133,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (BASE_DIR,'static')
 
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'mywebsite/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'mywebsite/static/')
+#send email
+# EMAIL_HOST = 'smtp.qq.com'
+# EMAIL_PORT = 25
+# EMAIL_HOST_USER = 'XXXX@qq.com' # 登陆第三方的邮箱账号
+# EMAIL_HOST_PASSWORD = ''
+# EMAIL_USE_TLS = True  # 必须配置为true
+# EMAIL_FROM = 'XXXX@qq.com'  # 主动发送的邮箱

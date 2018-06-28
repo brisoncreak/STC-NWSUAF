@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect, reverse
 from .models import *
 from index.models import User
 
+from STC_NWSUAF.tools import login_required
+
 # Create your views here.
+@login_required
 def index_views(request):
     if request.method == 'GET':
 
@@ -12,6 +15,7 @@ def docs_views(request):
     if request.method == 'GET':
         return render(request,'docs_index.html',locals())
 #二手商品页面
+
 def goods_views(request):
     if request.method == 'GET':
         goods = Good.objects.all().order_by('-create_time')

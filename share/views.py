@@ -31,16 +31,17 @@ def upload_file(request):
         if userid != '' and classifyid!='':
             obj = request.FILES.get('inputfile')
             file_path = os.path.join('share','upload',obj.name)
-
+            
             f = open(file_path, 'wb')
             for chunk in obj.chunks():
                 f.write(chunk)
             f.close()
-            File.objects.create(fileName=obj.name,user_id=userid,fileSize=obj.size,fileBeDown=0,file=file_path,fileType=filetype,fileClassify_id=classifyid)
+            File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_classify_id=classifyid)
             # return HttpResponse('上传成功')
+            messages.success(request,'上传成功')
             return HttpResponseRedirect('/share')
-          
-        return HttpResponse('上传失败')
+        messages.error(request,'上传失败')
+        return HttpResponseRedirect('/upload_file')
 #download files
 def download_files(request,fileid):  
     file=File.objects.get(id=fileid)
@@ -60,11 +61,26 @@ def delete_files(request,fileid):
     file_path = os.path.join('share','upload',file_name)
     if os.path.isfile(file_path):
         os.remove(file_path)
-    return HttpResponseRedirect('/show_file')
+    return HttpResponseRedirect('/share')
 
 def index_views(request):
     sharefileList = File.objects.all()
+    colleges = Colleges.objects.all()
+
     collegetypes = Collegetype.objects.all()
-    # colleges = Colleges.objects.filter(classify_id=collegetypes.id)
+
+    # wenketype = Collegetype.objects.filter(title='文科')
+    # wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
+
+
+    # liketype = Collegetype.objects.filter(title='理科')
+    # likecolleges = Colleges.objects.filter(classify_id=liketype.id)
+
+    # gongketype = Collegetype.objects.filter(title='工科')
+    # gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
+
+    # nongketype = Collegetype.objects.filter(title='农科')
+    # nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)
+
     return render(request,'share_index.html',locals()) 
 

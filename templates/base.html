@@ -23,7 +23,7 @@
             <li><a href="#">热门</a></li>
             <li><a href="#">市场</a></li>
             <li><a href="#">讨论</a></li>
-            <li><a href="#">网盘</a></li>
+            <li><a href="/share">网盘</a></li>
         {% endblock %}
     </ul>
     {%endblock%}
@@ -42,9 +42,23 @@
 
 {% if messages %}
 <ul class="messages">
-    {%for message in messages %}
-    <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div class="alert alert-success">
-  <strong>{{message}}</strong> 指定操作成功提示信息。
+    {% for message in messages %}
+    <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div
+    {% if message.tags == 'info' %}
+    class="alert alert-info"
+    {% elif message.tags == 'success' %}
+    class="alert alert-success"
+    {% elif message.tags == 'warning' %}
+    class="alert alert-warning"
+    {% elif message.tags == 'error' %}
+    class="alert alert-danger"
+    {% else %}
+    class="alert alert-success"
+    {% endif %} class="alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;</button>
+        <strong>{{message}}</strong> 指定操作成功提示信息。
 </div></li>
     {%endfor %}
 </ul>
@@ -65,7 +79,7 @@
             <div align="center" class="modal-body" >
                <h1>欢迎注册！</h1>
     <form  action="{%url 'register' %}" method="post">
-    {% csrf_token %}
+    {%csrf_token%}
         <div>
         <p><label>用户名称:</label> <input name="username" type="text" placeholder="请输入用户名" 　></p>
         </div>
