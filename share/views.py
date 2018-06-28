@@ -12,7 +12,8 @@ from django.contrib import messages
 #show files
 def show_files(request):
     files=File.objects.all();
-    return render(request,'showfiles.html',locals())
+    return render(req
+        uest,'showfiles.html',locals())
 #upload files
 def upload_file(request):
     if request.method == 'GET':
