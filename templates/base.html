@@ -180,7 +180,51 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>           
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label>找回密码</label> 
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
 
+                </h4>
+            </div>
+            <div class="login-form" style="background-image: url(/static/img/bbb.jpg);">
+            <div class="top-login">
+                    <span><img src="/static/img/logo.png" alt=""/></span>
+            </div>
+            <div class="login_log">
+            </div>
+            <br>
+            <div class="login-top">
+            <form  action='/reset/' method='POST'>
+                {%csrf_token%}
+                <div class="login-ic">
+                    <i ></i>
+                    <input type="text"  name="username" onFocus="this.value = '';" onBlur="if (this.value == '') "/>
+                <div class="clear"> </div>
+                </div>           
+                <div class="log-bwn">
+                    <input type="submit"  value="下一步" >
+                </div>
+                </form>
+            </div>
+                 <p class="copy"> 找回密码
+                         © 2018 STC-NWSAUF　有点东西平台</p>
+            </div>  
+</div>    
+
+        </div>
+  
+</div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 <div class="side">
 
@@ -215,7 +259,8 @@
             <div class="remember-me">
                 <input class="rem" type="checkbox" name="rem" id="rem-login-main">
                 <label for="rem-login-main" class="text-muted">记住我</label>
-                <a class="recover-password" class="text-muted" href="#">忘记密码</a>
+                
+                <a href="#"  class="recover-password" class="text-muted" data-toggle="modal" data-target="#myModal2">忘记密码</a>
             </div>
             <div class="submit">
                 <button type="submit" class="btn btn-default" >登录</button>

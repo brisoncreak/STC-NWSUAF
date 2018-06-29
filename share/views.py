@@ -53,6 +53,7 @@ def upload_file(request):
                     f.write(chunk)
                 f.close()
                 File.objects.create(file_name=filename,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_classify_id=classifyid)
+                
                 messages.success(request,'上传成功')
                 return HttpResponseRedirect('/share')
             messages.error(request,'上传失败')

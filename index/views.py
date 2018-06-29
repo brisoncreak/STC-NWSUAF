@@ -6,12 +6,14 @@ from .models import *
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.core.mail import send_mail
 import json
 # Create your views here.
 def index_views(request):
     
     return render(request, 'index.html')
 
+#登录
 def index_login(request):
 
     if request.method == 'GET':
@@ -42,7 +44,7 @@ def index_login(request):
         return HttpResponseRedirect('/')
 
 
-
+#退出
 def index_logout(request):
     try:
         del request.session['username']
@@ -51,7 +53,7 @@ def index_logout(request):
     messages.success(request,'退出成功')
     return HttpResponseRedirect('/')
 
-
+#注册
 def index_register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -63,6 +65,9 @@ def index_register(request):
         for u in user:
             if(username==u.username):
                 messages.error(request,'用户名已存在,请重新注册')
+                return redirect('/')
+            elif(email==u.email):
+                messages.error(request,'该邮箱已与其他帐号绑定,请重新注册')
                 return redirect('/')
         if password1 == password2 and username!='' and email!='' and password1!='':
             password = make_password(password1)
@@ -93,5 +98,49 @@ def index_modelbase(request):
     colleges_wenke = Colleges.objects.filter(classify_id=wenke.id)
 
     return render(request,'modelbase.html',locals())
-
-
+#发送邮件重置密码
+def index_reset(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        if username == '':
+            messages.error(request,'用户不存在')
+            return HttpResponseRedirect('/')
+        else:
+            user=User.objects.get(username=username)
+            password=user.password
+            password=password.replace('pbkdf2_sha256$36000$','a')
+            send_mail("找回密码", "亲爱的用户"+username+'请点击此链接来修改你的密码,http://172.29.7.228:8000/back/reset?str1='+password+'&user='+username, "1441335655@qq.com", [user.email], fail_silently=False)
+            messages.info(request,'请查看你的邮箱') 
+            return HttpResponseRedirect('/')
+    else:
+        return redirect('/reset')
+#邮件回执
+def index_back(request):
+    if request.method=='GET':
+        password=request.GET.get('str1')
+        password=password.replace(' ','+')
+        
+        print(password)
+        username=request.GET.get('user')
+        user=User.objects.get(username=username)
+        print(username)
+        user.password=password.replace('pbkdf2_sha256$36000$','a')
+        
+        user.password
+        if str(password) == str(user.password):
+            return render(request,'back_reset.html',locals())
+        else:
+            messages.warning(request,'没有权限')
+            return HttpResponseRedirect('/')
+    else:
+        username=request.POST.get('username')
+        password1=request.POST.get('password1')
+        password2=request.POST.get('password2')
+        if password1!=password2:
+            messages.error(request,'两次密码不一致')
+            return HttpResponse('密码不一致')
+        user=User.objects.get(username=username)
+        password = make_password(password1)
+        user.password=password
+        user.save()
+        return HttpResponseRedirect('/')
