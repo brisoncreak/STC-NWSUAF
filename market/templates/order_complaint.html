@@ -1,0 +1,34 @@
+{% extends 'order_view.html'%}
+{%block order%}
+    <ul class="ordermenu">
+        <a class="ordera" href="{%url 'ordershow' 0%}">
+        <div class="orderli">
+        <div class="order-style">
+            <li style="width: 42%;margin: auto;">未付款</li>
+        </div>
+        </div>
+        </a>
+        <a class="ordera" href="{%url 'finished' 1%}">
+        <div class="orderli">
+        <div class="order-style">
+            <li >已完成</li>
+        </div>
+        </div>
+        </a>
+        <a class="ordera" href="{%url 'complaint' 2%}">
+        <div class="order_selected">
+        <div class="order-style">    
+            <li>投诉中</li>
+        </div>
+        </div>
+        </a>
+        <a class="ordera" href="{%url 'cancel' 3%}">
+            <div class="orderli">
+
+            <div class="order-style">
+            <li>已取消</li>
+            </div>
+        </div>
+        </a>
+        </ul>
+{%endblock%}

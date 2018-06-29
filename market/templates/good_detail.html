@@ -39,9 +39,9 @@
     </tr>
     </tbody>
     </table>
-    <a href="{% url 'ordering' 1 %}" class="btn btn-default">购买</a>
+    <a href="{% url 'ordering' good.id %}" class="btn btn-default">购买</a>
     </div>
-    <a class="btn btn-default" href="{% url 'ordering' good.id %}">购买</a>
+
     </div>
 {% endblock %}
 {% block side %}
