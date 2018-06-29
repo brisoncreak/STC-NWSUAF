@@ -19,7 +19,7 @@ body{
     width :auto;
     margin:0 auto;
     overflow:hidden;
-    border:1px solid ;
+    border:1px solid;
     z-index: 1;
 }
 #header-img {
@@ -410,7 +410,7 @@ body {
 }
 @media (max-width:768px){
 body {
-    min-height: auto;
+    //min-height: auto;
 }
 }
 @media (max-width:600px){
@@ -487,7 +487,6 @@ body {
 }
 }
 
-}
 .login-ic input[type="text"], .login-ic input[type="password"] {
     width: 70%;
 }
@@ -497,5 +496,5 @@ body {
 body {
     min-height: 540px;
 }
-}
+
 

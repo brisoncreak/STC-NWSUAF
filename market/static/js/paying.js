@@ -1,7 +1,9 @@
 window.onload=function(){
 
 
-    document.getElementById("chatbottom").scrollIntoView();
+    //document.getElementById("chatbottom").scrollIntoView();
+    var div = document.getElementById("chatarea")
+    div.scrollTop = div.scrollHeight;
     
     $("#new-message").click(function(){          
 　　　　    var content = $("#new-content").val();
@@ -20,7 +22,11 @@ window.onload=function(){
 
 function myFunction()
 {
-$("#chatarea-box").load("/market/paying/"+order_id+" #chatarea", function(){document.getElementById("chatbottom").scrollIntoView();});
+$("#chatarea-box").load("/market/paying/"+order_id+" #chatarea", function(){
+    //document.getElementById("chatbottom").scrollIntoView();
+    var div = document.getElementById("chatarea")
+    div.scrollTop = div.scrollHeight;
+});
 
 
 }

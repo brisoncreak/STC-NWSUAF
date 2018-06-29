@@ -37,10 +37,16 @@ def ordering_views(request, good_id):
 def new_order_views(request, good_id):
     if request.method == 'POST':
         good = Good.objects.get(id=good_id)
-        user = User.objects.get(username=request.session['username'])
-        new_order = Order(status=0, creator=user, good=good)
-        new_order.save()
-        return redirect(reverse('paying', args=(new_order.id,)))
+        confirm = request.POST.get('confirm-buy', '')
+        if confirm == '':
+            messages.warning(request, '你未确认交易信息')
+            return render(request, 'ordering.html', locals())
+        else:
+            good = Good.objects.get(id=good_id)
+            user = User.objects.get(username=request.session['username'])
+            new_order = Order(status=0, creator=user, good=good)
+            new_order.save()
+            return redirect(reverse('paying', args=(new_order.id,)))
 
 #支付页面
 @login_required
