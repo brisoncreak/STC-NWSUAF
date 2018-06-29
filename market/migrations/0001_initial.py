@@ -79,10 +79,6 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': '订单',
                 'verbose_name_plural': '订单',
-<<<<<<< HEAD
-
-
-=======
                 'ordering': ['-create_time'],
             },
         ),
@@ -100,7 +96,6 @@ class Migration(migrations.Migration):
                 'verbose_name': '交易消息',
                 'verbose_name_plural': '交易消息',
                 'ordering': ['create_time'],
->>>>>>> d845ad76a8b7354ff7eb270d0f232d6d39f21940
             },
         ),
         migrations.AddField(
