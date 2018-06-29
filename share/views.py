@@ -28,14 +28,32 @@ def upload_file(request):
             userid=user2.id
             if userid != '' and classifyid!='':
                 obj = request.FILES.get('inputfile')
-                file_path = os.path.join('share','upload',obj.name)
+                file=File.objects.filter(file_name=obj.name)
+                if file!='':
+                    repeat_name=obj.name
+                    print(repeat_name)
+                    i=0
+                    file1=File.objects.filter(file_name=repeat_name)
+                    while True:
+                        repeat_divi =str(i)+'-'
+                        repeat_name = repeat_divi + obj.name
+                        i += 1
+                        file1=File.objects.filter(file_name=repeat_name)
+                        if file1.count()==0:
 
+                            break
+                    messages.warning(request,'您上传的文件已存在，已为您重新命名')
+                    filename=repeat_name
+                else:
+                    filename=obj.name
 
+                file_path = os.path.join('share','upload',filename)
                 f = open(file_path, 'wb')
                 for chunk in obj.chunks():
                     f.write(chunk)
                 f.close()
-                File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_classify_id=classifyid)
+                File.objects.create(file_name=filename,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_classify_id=classifyid)
+                
                 messages.success(request,'上传成功')
                 return HttpResponseRedirect('/share')
             messages.error(request,'上传失败')
