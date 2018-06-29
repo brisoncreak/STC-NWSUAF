@@ -27,7 +27,7 @@ def index_login(request):
 
     if check_password(password,user.password):
         request.session['username'] = user.username
-        request.session.set_expiry(600)
+        request.session.set_expiry(7200)
         messages.success(request,'登录成功')
         return HttpResponseRedirect('/')
     else:
@@ -48,19 +48,25 @@ def index_logout(request):
 def index_register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        user=User.objects.all()
+
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
         email = request.POST.get('email')
-        if password1 == password2:
+        for u in user:
+            if(username==u.username):
+                messages.error(request,'用户名已存在,请重新注册')
+                return redirect('/')
+        if password1 == password2 and username!='' and email!='' and password1!='':
             password = make_password(password1)
             User.objects.create(username = username,password = password, email = email)
-            messages.success(request,'注册成功')
+            messages.success(request,'注册成功,请登录')
             return redirect('/')
         else:
-            messages.error(request,'密码错误')
-            return redirect('/register')
+            messages.error(request,'注册失败,请重新注册')
+            return redirect('/')
     else:
-        return redirect('/register')
+        return redirect('/')
 
 
 

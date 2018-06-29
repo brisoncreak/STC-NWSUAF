@@ -1,0 +1,28 @@
+.chatarea{
+    
+    margin: auto;
+    width:100%;
+    height:400px;
+    //background-color: red;
+    overflow:scroll;
+    overflow-x:hidden;
+    border:1px solid #80808070;
+
+
+}
+.charline-left{
+
+    //background-color: green;
+    width:100%;
+    min-height:50px;
+    text-align:left;
+
+}
+.charline-right{
+
+    //background-color: green;
+    width:100%;
+    min-height:50px;
+    text-align:right;
+
+}
