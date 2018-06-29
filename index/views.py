@@ -6,7 +6,11 @@ from .models import *
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+<<<<<<< HEAD
+from django.core.mail import send_mail
+=======
 from STC_NWSUAF.tools import login_required
+>>>>>>> c92b1d1cb5cf6a352bc35a51346b7265f063caf1
 import json
 
 
@@ -15,13 +19,14 @@ def index_views(request):
 
     return render(request, 'index.html')
 
+#登录
 def index_login(request):
 
     if request.method == 'GET':
         return redirect('/login')
     username = request.POST.get('username')
     password = request.POST.get('password')
-
+    isremember=request.POST.get('rem')
     try:
         user = User.objects.get(username=username)
     except:
@@ -31,14 +36,21 @@ def index_login(request):
     if check_password(password,user.password):
         request.session['username'] = user.username
         request.session.set_expiry(7200)
-        messages.success(request,'登录成功')
-        return HttpResponseRedirect('/')
+        #选择记住我创建cookie
+        if isremember=='on':
+            response= HttpResponseRedirect('/')
+            response.set_cookie("username",user.username,3600)
+            messages.success(request,'登录成功')
+            return response
+        else:
+            messages.success(request,'登录成功')
+            return HttpResponseRedirect('/')
     else:
         messages.error(request,'密码错误')
         return HttpResponseRedirect('/')
 
 
-
+#退出
 def index_logout(request):
     try:
         del request.session['username']
@@ -47,7 +59,7 @@ def index_logout(request):
     messages.success(request,'退出成功')
     return HttpResponseRedirect('/')
 
-
+#注册
 def index_register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -60,6 +72,9 @@ def index_register(request):
             if(username==u.username):
                 messages.error(request,'用户名已存在,请重新注册')
                 return redirect('/')
+            elif(email==u.email):
+                messages.error(request,'该邮箱已与其他帐号绑定,请重新注册')
+                return redirect('/')
         if password1 == password2 and username!='' and email!='' and password1!='':
             password = make_password(password1)
             User.objects.create(username = username,password = password, email = email)
@@ -70,8 +85,6 @@ def index_register(request):
             return redirect('/')
     else:
         return redirect('/')
-
-
 
 def test(request):
     if request.method == 'GET':
@@ -91,7 +104,52 @@ def index_modelbase(request):
     colleges_wenke = Colleges.objects.filter(classify_id=wenke.id)
 
     return render(request,'modelbase.html',locals())
-
+#发送邮件重置密码
+def index_reset(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        if username == '':
+            messages.error(request,'用户不存在')
+            return HttpResponseRedirect('/')
+        else:
+            user=User.objects.get(username=username)
+            password=user.password
+            password=password.replace('pbkdf2_sha256$36000$','a')
+            send_mail("找回密码", "亲爱的用户"+username+'请点击此链接来修改你的密码,http://172.29.7.228:8000/back/reset?str1='+password+'&user='+username, "1441335655@qq.com", [user.email], fail_silently=False)
+            messages.info(request,'请查看你的邮箱') 
+            return HttpResponseRedirect('/')
+    else:
+        return redirect('/reset')
+#邮件回执
+def index_back(request):
+    if request.method=='GET':
+        password=request.GET.get('str1')
+        password=password.replace(' ','+')
+        
+        print(password)
+        username=request.GET.get('user')
+        user=User.objects.get(username=username)
+        print(username)
+        user.password=password.replace('pbkdf2_sha256$36000$','a')
+        
+        user.password
+        if str(password) == str(user.password):
+            return render(request,'back_reset.html',locals())
+        else:
+            messages.warning(request,'没有权限')
+            return HttpResponseRedirect('/')
+    else:
+        username=request.POST.get('username')
+        password1=request.POST.get('password1')
+        password2=request.POST.get('password2')
+        if password1!=password2:
+            messages.error(request,'两次密码不一致')
+            return HttpResponse('密码不一致')
+        user=User.objects.get(username=username)
+        password = make_password(password1)
+        user.password=password
+        user.save()
+        return HttpResponseRedirect('/')
 @login_required
 def notify_views(request):
     user = User.objects.get(username=request.session.get('username'))

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>找回密码</title>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" />
+	<script src="/static/js/need.js"></script>
+	<link type="text/css" rel="stylesheet" href="/static/css/showBo.css" />
+	<script type="text/javascript" src="/static/js/showBo.js"></script>
+
+</head>
+
+<body>
+<!--定义了一个login按钮 链接为空 -->
+  <span href="#" class="button" id="toggle-login">找回密码</span>
+<!--定义一个login表单框架实体 -->
+<div id="login">
+  <!--表单上的三角形 -->
+  <div id="triangle"></div>
+  <!--表单 -->
+  <form name="myForm" method='POST' action='/back/reset/'>
+  {%csrf_token%}
+	<br/>    
+	<div style="display：inline;overflow:hidden">
+    <span class="ttt" style="background-image: url(/static/img/1.png);"></span>
+    <input type="text" required="required" name="username" placeholder="Username" />
+	</div>
+	<br/>
+	<div style="display：inline">
+	<span class="ttt" style="background-image: url(/static/img/2.png);"></span>
+    <input type="password" required="required" name="password1" placeholder="Password" />
+	</div>
+	<br/>
+  <div style="display：inline">
+  <span class="ttt" style="background-image: url(/static/img/2.png);"></span>
+    <input type="password" required="required" name="password2" placeholder="Password" />
+  </div>
+  <br/>
+    <input type="submit" value="RESET" onclick="check()"/> <br/>
+  </form>
+      <script src='/static/js/jquery.js'></script>
+	  <script src="/static/js/index.js"></script>
+</div>
+
+</body>
+
+</html>
