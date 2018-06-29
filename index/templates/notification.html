@@ -65,7 +65,7 @@
   </div>
   <div class="panel-body">
     {%if noti.arg0 == 0%}
-    你收到一条新的交易信息
+    你收到新的交易信息<span class="badge">{{noti.arg2}}</span>
     <a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
     {%endif%}
 
