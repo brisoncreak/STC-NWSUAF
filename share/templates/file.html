@@ -30,6 +30,7 @@
             <div class="indiv">
                 <span>资源类型 :</span><select name='list'>{% for college in colleges%}<option value="{{college.title}}">{{college.title}}</option>{% endfor %}</select>  
             </div> 
+            
             <div class="indiv">
                 <input type="submit" value="提交">
             </div>
@@ -41,6 +42,7 @@
 
 {% block side-search %}
     <div class="spacer">
+
         <form action="#" id="search">
             <div class="input-group">
             <input type="text" class="form-control" placeholder="搜索">

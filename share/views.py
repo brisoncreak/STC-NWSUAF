@@ -9,7 +9,7 @@ import os
 from django.db.models import F
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
-
+from urllib.parse import unquote
 # Create your views here.
 
 
@@ -29,8 +29,6 @@ def upload_file(request):
             if userid != '' and classifyid!='':
                 obj = request.FILES.get('inputfile')
                 file_path = os.path.join('share','upload',obj.name)
-
-
                 f = open(file_path, 'wb')
                 for chunk in obj.chunks():
                     f.write(chunk)
@@ -42,6 +40,38 @@ def upload_file(request):
             return HttpResponseRedirect('/upload_file')
         messages.error(request,'请登录')
         return HttpResponseRedirect('/login')
+
+#upload files
+def upload_file2(request,collegename):
+    name = unquote(collegename, 'utf-8')
+
+    if request.method == 'GET':
+        return render(request,'singleCollegeUpload.html',locals())
+    else:
+        file_classify=Colleges.objects.get(title=name)           
+        classifyid= file_classify.id
+        if request.session.get('username'):
+            user_name=request.session.get('username')
+            user2=User.objects.get(username=user_name)
+            userid=user2.id
+            if userid != '' and classifyid!='':
+                obj = request.FILES.get('inputfile')
+                file_path = os.path.join('share','upload',obj.name)
+                f = open(file_path, 'wb')
+                for chunk in obj.chunks():
+                    f.write(chunk)
+                f.close()
+                File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_classify_id=classifyid)
+                messages.success(request,'上传成功')
+                # return HttpResponseRedirect('/share')
+                return HttpResponseRedirect('/show_College/'+collegename)
+                #return render(request,'singleCollegeShow.html',locals())   # /upload_file2/collegename
+            messages.error(request,'上传失败')
+            return HttpResponseRedirect('/upload_file')
+        messages.error(request,'请登录')
+        return HttpResponseRedirect('/login')
+
+
 #download files
 def download_files(request,fileid):  
     file=File.objects.get(id=fileid)
@@ -68,19 +98,43 @@ def index_views(request):
     sharefileList = File.objects.all()
     colleges = Colleges.objects.all()
     collegetypes = Collegetype.objects.all()
-
     #1
     wenketype = Collegetype.objects.get(title='文科')
     wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
+    wenkes = []
+    for wenke in wenkecolleges:
+        wenkes.append(wenke.title)
     #2
     liketype = Collegetype.objects.get(title='理科')
     likecolleges = Colleges.objects.filter(classify_id=liketype.id)
+    likes = []
+    for like in likecolleges:
+        likes.append(like.title)
     #3
     gongketype = Collegetype.objects.get(title='工科')
     gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
+    gongkes = []
+    for gongke in gongkecolleges:
+        gongkes.append(gongke.title)
+
     #4
     nongketype = Collegetype.objects.get(title='农科')
-    nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)
+    nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)   #得到了querySet集合
+    # print(nongkecolleges)
+    #转化为列表
+    nongkes = []
+    for nongke in nongkecolleges:
+        nongkes.append(nongke.title)
+    # print(nongkes)
 
-    return render(request,'share_index.html',locals()) 
+    if request.method == 'GET':
+        return render(request,'share_index.html',locals()) 
+    else:
+        collegetitle = request.POST.get('selcollege')  
+        return HttpResponseRedirect('/show_College/'+collegetitle)
 
+
+def show_college(request,collegetitle):
+    college = Colleges.objects.get(title=collegetitle)
+    files = File.objects.filter(file_classify_id=college.id)
+    return render(request,'singleCollegeShow.html',locals()) 

@@ -7,45 +7,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/share_index.css'%}"/>
-    <script type="text/javascript"  language="javascript"> 
-            function change_1()//主分类改变函数
-            {
-                // obj1 = document.getElementById("s_1");
-                str1=request.getParameter("s_1");
-                obj2 = document.getElementById("s_2");
-                // str1 = obj1.value
-
-                if(str1="农科")
-                    createSelect(nongkecolleges)
-
-                else if(str1="工科")
-                    createSelect(gongkecolleges)
-
-                else if(str1="理科")
-                    createSelect(likecolleges)
-
-                else if(str1="文科")
-                    createSelect(wenkecolleges)
-
-            }
-            function createSelect(colleges)
-            { 
-               for(college in colleges)
-               {
-                op = document.createElement("option");
-                //创建option元素
-                op_text = document.createTextNode(college);
-                //创建文本节点
-                op.appendChild(op_text);
-                //为option添加文本节点
-                op.setAttribute("value",college);
-                //设置value属性
-                obj2.appendChild(op);
-                //为obj2添加子节点
-                ｝
-            } 
-            window.onload = change_1();
-    </script>
+    <!-- <script type="text/javascript" src="{% static 'js/collegeSearch.js' %}"></script> -->
 {% endblock %}
 
 {% block navbar %}
@@ -113,31 +75,79 @@
 <a class='btn btn-default sidebtn'>付费文档</a> -->
 
 <br>
-<form action="" method="POST">
-<!--     请选择学院类别：
+<form action="{%url 'share_index'%}" method="POST">
+{% csrf_token %}
+<script>
+        function change_1()//主分类改变函数
+        {
+            obj1 = document.getElementById("s_1");
+            str1 = obj1.value;
+            obj2 = document.getElementById("s_2"); 
+            // var nongkecolleges = {{nongkecolleges}}
+            nongkecolleges = {{nongkes|safe}}
+            gongkecolleges = {{gongkes|safe}}
+            likecolleges = {{likes|safe}}
+            wenkecolleges = {{wenkes|safe}}
+            if(str1=="农科")
+                createSelect(nongkecolleges)
+            else if(str1=="工科")
+                createSelect(gongkecolleges)
+            else if(str1=="理科")
+                createSelect(likecolleges)
+            else if(str1=="文科")
+                createSelect(wenkecolleges)
+        }
+
+        function createSelect(colleges)
+        {
+            // for(var i=0;i<obj2.options.length;i++) 
+            // { 
+            //     obj2.removeChild(obj2.options[i]); 
+            // }
+            // obj2.removeChild(obj2.options[0]);
+            obj2.innerHTML = ""; //删除
+            colleges.forEach(function(college)
+            {
+                op = document.createElement("option");
+                //创建option元素
+                op_text = document.createTextNode(college);
+                //创建文本节点
+                op.appendChild(op_text);
+                //为option添加文本节点
+                op.setAttribute("value",college);
+                //设置value属性
+                obj2.appendChild(op);
+                //为obj2添加子节点
+            })
+        } 
+</script>
+    请选择学院类别：
     <select id="s_1" style="width:100px" onchange="change_1();">
         {% for collegetype in collegetypes%}
             <option value="{{collegetype.title}}">{{collegetype.title}}</option>
         {% endfor %}
     </select>
     请   选  择   学  院 ： 
-    <select id="s_2" style="width:100px">
+    <select id="s_2" style="width:100px" name="selcollege">
     </select>
-    <br><input type="submit" value="提交"> -->
-    请选择学院类别：
+    <br><input type="submit" value="提交">
+
+<!--     请选择学院类别：
     <select id="s_1" style="width:100px"">
         {% for collegetype in collegetypes%}
             <option value="{{collegetype.title}}">{{collegetype.title}}</option>
         {% endfor %}
     </select><br>
     请   选  择   学  院 ： 
-    <select id="s_2" style="width:100px">
+    <select id="s_2" style="width:100px" name="selcollege">
         {% for college in colleges%}
             <option value="{{college.title}}">{{college.title}}</option>
-        {% endfor %}
+        {% endfor %} 
+
     </select>
     <br><input type="submit" value="提交">
     </select>
+-->
 </form>
 
 <br>
