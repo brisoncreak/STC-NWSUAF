@@ -6,11 +6,17 @@ from .models import *
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+<<<<<<< HEAD
 from django.core.mail import send_mail
+=======
+from STC_NWSUAF.tools import login_required
+>>>>>>> c92b1d1cb5cf6a352bc35a51346b7265f063caf1
 import json
+
+
 # Create your views here.
 def index_views(request):
-    
+
     return render(request, 'index.html')
 
 #登录
@@ -144,3 +150,24 @@ def index_back(request):
         user.password=password
         user.save()
         return HttpResponseRedirect('/')
+@login_required
+def notify_views(request):
+    user = User.objects.get(username=request.session.get('username'))
+    notis = Notification.objects.filter(aim_user=user).order_by('-create_time')
+    page_now = request.GET.get('page')
+    if not page_now:
+        page_now = 1
+
+    page_now = int(page_now)
+
+    count_per_page = 5
+    page_sum = len(notis)//count_per_page+1
+    page_range = range(1, page_sum+1)
+
+    #计算起始位置
+    start_page = (page_now-1)*count_per_page
+    #创建数据集
+    notis = notis[start_page:start_page+count_per_page]
+
+
+    return render(request,'notification.html',locals())

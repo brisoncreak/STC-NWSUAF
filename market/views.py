@@ -52,10 +52,17 @@ def new_order_views(request, good_id):
 @login_required
 def paying_views(request, order_id):
     if request.method == 'GET':
+        user = User.objects.get(username=request.session['username'])
         order = Order.objects.get(id=order_id)
         good = order.good
 
+        notis = Notification.objects.filter(aim_user=user).filter(arg0=0).filter(arg1=order_id)
+        for noti in notis:
+            noti.have_read = True
+            noti.save()
+
         tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
+        
         return render(request, 'paying.html', locals())
     return redirect('/')
 
