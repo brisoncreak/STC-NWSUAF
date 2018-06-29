@@ -29,7 +29,7 @@
     {%endblock%}
       <div class="header-bottom-right">
           {% if request.session.username %}
-              <span><a href="#">{{ request.session.username }}</a>|<a href="#">消息<span class="badge">{{lang}}</span></a>|<a href="/logout/">退出</a></span>
+              <span><a href="#">{{ request.session.username }}</a>|<a href="{%url 'notify'%}">消息<span class="badge">{{lang}}</span></a>|<a href="/logout/">退出</a></span>
           {% else %}
               <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册</a>
               或<a href="#" data-toggle="modal" data-target="#myModal1">登录</a>

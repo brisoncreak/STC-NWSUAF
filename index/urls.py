@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^register/$',index_register,name='register'),
     url(r'^test/$', test),
     url(r'^modelbase/$',index_modelbase),
+    url(r'^notification/$',notify_views, name='notify'),
+
 ]
