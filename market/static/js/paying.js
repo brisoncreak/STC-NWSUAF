@@ -15,7 +15,7 @@ window.onload=function(){
             });
 
 　　})
-    setInterval(myFunction, 3000);
+    setInterval(myFunction, 1000);
 }
 
 function myFunction()
