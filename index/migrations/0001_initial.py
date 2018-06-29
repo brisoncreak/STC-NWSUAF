@@ -55,17 +55,9 @@ class Migration(migrations.Migration):
                 ('bad_mark', models.IntegerField(default=0)),
             ],
             options={
-<<<<<<< HEAD
-
-                'verbose_name': '用户',
-                'verbose_name_plural': '用户',
-                'ordering': ['create_time'],
-=======
                 'verbose_name_plural': '用户',
                 'verbose_name': '用户',
                 'ordering': ['create_time'],
-
->>>>>>> e6c89d861b03787cbe371e9d298b0c3d19b0e15b
             },
         ),
         migrations.AddField(
