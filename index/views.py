@@ -18,7 +18,7 @@ def index_login(request):
         return redirect('/login')
     username = request.POST.get('username')
     password = request.POST.get('password')
-
+    isremember=request.POST.get('rem')
     try:
         user = User.objects.get(username=username)
     except:
@@ -28,8 +28,15 @@ def index_login(request):
     if check_password(password,user.password):
         request.session['username'] = user.username
         request.session.set_expiry(7200)
-        messages.success(request,'登录成功')
-        return HttpResponseRedirect('/')
+        #选择记住我创建cookie
+        if isremember=='on':
+            response= HttpResponseRedirect('/')
+            response.set_cookie("username",user.username,3600)
+            messages.success(request,'登录成功')
+            return response
+        else:
+            messages.success(request,'登录成功')
+            return HttpResponseRedirect('/')
     else:
         messages.error(request,'密码错误')
         return HttpResponseRedirect('/')
@@ -67,8 +74,6 @@ def index_register(request):
             return redirect('/')
     else:
         return redirect('/')
-
-
 
 def test(request):
     if request.method == 'GET':
