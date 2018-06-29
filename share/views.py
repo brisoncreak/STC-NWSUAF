@@ -12,8 +12,7 @@ from django.contrib import messages
 #show files
 def show_files(request):
     files=File.objects.all();
-    return render(req
-        uest,'showfiles.html',locals())
+    return render(request,'showfiles.html',locals())
 #upload files
 def upload_file(request):
     if request.method == 'GET':
@@ -66,21 +65,20 @@ def delete_files(request,fileid):
 def index_views(request):
     sharefileList = File.objects.all()
     colleges = Colleges.objects.all()
-
     collegetypes = Collegetype.objects.all()
 
-    # wenketype = Collegetype.objects.filter(title='文科')
-    # wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
-
-
-    # liketype = Collegetype.objects.filter(title='理科')
-    # likecolleges = Colleges.objects.filter(classify_id=liketype.id)
-
-    # gongketype = Collegetype.objects.filter(title='工科')
-    # gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
-
-    # nongketype = Collegetype.objects.filter(title='农科')
-    # nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)
+    #1
+    wenketype = Collegetype.objects.get(title='文科')
+    wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
+    #2
+    liketype = Collegetype.objects.get(title='理科')
+    likecolleges = Colleges.objects.filter(classify_id=liketype.id)
+    #3
+    gongketype = Collegetype.objects.get(title='工科')
+    gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
+    #4
+    nongketype = Collegetype.objects.get(title='农科')
+    nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)
 
     return render(request,'share_index.html',locals()) 
 

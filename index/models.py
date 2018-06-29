@@ -44,3 +44,28 @@ class Colleges(models.Model):
     class Meta:
         verbose_name = '学院/文件类型'
         verbose_name_plural = verbose_name
+
+# coding:utf-8
+# from django.db import models
+
+# Create your models here.
+
+#省份表
+class Province(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+#城市表
+class City(models.Model):
+    name = models.CharField(max_length=40)
+    province = models.ForeignKey(Province)
+
+    def __str__(self):
+        return self.name
+
+#这个主要是用来显示，选择的结果
+class SelectP(models.Model):
+    province = models.ForeignKey(Province)
+    city = models.ForeignKey(City)

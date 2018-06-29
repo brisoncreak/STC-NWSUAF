@@ -8,12 +8,7 @@ class File(models.Model):
     file_size=models.IntegerField()
     file_bedown=models.IntegerField()
     create_time=models.DateTimeField(auto_now_add=True)
-<<<<<<< HEAD
-    file_classify=models.ForeignKey(Colleges,null=True)
-=======
     file_classify=models.ForeignKey(Colleges)
->>>>>>> 728281590ff5fbeb245fd8803948a5a1d8c0082b
-
     file=models.FileField(upload_to='share/upload')
     user=models.ForeignKey(User)
     file_status=models.CharField(max_length=20,null=True)
@@ -23,4 +18,6 @@ class File(models.Model):
         #db_table="author"
         verbose_name='文件'
         verbose_name_plural=verbose_name
+
+
 
