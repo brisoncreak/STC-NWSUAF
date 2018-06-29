@@ -45,11 +45,6 @@ class Colleges(models.Model):
         verbose_name = '学院/文件类型'
         verbose_name_plural = verbose_name
 
-<<<<<<< HEAD
-# coding:utf-8
-# from django.db import models
-
-# Create your models here.
 
 #省份表
 class Province(models.Model):
@@ -70,5 +65,3 @@ class City(models.Model):
 class SelectP(models.Model):
     province = models.ForeignKey(Province)
     city = models.ForeignKey(City)
-=======
->>>>>>> d845ad76a8b7354ff7eb270d0f232d6d39f21940
