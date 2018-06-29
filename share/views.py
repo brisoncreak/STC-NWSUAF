@@ -8,39 +8,40 @@ from index.templates import *
 import os
 from django.db.models import F
 from django.contrib import messages
+from STC_NWSUAF.tools import login_required
+
 # Create your views here.
-#show files
-def show_files(request):
-    files=File.objects.all();
-    return render(request,'showfiles.html',locals())
+
+
 #upload files
 def upload_file(request):
     if request.method == 'GET':
         colleges = Colleges.objects.all()
         return render(request,'file.html',locals())
     else:
-        user_name = request.POST.get('user')
-        # print(user_name)
-        classify = request.POST.get('list')
-        print(classify)
-        user2=User.objects.get(username=user_name)
-        file_classify=Colleges.objects.get(title=classify)
-        userid=user2.id
+        classify = request.POST.get('list')      
+        file_classify=Colleges.objects.get(title=classify)      
         classifyid= file_classify.id
-        if userid != '' and classifyid!='':
-            obj = request.FILES.get('inputfile')
-            file_path = os.path.join('share','upload',obj.name)
-            
-            f = open(file_path, 'wb')
-            for chunk in obj.chunks():
-                f.write(chunk)
-            f.close()
-            File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_classify_id=classifyid)
-            # return HttpResponse('上传成功')
-            messages.success(request,'上传成功')
-            return HttpResponseRedirect('/share')
-        messages.error(request,'上传失败')
-        return HttpResponseRedirect('/upload_file')
+        if request.session.get('username'):
+            user_name=request.session.get('username')
+            user2=User.objects.get(username=user_name)
+            userid=user2.id
+            if userid != '' and classifyid!='':
+                obj = request.FILES.get('inputfile')
+                file_path = os.path.join('share','upload',obj.name)
+
+
+                f = open(file_path, 'wb')
+                for chunk in obj.chunks():
+                    f.write(chunk)
+                f.close()
+                File.objects.create(file_name=obj.name,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_classify_id=classifyid)
+                messages.success(request,'上传成功')
+                return HttpResponseRedirect('/share')
+            messages.error(request,'上传失败')
+            return HttpResponseRedirect('/upload_file')
+        messages.error(request,'请登录')
+        return HttpResponseRedirect('/login')
 #download files
 def download_files(request,fileid):  
     file=File.objects.get(id=fileid)
@@ -61,7 +62,8 @@ def delete_files(request,fileid):
     if os.path.isfile(file_path):
         os.remove(file_path)
     return HttpResponseRedirect('/share')
-
+@login_required
+#show files
 def index_views(request):
     sharefileList = File.objects.all()
     colleges = Colleges.objects.all()

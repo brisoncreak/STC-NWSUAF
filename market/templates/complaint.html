@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+{% endblock %}
+{%block body%}
+    <div class="good_inf">
+    <h2 class="title">投诉</h2>
+    <div class="inf" style="float: left;">    
+    <table class="table table-striped" style=" width:100%;">
+    <tbody> 
+    <tr>
+        <td class="alone_inf" style="border:0px;">name:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">number:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">支付方式:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">下单时间:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+     <tr>
+        <td class="alone_inf" style="border:0px;">卖家name:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">联系方式:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+     <tr>
+        <td class="alone_inf" style="border:0px;">订单状态:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">name:</td>
+        <td class="alone_inf" style="border:0px;"><input type="text" name=""></td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">投诉信息:</td>
+        <td class="alone_inf" style="border:0px;"><textarea  style="resize:none; width: 500px;" class="form-control" id="name" placeholder="请输入名称"></textarea></td>
+    </tr>
+    </table>
+    <div class="order_button"></div>
+    <a href="{% url 'ordershow' 0 %}" class="btn btn-default">提交</a>
+    <a href="{% url 'ordershow' 0 %}" style="float: right;" class="btn btn-default">取消</a>
+    </div>
+    </div>
+{%endblock%}
