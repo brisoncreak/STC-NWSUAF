@@ -80,6 +80,7 @@ class Evidence(models.Model):
         ordering = ['create_time']
 
 class TradeMessage(models.Model):
+    
     sender = models.ForeignKey(User, related_name='sender')
     receiver = models.ForeignKey(User, related_name='receiver')
     order = models.ForeignKey(Order, null=False)

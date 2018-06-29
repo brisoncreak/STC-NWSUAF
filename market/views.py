@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import *
-from index.models import User
+from index.models import User, Notification
 
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
@@ -95,10 +95,12 @@ def add_tmessage_views(request, order_id):
         if not content == '':
             if user.id == buyer.id:
                 message = TradeMessage(sender=user, receiver=seller, order=order, content=content)
+                notify = Notification(aim_user=seller, arg0=0, arg1=order_id)
             else:
                 message = TradeMessage(sender=user, receiver=buyer, order=order, content=content)
-
+                notify = Notification(aim_user=buyer, arg0=0, arg1=order_id)        
             message.save()
+            notify.save()
 
         messages.success(request,'已发送')
         return render(request, 'paying.html', locals())
