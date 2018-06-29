@@ -42,4 +42,11 @@ class CollegesAdmin(admin.ModelAdmin):
     list_filter = ['title']
 admin.site.register(Colleges, CollegesAdmin)
 
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ['aim_user','have_read','arg0','arg1']
+    list_display_links = ['aim_user']
+    #search_fields = ['title']
+    #list_filter = ['title']
+admin.site.register(Notification, NotificationAdmin)
+
 
