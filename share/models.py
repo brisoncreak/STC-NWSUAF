@@ -1,6 +1,7 @@
 from django.db import models
 from index.models import *
-
+from system.storage import ImageStorage
+# Create your models here.
 class File(models.Model):
   
     file_name=models.CharField(max_length=20)
@@ -13,11 +14,8 @@ class File(models.Model):
     user=models.ForeignKey(User)
     file_status=models.CharField(max_length=20,null=True)
     def __str__(self):
-        return self.fileName
+        return self.file_name
     class Meta:
         #db_table="author"
         verbose_name='文件'
         verbose_name_plural=verbose_name
-
-
-

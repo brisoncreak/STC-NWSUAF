@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from .models import *
-from index.models import User
-
+from index.models import User, Notification
+from django.db.models import F,Q
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 
@@ -52,10 +52,20 @@ def new_order_views(request, good_id):
 @login_required
 def paying_views(request, order_id):
     if request.method == 'GET':
+        user = User.objects.get(username=request.session['username'])
         order = Order.objects.get(id=order_id)
         good = order.good
+        try:
+            noti = Notification.objects.get(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
+            noti.have_read = True
+            noti.arg2 = 0
+            noti.save()
+        except:
+            print('bucunzai')
+            
 
         tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
+        
         return render(request, 'paying.html', locals())
     return redirect('/')
 
@@ -95,10 +105,22 @@ def add_tmessage_views(request, order_id):
         if not content == '':
             if user.id == buyer.id:
                 message = TradeMessage(sender=user, receiver=seller, order=order, content=content)
+                try:
+                    n = Notification.objects.get(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=seller))
+                    n.arg2 += 1
+                    n.have_read = False
+                except:
+                    n = Notification(aim_user=seller, arg0=0, arg1=order_id, arg2=1)
             else:
                 message = TradeMessage(sender=user, receiver=buyer, order=order, content=content)
-
+                try:
+                    n = Notification.objects.get(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=buyer))
+                    n.arg2 += 1
+                    n.have_read = False
+                except:
+                    n = Notification(aim_user=buyer, arg0=0, arg1=order_id, arg2=1)
             message.save()
+            n.save()
 
         messages.success(request,'已发送')
         return render(request, 'paying.html', locals())
