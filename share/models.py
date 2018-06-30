@@ -13,6 +13,11 @@ class File(models.Model):
     file=models.FileField(upload_to='share/upload')
     user=models.ForeignKey(User)
     file_status=models.CharField(max_length=20,null=True)
+    file_beadmired = models.IntegerField(default = 0)
+    file_benotadmired = models.IntegerField(default = 0)
+
+
+
     def __str__(self):
         return self.file_name
     class Meta:

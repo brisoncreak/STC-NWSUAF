@@ -155,7 +155,20 @@ def index_views(request):
         return HttpResponseRedirect('/show_College/'+collegetitle)
 
 
+
 def show_college(request,collegetitle):
     college = Colleges.objects.get(title=collegetitle)
     files = File.objects.filter(file_classify_id=college.id)
     return render(request,'singleCollegeShow.html',locals()) 
+
+def show_user(request,userid):
+    user = User.objects.get(id=userid)
+    listfile = File.objects.filter(user_id=userid).order_by("-id")
+    return render(request,'userFilesShow.html',locals())
+
+def show_file(request,fileid):
+    file = File.objects.get(id=fileid)
+    return render(request,'fileDetailShow.html',locals())
+
+def admire_views(request):
+    return render(request,'admire.html',locals())

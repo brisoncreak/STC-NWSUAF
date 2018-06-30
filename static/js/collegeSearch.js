@@ -1,9 +1,9 @@
+obj1 = document.getElementById("s_1");
+str1 = obj1.value;
+obj2 = document.getElementById("s_2"); 
+
 function change_1()//主分类改变函数
 {
-    obj1 = document.getElementById("s_1");
-    str1 = obj1.value;
-    obj2 = document.getElementById("s_2"); 
-    // var nongkecolleges = {{nongkecolleges}}
     nongkecolleges = {{nongkes|safe}}
     gongkecolleges = {{gongkes|safe}}
     likecolleges = {{likes|safe}}
@@ -20,11 +20,6 @@ function change_1()//主分类改变函数
 
 function createSelect(colleges)
 {
-    // for(var i=0;i<obj2.options.length;i++) 
-    // { 
-    //     obj2.removeChild(obj2.options[i]); 
-    // }
-    // obj2.removeChild(obj2.options[0]);
     obj2.innerHTML = ""; //删除
     colleges.forEach(function(college)
     {
