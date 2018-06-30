@@ -22,7 +22,7 @@ class Good(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return str(self.id)
     class Meta:
         #改数据库名
         #db_table = 'good'
