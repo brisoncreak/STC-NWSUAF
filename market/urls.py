@@ -17,4 +17,7 @@ urlpatterns = [
     url(r'^order_detail/(\d+)',order_detail_views,name="orderdetail"),
     url(r'^complaint/(\d+)',complaint_views,name="complaint_page"),
     url(r'^add_tmessage/(\d+)$', add_tmessage_views, name='add_tmessage'),
+    url(r'^buyer_ok/(\d+)$', buyer_ok_views, name='buyer_ok'),
+    url(r'^seller_ok/(\d+)$', seller_ok_views, name='seller_ok'),
+
 ]

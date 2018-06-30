@@ -86,14 +86,23 @@ def paying_views(request, order_id):
         user = User.objects.get(username=request.session['username'])
         order = Order.objects.get(id=order_id)
         good = order.good
+        is_buyer = user == order.creator
         try:
-            noti = Notification.objects.filter(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
-            for i in noti:
+            noti0 = Notification.objects.filter(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
+            for i in noti0:
                 i.have_read = True
                 i.arg2 = 0
                 i.save()
-            n = Notification.objects.filter(Q(arg0=1)&Q(aim_user=user))
-            for i in n:
+            noti1 = Notification.objects.filter(Q(arg0=1)&Q(aim_user=user))
+            for i in noti1:
+                i.have_read = True
+                i.save()
+            noti2 = Notification.objects.filter(Q(arg0=2)&Q(aim_user=user))
+            for i in noti2:
+                i.have_read = True
+                i.save()
+            noti3 = Notification.objects.filter(Q(arg0=3)&Q(aim_user=user))
+            for i in noti3:
                 i.have_read = True
                 i.save()
         except:
@@ -161,7 +170,7 @@ def add_tmessage_views(request, order_id):
                     n.have_read = False
                 except:
                     n = Notification(aim_user=buyer, arg0=0, arg1=order_id, arg2=1, arg3=1, arg4=user)
-                    #arg0:0聊天信息 1交易信息 
+                    #arg0:0聊天信息 1交易信息 2买家已付款 3卖家已确认
                     #arg1:订单id 
                     #arg2:暂存消息数量吧
                     #arg3:0由买家发来 1由卖家发来
@@ -169,6 +178,68 @@ def add_tmessage_views(request, order_id):
             message.save()
             n.save()
 
-        messages.success(request,'已发送')
         return render(request, 'paying.html', locals())
 
+#买家确认
+@login_required
+def buyer_ok_views(request, order_id):
+    if request.method == 'POST': 
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id=order_id)
+
+        if user != order.creator:
+            messages.error(request, '没有权限')
+            return render(request, '/', locals())
+        order.buyer_ok = True
+        order.status = 1
+        order.save()
+
+        #消息处理
+        good = order.good
+        buyer = order.creator
+        seller = good.creator
+
+        buyer_message = request.POST.get('buyer-ok-message', '')
+        
+        if not buyer_message == '':
+            message = TradeMessage(sender=user, receiver=seller, order=order, content=buyer_message)
+            n = Notification(aim_user=seller, arg0=2, arg1=order_id, arg4=user)
+            
+            message.save()
+            n.save()
+
+
+        return redirect(reverse('paying', args=(order.id,)))
+
+
+@login_required
+def seller_ok_views(request, order_id):
+    if request.method == 'POST': 
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id=order_id)
+        if user != order.good.creator:
+            messages.error(request, '没有权限')
+            return render(request, '/', locals())
+
+        order.buyer_ok = True
+        order.status = 2
+        order.save()
+        
+        good = order.good
+        good.sell_times += 1
+        good.save()
+            
+        buyer = order.creator
+        buyer.trade_count += 1
+        buyer.save()
+
+        seller = good.creator
+        seller.trade_count += 1
+        seller.save()
+
+
+        #消息处理
+        n = Notification(aim_user=buyer, arg0=3, arg1=order_id, arg4=user)
+        n.save()
+
+        return redirect(reverse('paying', args=(order.id,)))

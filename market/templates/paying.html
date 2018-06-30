@@ -26,8 +26,20 @@
 
 {% block body %}
 
-<table class="table table-striped">
+<div id="paycontent">
+<div id="fresh_area">
 
+
+<table class="table table-striped">
+<tr>
+  <td>商品名称</td>
+  <td>{{good.name}}</td>
+</tr>
+<tr>
+  <td>订单创建时间</td>
+  <td>{{order.create_time|date:"Y-m-d H:i:s"}}</td>
+</tr>
+<tr>
   <td>支付方式</td>
   <td>支付宝</td>
 </tr>
@@ -37,19 +49,38 @@
 </tr>
 <tr>
   <td>订单状态</td>
-  <td>等待付款中</td>
+  <td>
+  {% if order.status == 0 %}
+  等待买家付款
+  {% elif order.status == 1%}
+  等待卖家确认
+  {% elif order.status == 2%}
+  交易完成
+  {% elif order.status == 3%}
+  投诉处理中
+  {% else%}
+  交易取消
+  {% endif %}
+  </td>
 </tr>
 </table>
-
-{{order.create_time}}
-{{good.name}}
 
 {%csrf_token%}
 
 
+  {% if order.status == 0 and is_buyer %}
+  <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#buyer_ok">标记已经付款</button>
+  {% elif order.status == 1 and not  is_buyer%}
+  <form action="{% url 'seller_ok' order.id %}" method="POST">
+  {%csrf_token%}
+  <input type="submit" class="btn btn-success btn-block" value="确认已收款">
+  </form>
+  {% endif%}
 
 
-<button class="btn btn-default">标记已经付款</button>
+
+
+<br>
 
 <div id="chatarea-box">
 <div class="chatarea" id="chatarea">
@@ -73,8 +104,14 @@
 </div>
 </div>
 
+</div>
+</div>
+
 <input type="text" id="new-content" class="form-control">
 <button class="btn btn-default" id="new-message">发送</button>
+
+
+
 
 <div class="modal fade" id="mypay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -96,6 +133,42 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
+
+
+<div class="modal fade" id="buyer_ok" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div class="panel panel-default">
+ <div class="panel-body">
+ <p>1. 请填写付款留言，注明您已完成付款的金额、时间、方式等信息，以便卖家更快地核对款项。</p>
+<p>2. 当您转账完成后，请及时点击“确认已付款”，以便对方发货。</p>
+<p>3. 若您尚未转账给对方，请不要点击“确认已付款”，以免造成交易纠纷以及可能的信用降级。</p>
+
+</div>
+</div>
+            <form action="{% url 'buyer_ok' order.id %}" method="POST">
+            {%csrf_token%}
+            <p>付款留言</p>
+            <input type="text" name="buyer-ok-message" class="form-control" >
+            <br>
+            <input type="submit" class="btn btn-success btn-block" value="确认已付款">
+            </form>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 {% endblock %}
 
 {% block side-search %}
@@ -109,16 +182,25 @@
             </div>
         </form>
     </div> 
+
 {% endblock %}
 
 
 {% block side %}
+
 <a class='btn btn-default sidebtn active'>等待付款中</a>
+
 <!--<a class='btn btn-default sidebtn'>付费文档</a>-->
 
 <br>
 <br>
 <br>
-
+{% if is_buyer and order.status == 0%}
 <a class='btn btn-warning sidebtn'>取消交易</a>
+{% endif%}
+
+{% if order.status == 1 %}
+<a class='btn btn-warning sidebtn'>发起投诉</a>
+{% endif%}
+
 {% endblock %}

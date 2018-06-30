@@ -22,7 +22,8 @@ window.onload=function(){
 
 function myFunction()
 {
-$("#chatarea-box").load("/market/paying/"+order_id+" #chatarea", function(){
+//$("#chatarea-box").load("/market/paying/"+order_id+" #chatarea", function(){
+    $("#paycontent").load("/market/paying/"+order_id+" #fresh_area", function(){
     //document.getElementById("chatbottom").scrollIntoView();
     var div = document.getElementById("chatarea")
     div.scrollTop = div.scrollHeight;
