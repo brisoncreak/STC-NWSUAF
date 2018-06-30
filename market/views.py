@@ -19,7 +19,31 @@ def docs_views(request):
 
 def goods_views(request):
     if request.method == 'GET':
-        goods = Good.objects.all().order_by('-create_time')
+        goods = Good.objects.all().order_by('-create_time') 
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 4
+        page_sum = len(goods)//per_page+1
+        if page_sum > 6:
+            page_sum = len(goods)//per_page
+        else:
+            page_sum = len(goods)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        goods = goods[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
         return render(request,'goods_index.html',locals())
 #商品详情页面
 def good_detail_views(request,good_id):
@@ -78,6 +102,8 @@ def add_good_views(request):
 
 def order_views(request,orderstate):
     if request.method == 'GET':
+        order_list = Order.objects.all().order_by('-create_time')
+        #good = order_list.good__set.all()
         return render(request,'order_view.html',locals())
 def order_finished_views(request,orderstate):
     if request.method == 'GET':

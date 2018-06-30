@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 class GoodAdmin(admin.ModelAdmin):
-    list_display = ['name', 'file']
+    list_display = ['id', 'name', 'file']
     #添加链接
     list_display_links = ['name']
     #添加可编辑字段
