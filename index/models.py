@@ -45,3 +45,23 @@ class Colleges(models.Model):
         verbose_name = '学院/文件类型'
         verbose_name_plural = verbose_name
 
+
+
+class Notification(models.Model):
+
+    aim_user = models.ForeignKey(User, related_name='aim_user')
+    create_time = models.DateTimeField(default=datetime.now)
+    content = models.CharField(max_length = 1000)
+    have_read = models.BooleanField(default=False)
+    arg0 = models.IntegerField(null=True)
+    arg1 = models.IntegerField(null=True)
+    arg2 = models.IntegerField(null=True)
+    arg3 = models.CharField(max_length = 1000, null=True)
+    def __str__(self):
+        return self.aim_user.username
+    class Meta:
+        #改数据库名
+        #db_table = 'notification'
+        verbose_name = '全局通知'
+        verbose_name_plural = verbose_name
+        ordering = ['create_time']

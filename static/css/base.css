@@ -266,6 +266,7 @@ a{text-decoration:none;}
 nav.vertical ul li{ display:block;}/* vertical menu */
 nav.horizontal ul li{   display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
+
 /*end reset*/
 /*--header start here--*/
 
