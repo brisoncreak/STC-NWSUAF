@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}写文章 - {% endblock %}
+
+<!-- {% block head %}
+    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
+{% endblock %} -->
+
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li class="selected"><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">网盘</a></li>
+{% endblock %}
+
+
+{% block body %}
+    <a href="{%url 'r_m'%}">我发表的文章</a>
+    <a href="{%url 'a_a'%}">我要写文章</a>
+    <table  border="1">
+        <thead>
+            <tr>
+                <th>发布者</th>
+                <th>文章名</th>
+                <th>操作</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {%for a in listArticle%}  
+            <tr>
+                <td><a href="{%url 'r_s' a.user_id%}">{{a.user}}</a></td>
+                <td><a href="{%url 'r_a' a.id%}">{{a.topic}}</a></td>
+                <td><a href="{%url 'a_v' a.id%}">我要评论</a></td>
+                
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+{% endblock %}

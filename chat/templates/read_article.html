@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}文章 - {% endblock %}
+
+<!-- {% block head %}
+    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
+{% endblock %} -->
+
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li class="selected"><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">网盘</a></li>
+{% endblock %}
+
+
+{% block body %}
+    <div id="main" class="">
+        
+        <div id="top" class="">
+            <div id="left" class="">
+                <h3>社区|{{a.user}}的文章</h3>
+            </div>
+
+        </div>
+        <div id="middle" class="">
+            <div><h3>{{a.topic}}</h3></div>  
+            <div><h4>{{a.lable}}</h4></div>
+            <div><p>{{a.content}}</p></div>
+            <div><p>{{a.block}}</p></div>
+            <div><p>{{a.create_date}}</p></div>
+        </div>
+        <div id="bottom" class="">
+            <div>
+                
+                <h4>评论</h4>
+                {%for r in listReview%}
+                
+                <li>
+                    <a href="{%url 'a_p' r.id%}">回复  </a>
+                    |{{r.user}}  |{{r.content}}  |{{r.create_date}}
+                </li>
+                <li>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{r.replys}}
+                </li>
+
+
+
+
+                {%endfor%}
+            </div>
+            <div>
+                <a href="{%url 'a_v' a.id%}">我也要评论</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

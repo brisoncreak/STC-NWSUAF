@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{u.username}}的主页 - {% endblock %}
+
+<!-- {% block head %}
+    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
+{% endblock %} -->
+
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li class="selected"><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">网盘</a></li>
+{% endblock %}
+
+
+{% block body %}
+
+    <div id="main" class="">
+        
+        <div id="top" class="">
+            <h3>社区|{{u.username}}的文章</h3>
+            <hr>
+        </div>
+        <div id="middle" class="">
+            {%for a in listArticle%}
+                <div id="article" class="">                
+                    <h3>{{a.topic}}</h3>
+                    <p>{{a.content}}</p>
+                    <p>{{a.create_date}}</p>
+                </div>
+               
+                <hr>
+            {%endfor%}    
+            
+        </div>
+    </div>
+{% endblock %}
