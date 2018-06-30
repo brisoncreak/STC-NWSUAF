@@ -56,7 +56,8 @@ class Notification(models.Model):
     arg0 = models.IntegerField(null=True)
     arg1 = models.IntegerField(null=True)
     arg2 = models.IntegerField(null=True)
-    arg3 = models.CharField(max_length = 1000, null=True)
+    arg3 = models.IntegerField(null=True)
+    arg4 = models.ForeignKey(User, null=True)
     def __str__(self):
         return self.aim_user.username
     class Meta:

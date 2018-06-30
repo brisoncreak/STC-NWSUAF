@@ -86,6 +86,7 @@ class TradeMessage(models.Model):
     order = models.ForeignKey(Order, null=False)
     create_time = models.DateTimeField(default=datetime.now)
     content = models.CharField(max_length = 200)
+    have_read = models.BooleanField(default=False)
     def __str__(self):
         return self.content
     class Meta:

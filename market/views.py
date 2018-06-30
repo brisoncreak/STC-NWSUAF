@@ -44,8 +44,15 @@ def new_order_views(request, good_id):
         else:
             good = Good.objects.get(id=good_id)
             user = User.objects.get(username=request.session['username'])
+            
+            if good.creator == user:
+                messages.warning(request, '不允许购买自己发布的商品')
+                return render(request, 'ordering.html', locals())
+
             new_order = Order(status=0, creator=user, good=good)
             new_order.save()
+            n = Notification(aim_user=good.creator, arg0=1, arg1=new_order.id, arg4=user)
+            n.save()
             return redirect(reverse('paying', args=(new_order.id,)))
 
 #支付页面
@@ -56,13 +63,22 @@ def paying_views(request, order_id):
         order = Order.objects.get(id=order_id)
         good = order.good
         try:
-            noti = Notification.objects.get(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
-            noti.have_read = True
-            noti.arg2 = 0
-            noti.save()
+            noti = Notification.objects.filter(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
+            for i in noti:
+                i.have_read = True
+                i.arg2 = 0
+                i.save()
+            n = Notification.objects.filter(Q(arg0=1)&Q(aim_user=user))
+            for i in n:
+                i.have_read = True
+                i.save()
         except:
             print('bucunzai')
             
+        readt = TradeMessage.objects.filter(Q(order=order)&Q(receiver=user))
+        for t in readt:
+            t.have_read = True
+            t.save()
 
         tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
         
@@ -110,7 +126,7 @@ def add_tmessage_views(request, order_id):
                     n.arg2 += 1
                     n.have_read = False
                 except:
-                    n = Notification(aim_user=seller, arg0=0, arg1=order_id, arg2=1)
+                    n = Notification(aim_user=seller, arg0=0, arg1=order_id, arg2=1, arg3=0, arg4=user)
             else:
                 message = TradeMessage(sender=user, receiver=buyer, order=order, content=content)
                 try:
@@ -118,7 +134,12 @@ def add_tmessage_views(request, order_id):
                     n.arg2 += 1
                     n.have_read = False
                 except:
-                    n = Notification(aim_user=buyer, arg0=0, arg1=order_id, arg2=1)
+                    n = Notification(aim_user=buyer, arg0=0, arg1=order_id, arg2=1, arg3=1, arg4=user)
+                    #arg0:0聊天信息 1交易信息 
+                    #arg1:订单id 
+                    #arg2:暂存消息数量吧
+                    #arg3:0由买家发来 1由卖家发来
+                    #arg4:用户外键
             message.save()
             n.save()
 

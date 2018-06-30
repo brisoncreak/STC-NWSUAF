@@ -56,12 +56,18 @@
   {% for tm in tmessages%}
   {%if tm.sender.username == request.session.username%}
   <div class="charline-right">
+  <p>{{tm.sender.username}} {{tm.create_time|date:"Y-m-d H:i:s"}}</p>
+  <h4>{{tm.content}}</h4>
+  {%if tm.have_read%}<span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: rgb(212, 106, 64);"></span>{%endif%}
+  </div>
   {%else%}
   <div class="charline-left">
-  {%endif%}
-  <p>{{tm.sender.username}} {{tm.create_time}}</p>
+  <p>{{tm.sender.username}} {{tm.create_time|date:"Y-M-d H:i:s"}}</p>
   <h4>{{tm.content}}</h4>
+
   </div>
+  {%endif%}
+
   {%endfor%}
    <div id="chatbottom"></div>
 </div>
