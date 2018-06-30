@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^test/$', test),
     url(r'^modelbase/$',index_modelbase),
     url(r'^reset/$', index_reset,name='reset'),
-    url(r'^back/reset/',index_back,name='back')
+    url(r'^back/reset/',index_back,name='back'),
     url(r'^notification/$',notify_views, name='notify'),
 ]

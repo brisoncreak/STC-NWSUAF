@@ -6,11 +6,10 @@ from .models import *
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-<<<<<<< HEAD
+
 from django.core.mail import send_mail
-=======
 from STC_NWSUAF.tools import login_required
->>>>>>> c92b1d1cb5cf6a352bc35a51346b7265f063caf1
+
 import json
 
 
