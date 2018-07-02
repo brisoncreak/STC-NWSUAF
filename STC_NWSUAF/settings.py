@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'STC_NWSUAF.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stcdb',
+        'NAME': 'stcdb1',
 	    'USER': 'root',
 	    'PASSWORD': '123456',
 	    'HOST': 'localhost',

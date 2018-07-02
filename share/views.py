@@ -10,6 +10,7 @@ from django.db.models import F
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 from urllib.parse import unquote
+
 # Create your views here.
 
 
@@ -87,12 +88,13 @@ def upload_file2(request,collegename):
                 # return HttpResponseRedirect('/share')
                 return HttpResponseRedirect('/show_College/'+collegename)
                 #return render(request,'singleCollegeShow.html',locals())   # /upload_file2/collegename
+
             messages.error(request,'上传失败')
             return HttpResponseRedirect('/upload_file')
         messages.error(request,'请登录')
         return HttpResponseRedirect('/login')
 
-
+		
 #download files
 def download_files(request,fileid):  
     file=File.objects.get(id=fileid)
