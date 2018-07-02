@@ -19,5 +19,5 @@ urlpatterns = [
     url(r'^add_tmessage/(\d+)$', add_tmessage_views, name='add_tmessage'),
     url(r'^buyer_ok/(\d+)$', buyer_ok_views, name='buyer_ok'),
     url(r'^seller_ok/(\d+)$', seller_ok_views, name='seller_ok'),
-
+    url(r'^ws/(\d+)/(\d+)$', market_ws_views)
 ]

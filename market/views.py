@@ -5,6 +5,9 @@ from django.db.models import F,Q
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 
+from dwebsocket import require_websocket
+from bs4 import BeautifulSoup
+
 # Create your views here.
 
 def index_views(request):
@@ -243,3 +246,21 @@ def seller_ok_views(request, order_id):
         n.save()
 
         return redirect(reverse('paying', args=(order.id,)))
+
+@require_websocket
+def market_ws_views(request, order_id, uid):
+    for message in request.websocket:
+        if message == b'456':
+            #request.websocket.send(b'456')
+            #print(message)
+            user = User.objects.get(id=uid)
+            order = Order.objects.get(id=order_id)
+            good = order.good
+            is_buyer = user == order.creator
+            tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
+
+            html = render(request, 'paying.html', locals()).content
+            bs = BeautifulSoup(html, "html.parser")
+            noti_div = bs.find('div', id='paycontent').find('div', id='fresh_area')
+
+            request.websocket.send(noti_div.encode('utf-8'))
