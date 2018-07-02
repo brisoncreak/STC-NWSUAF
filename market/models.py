@@ -40,6 +40,8 @@ class Order(models.Model):
     status = models.IntegerField(choices=status_list)
     buyer_ok = models.BooleanField(default=False)
     seller_ok = models.BooleanField(default=False)
+    buyer_marked = models.BooleanField(default=False)
+    seller_marked = models.BooleanField(default=False)
 
     def __str__(self):
          return str(self.id)

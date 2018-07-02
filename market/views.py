@@ -259,6 +259,11 @@ def market_ws_views(request, order_id, uid):
             is_buyer = user == order.creator
             tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
 
+            readt = TradeMessage.objects.filter(Q(order=order)&Q(receiver=user))
+            for t in readt:
+                t.have_read = True
+                t.save()
+            
             html = render(request, 'paying.html', locals()).content
             bs = BeautifulSoup(html, "html.parser")
             noti_div = bs.find('div', id='paycontent').find('div', id='fresh_area')
