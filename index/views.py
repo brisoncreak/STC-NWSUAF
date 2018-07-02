@@ -12,6 +12,7 @@ from STC_NWSUAF.tools import login_required
 
 from dwebsocket import require_websocket
 from bs4 import BeautifulSoup
+
 import json
 
 
