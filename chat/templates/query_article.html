@@ -4,9 +4,96 @@
 
 {% block title %}写文章 - {% endblock %}
 
-<!-- {% block head %}
-    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
-{% endblock %} -->
+{% block head %}
+    <!-- <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/> -->
+    <style type="text/css">
+        .changestyle{color:red;font-weight:600;}
+    </style>
+    <script type="text/javascript">
+        var DOM = (document.getElementById) ? 1 : 0;
+
+        var NS4 = (document.layers) ? 1 : 0;
+
+        var IE4 = 0; if (document.all) { IE4 = 1; DOM = 0; }
+        var win = window;
+
+        var n = 0;
+        function findIt() {
+
+            if (document.getElementById("field1").value != "")
+
+                findInPage(document.getElementById("field1").value);
+
+        }
+
+        function findInPage(str) {
+
+            var txt, i, found;
+            if (str == "")
+
+                return false;
+            if (DOM) {
+
+                win.find(str, false, true);
+
+                return true;
+
+            }
+            if (NS4) {
+
+                if (!win.find(str))
+
+                    while (win.find(str, false, true))
+
+                        n++;
+
+                else
+
+                    n++;
+                if (n == 0)
+
+                    alert("未找到指定内容.");
+
+            }
+            if (IE4) {
+
+                txt = win.document.body.createTextRange();
+                for (i = 0; i <= n && (found = txt.findText(str)) != false; i++) {
+
+                    txt.moveStart("character", 1);
+
+                    txt.moveEnd("textedit");
+
+                }
+                if (found) {
+
+                    txt.moveStart("character", -1);
+
+                    txt.findText(str);
+
+                    txt.select();
+
+                    txt.scrollIntoView();
+
+                    n++;
+
+                } else {
+
+                    if (n > 0) {
+
+                        n = 0;
+
+                        findInPage(str);
+
+                    } else
+
+                        alert("未找到指定内容.");
+                }
+            }
+            return false;
+        }     
+    </script>
+{% endblock %}
 
 {% block navbar %}
     <li><a href="{% url 'index' %}">热门</a></li>
@@ -15,28 +102,49 @@
     <li><a href="{% url 'share_index' %}">网盘</a></li>
 {% endblock %}
 
+{% block side-search %}
+    <div class="spacer">
+        <form action="#" id="search">
+            <div class="input-group">
+            <input type="text" id="field1" class="form-control" placeholder="搜索">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="findIt()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </span>
+            </div>
+        </form>
+    </div> 
+{% endblock %}
 
 {% block body %}
-    <a href="{%url 'r_m'%}">我发表的文章</a>
-    <a href="{%url 'a_a'%}">我要写文章</a>
-    <table  border="1">
-        <thead>
-            <tr>
-                <th>发布者</th>
-                <th>文章名</th>
-                <th>操作</th>
+
+    <div id="OnePerson">
+            
+        <a href="{%url 'r_m'%}">我发表的文章</a>
+        <a href="{%url 'a_a'%}">我要写文章</a>
+        <table  border="1">
+            <thead>
+                <tr>
+                    <th>发布者</th>
+                    <th>文章名</th>
+                    <th>操作</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {%for a in listArticle%} 
+                <div class="single">
+                    <tr>
+                    <td><a href="{%url 'r_s' a.user_id%}">{{a.user}}</a></td>
+                    <td><a href="{%url 'r_a' a.id%}">{{a.topic}}</a></td>
+                    <td><a href="{%url 'a_v' a.id%}">我要评论</a></td>
+                    
+                </tr>
+                </div> 
                 
-            </tr>
-        </thead>
-        <tbody>
-            {%for a in listArticle%}  
-            <tr>
-                <td><a href="{%url 'r_s' a.user_id%}">{{a.user}}</a></td>
-                <td><a href="{%url 'r_a' a.id%}">{{a.topic}}</a></td>
-                <td><a href="{%url 'a_v' a.id%}">我要评论</a></td>
-                
-            </tr>
-            {%endfor%}
-        </tbody>
-    </table>
+                {%endfor%}
+            </tbody>
+        
+
+        </table>
+    </div>
 {% endblock %}
