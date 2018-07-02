@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/base.js' %}"></script>
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -27,7 +28,8 @@
         {% endblock %}
     </ul>
     {%endblock%}
-      <div class="header-bottom-right">
+    <div id="refresh-nav">
+      <div class="header-bottom-right" id="header-bottom-right">
           {% if request.session.username %}
               <span><a href="#">{{ request.session.username }}</a>|<a href="{%url 'notify'%}">消息<span class="badge">{{lang}}</span></a>|<a href="/logout/">退出</a></span>
           {% else %}
@@ -37,6 +39,7 @@
               </span>
           {% endif %}
       </div>
+    </div>
 
 </nav>
 
@@ -162,7 +165,7 @@
                 </div>
                 <div class="copy">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input class="rem" type="checkbox" name="rem" id="rem-login-main">
+                <input class="rem" type="checkbox" name="rem" id="rem-login-main1">
                 <label for="rem-login-main" class="text-muted">记住我</label>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a class="copy1" class="text-muted" href="#">忘记密码</a>
@@ -288,7 +291,7 @@
     </div>
 </div>
 
-<div class="content">
+<div class="content" id="content">
 {% block body %}
 
 {% endblock %}
