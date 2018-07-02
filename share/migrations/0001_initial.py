@@ -31,8 +31,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='index.User')),
             ],
             options={
-                'verbose_name': '文件',
                 'verbose_name_plural': '文件',
+                'verbose_name': '文件',
             },
         ),
     ]
