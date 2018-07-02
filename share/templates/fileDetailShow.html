@@ -1,0 +1,55 @@
+<!-- fileDetailShow.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/upload.css' %}">
+{% endblock %}
+
+{% block navbar %}
+    <li ><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="#">讨论</a></li>
+    <li class="selected"><a href="{% url 'share_index' %}">网盘</a></li>
+{% endblock %}
+{% block side %}
+
+
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <td>文件名称：</td>
+            <td>{{file.file_name}} </td>
+        </tr>
+        <tr>
+            <td>文件类型：</td>
+            <td>{{file.file_type}}</td>
+        </tr>
+        <tr>
+            <td>文件大小：</td>
+            <td>{{file.file_size}}Ｂ</td>
+        </tr>
+        <tr>
+            <td>文件下载次数：</td>
+            <td>{{file.file_bedown}}</td>
+        </tr>
+        <tr>
+            <td>文件上传时间：</td>
+            <td>{{file.create_time}}</td>
+        </tr>
+        <tr>
+            <td>文件所属类别：</td>
+            <td>{{file.file_classify}}</td>
+        </tr>
+        <tr>
+            <td>文件好评数：</td>
+            <td>{{file.file_beadmired}}</td>
+        </tr>
+    </table>
+
+{% endblock %}

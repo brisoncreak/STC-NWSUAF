@@ -48,6 +48,25 @@ class Colleges(models.Model):
         verbose_name_plural = verbose_name
 
 
+#省份表
+class Province(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+#城市表
+class City(models.Model):
+    name = models.CharField(max_length=40)
+    province = models.ForeignKey(Province)
+
+    def __str__(self):
+        return self.name
+
+#这个主要是用来显示，选择的结果
+class SelectP(models.Model):
+    province = models.ForeignKey(Province)
+    city = models.ForeignKey(City)
 
 class Notification(models.Model):
 
@@ -68,3 +87,4 @@ class Notification(models.Model):
         verbose_name = '全局通知'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
+
