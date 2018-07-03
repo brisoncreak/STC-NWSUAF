@@ -8,7 +8,7 @@ class Good(models.Model):
     pay_way_list = ((0, '支付宝'), (1, '微信'), (2, '当面交易'))
 
     name = models.CharField(max_length = 30)
-    creator = models.ForeignKey(User, verbose_name='创建者',related_name='goods')
+    creator = models.ForeignKey(User, verbose_name='创建者')
     file = models.ForeignKey(File, blank=True, null=True)
     image = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
     create_time = models.DateTimeField(default=datetime.now)
@@ -32,7 +32,6 @@ class Good(models.Model):
 
 
 class Order(models.Model):
-
 
     status_list = ((0, '等待支付'), (1, '等待卖家确认'),(2, '交易完成'), (3, '投诉中'), (4, '交易取消'))
     creator = models.ForeignKey(User, null=False)
@@ -83,6 +82,7 @@ class Evidence(models.Model):
         ordering = ['create_time']
 
 class TradeMessage(models.Model):
+    
     sender = models.ForeignKey(User, related_name='sender')
     receiver = models.ForeignKey(User, related_name='receiver')
     order = models.ForeignKey(Order, null=False)
@@ -97,20 +97,3 @@ class TradeMessage(models.Model):
         verbose_name = '交易消息'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
-
-class GoodRemark(models.Model):
-    remark_list = ((0, '好评'), (1, '差评'))
-    creator = models.ForeignKey(User, null=False)
-    good = models.ForeignKey(Good, null=False)
-    content = models.CharField(max_length = 200)
-    remark_type = models.IntegerField(choices=remark_list)
-    create_time = models.DateTimeField(default=datetime.now)
-    def __str__(self):
-        return self.content
-    class Meta:
-        #改数据库名
-        #db_table = 'trade_message'
-        verbose_name = '商品评论'
-        verbose_name_plural = verbose_name
-        ordering = ['create_time']
-        
