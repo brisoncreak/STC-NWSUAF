@@ -222,7 +222,6 @@ def add_tmessage_views(request, order_id):
 
         return render(request, 'paying.html', locals())
 
-<<<<<<< HEAD
 #买家确认
 @login_required
 def buyer_ok_views(request, order_id):
@@ -309,7 +308,7 @@ def market_ws_views(request, order_id, uid):
             noti_div = bs.find('div', id='paycontent').find('div', id='fresh_area')
 
             request.websocket.send(noti_div.encode('utf-8'))
-=======
+
 @login_required
 def good_list_views(request):
     if request.method == 'GET':
@@ -342,11 +341,3 @@ def good_list_views(request):
         print(page_sum)
         return render(request,'good_list.html',locals())
 
-def test_views(request):
-    if  request.method == 'GET':
-        return render(request,'test1.html')
-    else:
-        obj = request.FILES.get('inputfile')
-        print(obj)
-        return render(request,'test1.html')
->>>>>>> b16df853057fff47ef17bf78a91c175fd93dc4b1
