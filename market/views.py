@@ -74,6 +74,7 @@ def goods_views(request):
 def good_detail_views(request,good_id):
     if request.method=='GET':
         good = Good.objects.get(id=good_id)
+        
         return render(request,'good_detail.html',locals())
 
 #确认购买页面
@@ -162,6 +163,7 @@ def add_good_views(request):
         new_good.save()
         return redirect(good_list_views)
 @login_required
+#订单列表页面
 def order_views(request,orderstate):
     if request.method == 'GET':
         username=request.session['username']
@@ -172,6 +174,7 @@ def order_views(request,orderstate):
 def order_detail_views(request,goodname):
     if request.method == 'GET':
         return render(request,'order_detail.html',locals())
+#创建投诉页面
 def complaint_views(request,orderid):
     if request.method == 'GET':
         return render(request,'complaint.html',locals())
@@ -212,6 +215,7 @@ def add_tmessage_views(request, order_id):
         return render(request, 'paying.html', locals())
 
 @login_required
+#个人商品页面
 def good_list_views(request):
     if request.method == 'GET':
         username=request.session['username']
@@ -243,10 +247,3 @@ def good_list_views(request):
         print(page_sum)
         return render(request,'good_list.html',locals())
 
-def test_views(request):
-    if  request.method == 'GET':
-        return render(request,'test1.html')
-    else:
-        obj = request.FILES.get('inputfile')
-        print(obj)
-        return render(request,'test1.html')

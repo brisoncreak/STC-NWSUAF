@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}写评论 - {% endblock %}
+
+<!-- {% block head %}
+    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
+{% endblock %} -->
+
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li class="selected"><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">网盘</a></li>
+{% endblock %}
+
+
+{% block body %}
+<div id="main" class="">       
+        <div id="top" class="">
+            <h3>写评论|{{a.topic}}</h3>
+        </div>
+        <div id="bottom" class="">
+            <form action="#" method="post">
+            {% csrf_token %}
+                
+                <div>
+                    <textarea rows="20" cols="80" name="content"></textarea>
+                </div>
+                
+                <br><br>
+                <div>
+                    <input type="reset" value="清空">
+                    <input type="submit" value="提交">
+                </div>
+                
+            </form>
+        </div>
+    </div>
+{% endblock %}

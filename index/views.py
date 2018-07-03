@@ -10,6 +10,9 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from STC_NWSUAF.tools import login_required
 
+from dwebsocket import require_websocket
+from bs4 import BeautifulSoup
+
 import json
 
 
@@ -149,6 +152,7 @@ def index_back(request):
         user.password=password
         user.save()
         return HttpResponseRedirect('/')
+
 @login_required
 def notify_views(request):
     user = User.objects.get(username=request.session.get('username'))
@@ -170,3 +174,17 @@ def notify_views(request):
 
 
     return render(request,'notification.html',locals())
+
+
+@require_websocket
+def ws_views(request):
+    for message in request.websocket:
+        if message == b'123':
+            #request.websocket.send(b'456')
+            #print(message)
+            html = render(request, 'index.html').content
+            bs = BeautifulSoup(html, "html.parser")
+            noti_div = bs.find('div', id='header-bottom-right').find('span')
+
+            request.websocket.send(noti_div.encode('utf-8'))
+

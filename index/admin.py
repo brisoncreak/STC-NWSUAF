@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'password']
+    list_display = ['username', 'password','degree_good','trade_count', 'good_mark', 'bad_mark']
     #添加链接
     list_display_links = ['username']
     #添加可编辑字段
