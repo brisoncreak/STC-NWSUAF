@@ -3,32 +3,56 @@
 {% block body %}
     <h1 class="title">{{collegetitle}}的文件列表</h1>
     <table class="table table-hover" border=1>
-           <th>文件id</th>
+           <th>发表用户</th>
            <th>文件名</th>
            <th>文件大小</th>
            <th>下载次数</th>
            <th>创建时间</th>
            <th>操作</th>
-        {% for file in files %}
+           <th>评价</th>
+        {% for x in files %}
                 <tr>
-                    <td>{{file.id}}</td>
-                    <td>{{ file.file_name }}</td>
-
-                    {% if file.file_size >　1048576 %}
-                        <td>{% widthratio file.file_size 1048576 1 %}M</td>
-                    {% elif file.file_size >　1024 %}
-                        <td>{% widthratio file.file_size 1024 1 %} K</td>
+                    <td><a href="{% url 'show_user' x.user_id %}">{{ x.user }}</a></td>
+                    <!-- <td>{{ x.file_name }}</td> -->
+                    <td><a href="{% url 'show_file' x.id %}">{{ x.file_name }}</a></td>
+                    {% if x.file_size >　1048576 %}
+                        <td>{% widthratio x.file_size 1048576 1 %}M</td>
+                    {% elif x.file_size >　1024 %}
+                        <td>{% widthratio x.file_size 1024 1 %} K</td>
                     {% else %}
-                    <td>{{ file.file_size }} B</td>
+                    <td>{{ x.file_size }} B</td>
                     {% endif %}
-                    <td>{{file.file_bedown}}</td>
-                    <td>{{file.create_time}}</td>
+                    <td>{{x.file_bedown}}</td>
+                    <td>{{x.create_time}}</td>
                     <td>
-                    <a href="{%url 'd_files' file.id%}">下载</a>|
-                    <a href="{%url 'del_files' file.id%}">删除</a>
+                        <!--<a href="{%url 'd_files' x.id%}">下载</a>
+                             |<a href="{%url 'del_files' x.id%}">删除</a> -->
+                        {% if x.file_status != 2 %}
+                            <a href="{%url 'd_files' x.id%}">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+                            
+                        {% else %}
+                            <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
+                        {% endif %}
+                        <!-- |<a href="{%url 'del_files' x.id%}">删除</a> -->
+
+                        
+                    </td>
+                    <td>
+                        <!-- 好评端 -->
+                        <span id="goodSpan" onclick="sendGood({{x.id}})">
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                        </span>
+                        [<span id="goodnum{{x.id}}">{{x.file_beadmired}}</span>]
+                         <!-- 差评端 -->
+                            |
+                        <span id="badSpan" onclick="sendBad({{x.id}})">
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/> 
+                        </span>
+                        [<span id="badnum{{x.id}}">{{x.file_benotadmired}}</span>]
                     </td>
                 </tr>
             {% endfor %}
+            <script language="JavaScript" src="../static/js/admire.js"></script>
       </table>
 
 {% endblock %}

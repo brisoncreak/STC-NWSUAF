@@ -1,44 +1,64 @@
 // admire.js
 
-    /*点赞的数量：*/
-    document.getElementById("good").innerText = "";
-    var good = document.getElementById("good").textContent;
-     
-    document.getElementById("bad").innerText  = "";
-    var bad = document.getElementById("bad").textContent;
+//表单提交　　因为会跳转　　所以舍弃
+    // function poost(URL,id,num) {
+    //     var temp = document.createElement("form");
+    //     temp.action =URL;
+    //     temp.method = "post";
+    //     temp.style.display = "none";
+      
+    //     var opt1 = document.createElement("input");
+    //     opt1.type = "text"
+    //     opt1.name = "INPUT";
+    //     opt1.value = num;
+    //     temp.appendChild(opt1);
+    //     var opt2 = document.createElement("input");
+    //     opt2.type = "text"
+    //     opt2.name = "ID";
+    //     opt2.value = id;
+    //     temp.appendChild(opt2);
+    //     document.body.appendChild(temp);
+    //     temp.submit();
+    //     return temp;
+    // }
 
-    // 初始化
-    window.onload = function(){
-        if (good == "") {
-            good = 0;
-            document.getElementById("good").innerText = 0;
-        }
-        if (bad == "") {
-            bad = 0;
-            document.getElementById("bad").innerText = 0;
-        }              
-    }
+//点赞
+    /*点赞的数量：good, good,*/
+    function sendGood(id){
+        goodnum = $("#goodnum"+id);//赞的个数
+        num1=parseInt(goodnum.text());//转为int类型
 
-    /*点赞的数量：*/
-    function sendGood(){
-        good = parseInt(good) + 1;
-        document.getElementById("good").innerText = good%2;
-        if(good%2!=0){
-             window.document.getElementById("goodimg").src="../static/img/like_aft.png"
+        img1 = document.getElementById("goodimg"+id).src.split('/');
+        name1 = img1[img1.length-1];
+        if (name1 != "like_aft.png"){
+            document.getElementById("goodimg"+id).src="../static/img/like_aft.png"
+            num1 +=1;
+            goodnum.text(num1)
         }
         else{
-             window.document.getElementById("goodimg").src="../static/img/like_bef.png"
+            document.getElementById("goodimg"+id).src="../static/img/like_bef.png"
+            num1 -=1;
+            goodnum.text(num1)
         }
+        $.post("show_Admirenum/",{'goodINPUT':num1, 'goodID':id},function(result){});
     }
-    
+//踩
     /*踩的数量：*/
-    function sendBad(){
-        bad = parseInt(bad) + 1;
-        document.getElementById("bad").innerText = bad%2;
-        if(bad%2!=0){
-             window.document.getElementById("badimg").src="../static/img/like_aft.png"
+    function sendBad(id){
+        badnum = $("#badnum"+id);//差评的个数
+        num2=parseInt(badnum.text());//转为int类型
+
+        img = document.getElementById("badimg"+id).src.split('/');
+        name = img[img.length-1];
+        if (name != "like_aft.png"){
+            document.getElementById("badimg"+id).src="../static/img/like_aft.png"
+            num2 +=1;
+            badnum.text(num2)
         }
         else{
-             window.document.getElementById("badimg").src="../static/img/like_bef.png"
+            document.getElementById("badimg"+id).src="../static/img/like_bef.png"
+            num2 -=1;
+            badnum.text(num2)
         }
+        $.post("show_Admirenum/",{'badINPUT':num2, 'badID':id},function(result){});
     }
