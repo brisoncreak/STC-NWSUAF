@@ -19,6 +19,7 @@ def index_views(request):
 def docs_views(request):
     if request.method == 'GET':
         goods = Good.objects.all().order_by('-create_time') 
+        page_now = request.GET.get('page')
         if not page_now:
             page_now = 1
         page_now = int(page_now)
