@@ -113,4 +113,20 @@ class GoodRemark(models.Model):
         verbose_name = '商品评论'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
+
+class TradeMark(models.Model):
+    mark_list = ((0, '好评'), (1, '差评'))
+    creator = models.ForeignKey(User, null=False)
+    order = models.ForeignKey(Order, null=False)
+    content = models.CharField(max_length = 200)
+    mark_type = models.IntegerField(choices=mark_list)
+    create_time = models.DateTimeField(default=datetime.now)
+    def __str__(self):
+        return self.content
+    class Meta:
+        #改数据库名
+        #db_table = 'trade_message'
+        verbose_name = '交易评论'
+        verbose_name_plural = verbose_name
+        ordering = ['create_time']
         

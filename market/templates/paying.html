@@ -32,6 +32,10 @@
 
 <table class="table table-striped">
 <tr>
+  <td>订单编号</td>
+  <td>{{order.id}}</td>
+</tr>
+<tr>
   <td>商品名称</td>
   <td>{{good.name}}</td>
 </tr>
@@ -70,18 +74,64 @@
   {% endif %}
 </tr>
 
+{% if order.status == 2 %}
 <tr class="default">
   <td>评价详情</td>
   <td>
+    {%if is_buyer%}
     <span class="col-md-5" style="font-size: 16px;">
-    我<span class="label label-default ">未评价</span>
-    <span>这个买家很傻比超级萌萌哒就是个睿智快点死吧</span>
-
+    我&nbsp;
+    {%if buyer_mark%}
+    {%if buyer_mark.mark_type == 0%}
+    <span class="label label-success">已好评</span>
+    {%elif buyer_mark.mark_type == 1%}
+    <span class="label label-danger">已差评</span>
+    {%endif%}
+    <span>{{buyer_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
     </span>
+
     <span class="col-md-5" style="font-size: 16px;">
-    {{order.creator.username}}<span class="label label-default ">未评价</span>
-    </span></td>
+    {{good.creator.username}}&nbsp;
+    {%if seller_mark%}
+    {%if seller_mark.mark_type == 0%}
+    <span class="label label-success ">已好评</span>
+    {%elif seller_mark.mark_type == 1%}
+    <span class="label label-danger ">已差评</span>
+    {%endif%}
+    <span>{{seller_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
+    </span>
+
+    {%else%}
+    <span class="col-md-5" style="font-size: 16px;">
+    我&nbsp;
+    {%if seller_mark%}
+    {%if seller_mark.mark_type == 0%}
+    <span class="label label-success ">已好评</span>
+    {%elif seller_mark.mark_type == 1%}
+    <span class="label label-danger ">已差评</span>
+    {%endif%}
+    <span>{{seller_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
+    </span>
+
+    <span class="col-md-5" style="font-size: 16px;">
+    {{order.creator.username}}&nbsp;
+    {%if buyer_mark%}
+    {%if buyer_mark.mark_type == 0%}
+    <span class="label label-success ">已好评</span>
+    {%elif buyer_mark.mark_type == 1%}
+    <span class="label label-danger ">已差评</span>
+    {%endif%}
+    <span>{{buyer_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
+    </span>
+    {%endif%}
+
+  </td>
 </tr>
+{%endif%}
 </table>
 
 {%csrf_token%}
@@ -201,12 +251,42 @@
 
                 </h4>
             </div>
-            <form action="#" method="POST">
-              <input type="radio" id="good-mark" value="option1" checked> 
+            <form action="{%url 'trade_mark' order.id%}" method="POST">
+            {%csrf_token%}
+            {%if is_buyer and buyer_mark%}
+              {%if buyer_mark.mark_type == 0%}
+              <input type="radio" id="good-mark" name="mark" value="option1" checked> 
               <span>好评</span>
-              <input type="radio" id="bad-mark"  value="option2">
+              <input type="radio" id="bad-mark" name="mark" value="option2" >
               <span>差评</span>
-              <input class="form-control" type="text" value="">
+              {%elif buyer_mark.mark_type == 1%}
+              <input type="radio" id="good-mark" name="mark" value="option1"> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2"  checked>
+              <span>差评</span>
+              {%endif%}
+            {%elif not is_buyer and seller_mark%}
+              {%if seller_mark.mark_type == 0%}
+              <input type="radio" id="good-mark" name="mark" value="option1" checked> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2" >
+              <span>差评</span>
+              {%elif seller_mark.mark_type == 1%}
+              <input type="radio" id="good-mark" name="mark" value="option1"> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2"  checked>
+              <span>差评</span>
+              {%endif%}
+            {%else%}
+              <input type="radio" id="good-mark" name="mark" value="option1"> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2" >
+              <span>差评</span>
+
+            {%endif%}
+              
+
+              <input class="form-control" name="mark-content"type="text" value="{%if is_buyer and buyer_mark%}{{buyer_mark.content}}{%elif not is_buyer and seller_mark%}{{seller_mark.content}}{%endif%}">
               <input class="btn btn-default" type="submit" value="提交">
             </form>
             <div class="modal-footer">

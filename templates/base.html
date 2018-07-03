@@ -172,8 +172,7 @@
                 </div>
                 <div class="login-ic">
                     <i class="icon"></i>
-                    <input type="password"  name="password" placeholder="请输入密码"  onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'password';}"
-                     required oninvalid="this.setCustomValidity('6~20字母数字或下划线')" oninput="setCustomValidity('')" onchange="checkPassword()"/>
+                    <input type="password"  name="password" placeholder="请输入密码"  onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'password';}"/>
                     <div class="clear"> </div>
                 </div>
                 <div class="copy">
@@ -251,7 +250,7 @@
 
     {% block side-search %}
     <div class="spacer">
-        <form action="#" id="search">
+        <form action="#" id="mysearch">
             <div class="input-group">
             <input type="text" class="form-control" placeholder="搜索">
                 <span class="input-group-btn">

@@ -28,7 +28,7 @@ class GoodAdmin(admin.ModelAdmin):
 
 # Register your models here.
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['good', 'creator', 'create_time', 'status']
+    list_display = ['id', 'good', 'creator', 'create_time', 'status']
     #添加链接
     list_display_links = ['good']
     #添加可编辑字段
@@ -119,8 +119,33 @@ class TradMessageAdmin(admin.ModelAdmin):
     #        'classes':('collapse',)
     #    }),
     #)
+class TradeMarkAdmin(admin.ModelAdmin):
+    list_display = ['id', 'creator', 'order', 'mark_type', 'create_time',]
+    #添加链接
+    list_display_links = ['id']
+    #添加可编辑字段
+    #list_editable = ['address', 'city']
+    #添加搜索框
+    search_fields = ['create_time']
+    #date_hierarchy = DateField
+    #右面添加过滤器
+    list_filter = ['mark_type', 'order']
+    #详细页面顺序
+    #fields = ('email', 'name', 'age')
+    #详细页面 属性分组
+    #fieldsets = (
+    #    ('基本设置',{
+    #       'fields':('country', 'website')
+    #    }),
+    #    ('高级设置',{
+    #        'fields':('name', 'address','city'),
+    #        'classes':('collapse',)
+    #    }),
+    #)
+
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Good, GoodAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(Evidence, EvidenceAdmin)
 admin.site.register(TradeMessage, TradMessageAdmin)
+admin.site.register(TradeMark, TradeMarkAdmin)

@@ -85,8 +85,10 @@ def good_detail_views(request,good_id):
 def ordering_views(request, good_id):
     good = Good.objects.get(id=good_id)
     user = User.objects.get(username=request.session['username'])
-    order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
-    order_len = len(order)
+    try:
+        myorder = Order.objects.filter(good = good).filter(creator = user)
+    except:
+        pass
     return render(request, 'ordering.html', locals())
 
 #创建订单视图
@@ -120,6 +122,11 @@ def paying_views(request, order_id):
         order = Order.objects.get(id=order_id)
         good = order.good
         is_buyer = user == order.creator
+        
+        if order.buyer_marked:
+            buyer_mark = TradeMark.objects.get(Q(order=order)&Q(creator=order.creator))
+        if order.seller_marked:
+            seller_mark = TradeMark.objects.get(Q(order=order)&Q(creator=good.creator))
         try:
             noti0 = Notification.objects.filter(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
             for i in noti0:
@@ -299,6 +306,11 @@ def market_ws_views(request, order_id, uid):
             is_buyer = user == order.creator
             tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
 
+            if order.buyer_marked:
+                buyer_mark = TradeMark.objects.get(Q(order=order)&Q(creator=order.creator))
+            if order.seller_marked:
+                seller_mark = TradeMark.objects.get(Q(order=order)&Q(creator=good.creator))
+
             readt = TradeMessage.objects.filter(Q(order=order)&Q(receiver=user))
             for t in readt:
                 t.have_read = True
@@ -342,3 +354,43 @@ def good_list_views(request):
         print(page_sum)
         return render(request,'good_list.html',locals())
 
+@login_required
+def trade_mark_views(request, order_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id=order_id)
+        good = order.good
+        buyer = order.creator
+        seller = good.creator
+
+        mark_type = request.POST.get('mark', '')
+        mark_content = request.POST.get('mark-content', '')
+
+        if order.status != 2:
+            messages.error(request, '订单未完成,无法评价')
+            return render(request, 'paying.html', locals())
+
+        if mark_type == 'option1':
+            #print('好评')
+            try:
+                mark = TradeMark.objects.get(Q(order=order)&Q(creator=user))
+                mark.mark_type = 0
+                mark.content = mark_content
+            except: 
+                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=0)
+        elif mark_type == 'option2':
+            #print('差评')
+            try:
+                mark = TradeMark.objects.get(Q(order=order)&Q(creator=user))
+                mark.mark_type = 1
+                mark.content = mark_content
+            except:
+                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=1)
+        mark.save()
+        if user == buyer:
+            order.buyer_marked = True
+        elif user == seller:
+            order.seller_marked = True
+        order.save()
+
+        return redirect(reverse('paying', args=(order.id,)))
