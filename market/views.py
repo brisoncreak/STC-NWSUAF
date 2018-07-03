@@ -3,17 +3,42 @@ from .models import *
 from index.models import User, Notification
 from django.db.models import F,Q
 from django.contrib import messages
+import os
+
 from STC_NWSUAF.tools import login_required
 
 # Create your views here.
 
 def index_views(request):
     if request.method == 'GET':
-
         return redirect(reverse('goods_index'))
 #付费文档页面
 def docs_views(request):
     if request.method == 'GET':
+        goods = Good.objects.all().order_by('-create_time') 
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 4
+        page_sum = len(goods)//per_page+1
+        if page_sum > 6:
+            page_sum = len(goods)//per_page
+        else:
+            page_sum = len(goods)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        goods = goods[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
         return render(request,'docs_index.html',locals())
 #二手商品页面
 
@@ -55,7 +80,11 @@ def good_detail_views(request,good_id):
 @login_required
 def ordering_views(request, good_id):
     good = Good.objects.get(id=good_id)
+    user = User.objects.get(username=request.session['username'])
+    order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
+    order_len = len(order)
     return render(request, 'ordering.html', locals())
+
 #创建订单视图
 @login_required
 def new_order_views(request, good_id):
@@ -115,21 +144,31 @@ def paying_views(request, order_id):
 def add_good_views(request):
     if request.method == 'GET':
         return render(request,'new_good.html',locals())
-
+    else:
+        rname = request.POST.get('good_name')
+        rprice = request.POST.get('price')
+        rpay_way = request.POST.get('pay_way')
+        rpay_pic = request.POST.get('pay_pic')
+        obj = request.FILES.get('good_pic')
+        print(obj)
+        file_path = os.path.join('static','upload','alipay',obj.name)
+        f = open(file_path, 'wb')
+        for chunk in obj.chunks():
+            f.write(chunk)
+        f.close()
+        rinf = request.POST.get('good_inf')
+        username = User.objects.get(username=request.session['username'])
+        new_good = Good(name=rname,creator = username,price = rprice,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0)
+        new_good.save()
+        return redirect(good_list_views)
+@login_required
 def order_views(request,orderstate):
     if request.method == 'GET':
-        order_list = Order.objects.all().order_by('-create_time')
-        #good = order_list.good__set.all()
+        username=request.session['username']
+        order_user = User.objects.get(username  =username)
+        order_list =  order_user.orders.all() 
+        order_list = order_list.filter(status=orderstate).order_by('create_time')
         return render(request,'order_view.html',locals())
-def order_finished_views(request,orderstate):
-    if request.method == 'GET':
-        return render(request,'order_finish.html',locals())
-def order_complaint_views(request,orderstate):
-    if request.method == 'GET':
-        return render(request,'order_complaint.html',locals())
-def order_cancel_views(request,orderstate):
-    if request.method == 'GET':
-        return render(request,'order_cancel.html',locals())
 def order_detail_views(request,goodname):
     if request.method == 'GET':
         return render(request,'order_detail.html',locals())
@@ -172,3 +211,42 @@ def add_tmessage_views(request, order_id):
         messages.success(request,'已发送')
         return render(request, 'paying.html', locals())
 
+@login_required
+def good_list_views(request):
+    if request.method == 'GET':
+        username=request.session['username']
+        page_now = request.GET.get('page')
+        good_user = User.objects.get(username=username) 
+        goods = good_user.goods.all().order_by('-create_time') 
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 4
+        page_sum = len(goods)//per_page+1
+        if page_sum > 6:
+            page_sum = len(goods)//per_page
+        else:
+            page_sum = len(goods)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        goods = goods[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
+        return render(request,'good_list.html',locals())
+
+def test_views(request):
+    if  request.method == 'GET':
+        return render(request,'test1.html')
+    else:
+        obj = request.FILES.get('inputfile')
+        print(obj)
+        return render(request,'test1.html')
