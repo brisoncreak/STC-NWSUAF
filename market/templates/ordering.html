@@ -18,41 +18,56 @@
 
 {% block body %}
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">卖家信息</h3>
+<div class="panel panel-info">
+  <div class="panel-heading row" >
+    <div class="col-md-2">
+    <span>卖家</span>
+    <span>{{good.creator.username}}</span>
+    </div>
+    <div class="col-md-2">
+    <span>交易次数</span>
+    <span>{{good.creator.trade_count}}</span>
+    </div>
+    <div class="col-md-2">
+    <span>好评度</span>
+    <span>{{good.creator.degree_good}}%</span>
+    </div>
+    <div class="col-md-2">
+    <span>评价数</span>
+    <span>+{{good.creator.good_mark}}</span>
+    <span> /</span>
+    <span>-{{good.creator.bad_mark}}</span>
+    </div>
   </div>
-  <div class="panel-body">
-    <table class="table table-bordered">
+<div class="panel-body">
+    <table class="table table-striped">
+
     <tr>
-      <td>用户名</td><td>123</td><td>交易次数</td><td>10</td>
-      <td>好评度</td><td>100%</td><td>评价数</td><td>3</td>
+        <td>金额</td>
+        <td>{{ good.price }}</td>
+    </tr>
+    <tr>
+        <td>支付方式</td>
+        <td>支付宝</td>
     </tr>
     </table>
   </div>
 </div>
+<div class="panel panel-default">
+ <div class="panel-body">
+ <p>1. 交易发起前，请您确认已阅读并同意卖家提出的条款，并再次确认交易内容无误后，再点击购买按钮。</p>
+<p>2. 交易发起后，请您于付款期限截止前转帐至指定账户，并标记已付款完毕，逾期系统将自动取消交易。</p>
+<p>3. 建议您在交易前先查看卖家信息，检视相关交易记录及评价，以減少交易纠纷。</p>
+<p>4. 交易过程请使用平台的聊天系统进行沟通，平台外的对话记录将无法作为交易纠纷的依据。</p>
+<p>5. 温馨提示：超过三笔取消订单，将被冻结当天下单权限。</p>
+</div>
+</div>
 
-<table class="table table-striped">
-<tr>
-  <td>卖家信息</td>
-  <td>用户名 交易次数 好评度 评价数</td>
-</tr>
-<tr>
-  <td>金额</td>
-  <td>{{ good.price }}</td>
-</tr>
-<tr>
-  <td>支付方式</td>
-  <td>支付宝</td>
-</tr>
-
-</table>
-{%if order_len == 0 %}
 <form action="{% url 'add_order' good.id %}" method="POST"> 
 {% csrf_token %}
 <input type="checkbox" id="confirm-buy" name="confirm-buy">
 <label for="confirm-buy" class="text-muted" >我已经阅读并确认以上交易信息</label>
-<input class="btn btn-default" type="submit">立即购买</button>
+<input class="btn btn-default" type="submit" value="立即购买">
 </form>
 {%else%}
    <h2 class="title" style="width:100%;">发表评价</h2>

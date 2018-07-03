@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>对span标签控制鼠标点击</title>
+        <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+        <script type="text/javascript" src="js/bootstrap.min.js" ></script>
+    </head>
+    <body>
+        <h5 style="font-family: '微软雅黑';">图片文字并排摆放，文字局域图片腰部</h5>         
+        <span id="goodSpan" onclick="sendGood()">
+            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg'/> 
+        </span>
+        [<span id="good"></span>]
+            
+        <span id="badSpan" onclick="sendBad()">
+            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg'/> 
+        </span>
+        [<span id="bad"></span>]
+         
+        <script>
+            /*点赞的数量：*/
+            document.getElementById("good").innerText = "";
+            var good = document.getElementById("good").textContent;
+             
+            document.getElementById("bad").innerText  = "";
+            var bad = document.getElementById("bad").textContent;
+
+            // 初始化
+            window.onload = function(){
+                if (good == "") {
+                    good = 0;
+                    document.getElementById("good").innerText = 0;
+                }
+                if (bad == "") {
+                    bad = 0;
+                    document.getElementById("bad").innerText = 0;
+                }              
+            }
+             
+            /*点赞的数量：*/
+            function sendGood(){
+                good = parseInt(good) + 1;
+                document.getElementById("good").innerText = good%2;
+                if(good%2!=0){
+                     window.document.getElementById("goodimg").src="../static/img/like_aft.png"
+                }
+                else{
+                     window.document.getElementById("goodimg").src="../static/img/like_bef.png"
+                }
+            }   
+             
+            /*踩的数量：*/
+            function sendBad(){
+                bad = parseInt(bad) + 1;
+                document.getElementById("bad").innerText = bad%2;
+                if(bad%2!=0){
+                     window.document.getElementById("badimg").src="../static/img/like_aft.png"
+                }
+                else{
+                     window.document.getElementById("badimg").src="../static/img/like_bef.png"
+                }
+            }
+        </script>
+    </body>
+</html>
