@@ -76,7 +76,6 @@ def upload_file2(request,collegename):
                     filename=repeat_name
                 else:
                     filename=obj.name
-
                 file_path = os.path.join('share','upload',filename)
                 f = open(file_path, 'wb')
                 for chunk in obj.chunks():

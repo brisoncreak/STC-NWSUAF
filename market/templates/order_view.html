@@ -12,30 +12,45 @@
     <div>
     <ul class="ordermenu">
         <a class="ordera" href="{%url 'ordershow' 0%}">
+        {%if orderstate == "0" %}
         <div class="order_selected">
+        {%else%}
+        <div class="orderli">
+        {%endif%}
         <div class="order-style">
             <li style="width: 42%;margin: auto;">未付款</li>
         </div>
         </div>
         </a>
         <form>
-        <a class="ordera" href="{%url 'finished' 1%}">
+        <a class="ordera" href="{%url 'ordershow' 1%}">
+         {%if orderstate == "1"%}
+        <div class="order_selected">
+        {%else%}
         <div class="orderli">
+        {%endif%}
         <div class="order-style">
             <li >已完成</li>
         </div>
         </div>
         </a>
-        <a class="ordera" href="{%url 'complaint' 2%}">
+        <a class="ordera" href="{%url 'ordershow' 2%}">
+         {%if orderstate == "2"%}
+        <div class="order_selected">
+        {%else%}
         <div class="orderli">
+        {%endif%}
         <div class="order-style">    
             <li>投诉中</li>
         </div>
         </div>
         </a>
-        <a class="ordera" href="{%url 'cancel' 3%}">
-            <div class="orderli">
-
+        <a class="ordera" href="{%url 'ordershow' 3%}">
+        {%if orderstate == "3"%}
+        <div class="order_selected">
+        {%else%}
+        <div class="orderli">
+        {%endif%}
             <div class="order-style">
             <li>已取消</li>
             </div>
