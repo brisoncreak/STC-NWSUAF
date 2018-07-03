@@ -17,6 +17,7 @@ class Good(models.Model):
     pay_pic = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
     info = models.CharField(max_length = 200)
     sell_times  = models.IntegerField(default=0)
+    isfile = models.BooleanField(default=False)
 
 
 
