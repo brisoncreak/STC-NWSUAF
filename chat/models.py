@@ -25,7 +25,12 @@ class Article(models.Model):
     skim_num=models.IntegerField(null=True)
     like_num=models.IntegerField(null=True)
     user=models.ForeignKey(User)
-    collegetype=models.ForeignKey(Collegetype)
+    collegetype=models.ForeignKey(Collegetype) 
+    college = models.ForeignKey(Colleges)
+    #点赞
+    beadmired_num = models.IntegerField(default=0)
+    benotadmired_num = models.IntegerField(default=0)
+
     reviews = models.TextField(null=True)
 
     def __str__(self):
@@ -61,16 +66,3 @@ class Reply(models.Model):
         verbose_name = '评论回复表'
         verbose_name_plural = verbose_name
         
-
-
-class Like(models.Model):
-    create_date=models.DateField(default=datetime.now)
-    user=models.ForeignKey(User)
-    article=models.ForeignKey(Article)
-    def __str__(self):
-        return self.create_date.strftime("%Y-%m-%d-%H")  
-    class Meta:
-        verbose_name = '赞表'
-        verbose_name_plural = verbose_name
-
-

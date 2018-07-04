@@ -17,13 +17,12 @@
 {% endblock %}
 {% block side %}
 
-
 {% endblock %}
 
 {% block body %}
     <!-- user　　listfile -->
 
-    <h2>{{user.username}}所共享的文件</h2>
+    <h2>我上传的文件</h2>
     
     <table class="table table-hover" border=1>
         <th>文件类别</th>
@@ -33,6 +32,7 @@
         <th>上传时间</th>
         <th>操作</th>
         <th>评价</th>
+        <th>文件状态</th>
         {% for file in listfile%}
             <tr>
                 <!-- 只有college的参数是name -->
@@ -55,24 +55,33 @@
                     <a href="{%url 'del_files' file.id%}">删除</a>
                 </td>
                 <td>
-                    <script language="JavaScript" src="../static/js/admire.js"></script>
-
-                    <span id="goodSpan" onclick="sendGood()">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg'/> 
-                    </span>
-                    <span id="good" style=display:none></span>
-                    [<span id="goodnum"></span>]
+                    <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                    [<span>{{file.file_beadmired}}</span>]
                         |
-                    <span id="badSpan" onclick="sendBad()">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg'/> 
-                    </span>
-                    <span id="bad" style=display:none></span>
-                    [<span id="badnum"></span>]
+                    <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/> 
+                    [<span>{{file.file_benotadmired}}</span>]
 
                 </td>
+                <td>
+                    <select name="fileStaus" id="">
 
+                        {% if file.file_status == 0 %}
+                            <option value="私有文档" selected="selected">私有文档</option>
+                            <option value="免费共享文档">免费共享文档</option>
+                            <option value="付费共享文档">付费共享文档</option>
+                        {% elif file.file_status == 1 %}
+                            <option value="私有文档">私有文档</option>
+                            <option value="免费共享文档" selected="selected">免费共享文档</option>
+                            <option value="付费共享文档">付费共享文档</option>
+                        {% else %}
+                            <option value="私有文档">私有文档</option>
+                            <option value="免费共享文档">免费共享文档</option>
+                            <option value="付费共享文档" selected="selected">付费共享文档</option>
+                        {% endif %}                      
+                    </select>
+
+                </td>
             </tr>
         {% endfor %}
-    
     </table>
 {% endblock %}

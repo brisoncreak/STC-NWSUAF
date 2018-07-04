@@ -7,6 +7,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/share_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/demo(1).css'%}"/>
     
 {% endblock %}
 
@@ -20,9 +21,6 @@
 
 {% block body %}
     <h2 class="title">最新发布</h2>
-<!--     <div class = "goodlist">
-        <p>{{i}}</p>
-    </div> -->
     <table class="table table-hover" border=1>
         <th>文件类别</th>
         <!-- <th>文件id</th> -->
@@ -35,49 +33,51 @@
         <th>评价</th>
         <!-- <th>用户名</th>
         <th>学院类型</th> -->
-        {% for file in sharefileList %}
+        {% for x in sharefileList %}
             <tr>
                 <!-- 只有college的参数是name -->
                 <td>
-                    <a href="{% url 'show_coll' file.file_classify %}">{{file.file_classify}}</a>
+                    <a href="{% url 'show_coll' x.file_classify %}">{{x.file_classify}}</a>
                 </td>
-                <td><a href="{% url 'show_user' file.user_id %}">{{ file.user }}</a></td>
-                <td><a href="{% url 'show_file' file.id %}">{{ file.file_name }}</a></td>
+                <td><a href="{% url 'show_user' x.user_id %}">{{ x.user }}</a></td>
+                <td><a href="{% url 'show_file' x.id %}">{{ x.file_name }}</a></td>
 
-                {% if file.file_size >　1048576 %}
-                    <td>{% widthratio file.file_size 1048576 1 %}M</td>
-                {% elif file.file_size >　1024 %}
-                    <td>{% widthratio file.file_size 1024 1 %} K</td>
+                {% if x.file_size >　1048576 %}
+                    <td>{% widthratio x.file_size 1048576 1 %}M</td>
+                {% elif x.file_size >　1024 %}
+                    <td>{% widthratio x.file_size 1024 1 %} K</td>
                 {% else %}
-                    <td>{{ file.file_size }} B</td>
+                    <td>{{ x.file_size }} B</td>
                 {% endif %}
-                <td>{{file.file_bedown}}</td>
-                <td>{{file.create_time}}</td>
+                <td>{{x.file_bedown}}</td>
+                <td>{{x.create_time}}</td>
                 <td>
-                    <a href="{%url 'd_files' file.id%}">下载</a>
-                    <!-- |<a href="{%url 'del_files' file.id%}">删除</a> -->
+                    {% if x.file_status != 2 %}
+                        <a href="{%url 'd_files' x.id%}">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+                        
+                    {% else %}
+                        <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
+                    {% endif %}
+                    <!-- |<a href="{%url 'del_files' x.id%}">删除</a> -->
                 </td>
-                <script language="JavaScript" src="../static/js/admire.js"></script>
                 <td>
-                    
-
-                    <span id="goodSpan" onclick="sendGood()">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg'/> 
+        <!-- 好评端 -->
+                    <span id="goodSpan" onclick="sendGood({{x.id}})">
+                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
                     </span>
-                    <span id="good" style=display:none></span>
-                    [<span id="goodnum"></span>]
+                    [<span id="goodnum{{x.id}}">{{x.file_beadmired}}</span>]
+        <!-- 差评端 -->
                         |
-                    <span id="badSpan" onclick="sendBad()">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg'/> 
+                    <span id="badSpan" onclick="sendBad({{x.id}})">
+                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/> 
                     </span>
-                    <span id="bad" style=display:none></span>
-                    [<span id="badnum"></span>]
-
+                    [<span id="badnum{{x.id}}">{{x.file_benotadmired}}</span>]
+                    <script language="JavaScript" src="../static/js/admire.js"></script>
                 </td>
 
             </tr>
         {% endfor %}
-    
+                    
     </table>
 
 {% endblock %}
@@ -154,6 +154,9 @@
     <br><input type="submit" value="查询">
 </form>
 <br>
+<!-- <a class='btn btn-default sidebtn active'></a>
+<a class='btn btn-default sidebtn'>付费文档</a> -->
+<a class='btn btn-info sidebtn' href="{% url 'show_user' login_uid %}">我的网盘</a>
 <br>
 <a class='btn btn-info sidebtn' href="{%url 'add_file'%}">添加文件</a>
 {% endblock %}

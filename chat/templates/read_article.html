@@ -54,6 +54,24 @@
             <div>
                 <a href="{%url 'a_v' a.id%}">我也要评论</a>
             </div>
+            <!-- 点赞 -->
+            <div>
+                
+        <!-- 好评端 -->
+                    <span id="goodSpan" onclick="sendGood({{a.id}})">
+                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{a.id}}'/>  
+                    </span>
+                    [<span id="goodnum{{a.id}}">{{a.beadmired_num}}</span>]
+        <!-- 差评端 -->
+                        |
+                    <span id="badSpan" onclick="sendBad({{a.id}})">
+                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{a.id}}'/> 
+                    </span>
+                    [<span id="badnum{{a.id}}">{{a.benotadmired_num}}</span>]
+
+                    <script language="JavaScript" src="../static/js/admire.js"></script>
+<!-- 此处点赞还存在问题　　数据库是更改的文件的　　明天修改！！！！！！！！！！！！！！！！！！！ -->
+            </div>
         </div>
     </div>
 {% endblock %}
