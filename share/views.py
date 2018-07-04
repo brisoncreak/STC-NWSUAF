@@ -211,13 +211,16 @@ def show_user(request,userid):
     login_uname=request.session.get('username')
     login_user=User.objects.get(username=login_uname)
     login_uid=login_user.id 
-
+    # print(type(login_uid))
+    # print("**********88")
+    # print(type(userid))
     user = User.objects.get(id=userid)
-    if userid == login_uid:
+    if int(userid) == login_uid:
         listfile = File.objects.filter(user_id=userid).order_by("-id")
+        return render(request,'userFilesShow.html',locals())
     else:
         listfile = File.objects.filter(user_id=userid).exclude(file_status=0).order_by("-id")
-    return render(request,'userFilesShow.html',locals())
+        return render(request,'otherUserFilesShow.html',locals())
 
 
 
