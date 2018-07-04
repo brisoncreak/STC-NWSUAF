@@ -74,7 +74,7 @@ class FeedbackAdmin(admin.ModelAdmin):
     #    }),
     #)
 class EvidenceAdmin(admin.ModelAdmin):
-    list_display = ['create_time', 'feedback']
+    list_display = ['id','creator', 'create_time', 'feedback']
     #添加链接
     list_display_links = ['create_time']
     #添加可编辑字段

@@ -19,5 +19,8 @@ urlpatterns = [
     url(r'^seller_ok/(\d+)$', seller_ok_views, name='seller_ok'),
     url(r'^ws/(\d+)/(\d+)$', market_ws_views),
     url(r'^trade_mark/(\d+)$', trade_mark_views, name='trade_mark'),
-    
+    url(r'^add_feedback/(\d+)$', add_feedback_views, name='add_feedback'),
+    url(r'^feedback/(\d+)$', feedback_views, name='feedback'),
+    url(r'^cancel_fb/(\d+)$', cancel_fb_views, name='cancel_fb'),
+    url(r'^add_evi/(\d+)$', add_evi_views, name='add_evi'),
 ]

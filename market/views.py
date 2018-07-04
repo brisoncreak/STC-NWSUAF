@@ -155,6 +155,10 @@ def paying_views(request, order_id):
 
         tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
         
+        try:
+            fb = Feedback.objects.get(order=order)
+        except:
+            pass
         return render(request, 'paying.html', locals())
     return redirect('/')
 
@@ -315,10 +319,14 @@ def market_ws_views(request, order_id, uid):
             for t in readt:
                 t.have_read = True
                 t.save()
-            
+            try:
+                fb = Feedback.objects.get(order=order)
+            except:
+                pass
             html = render(request, 'paying.html', locals()).content
             bs = BeautifulSoup(html, "html.parser")
             noti_div = bs.find('div', id='paycontent').find('div', id='fresh_area')
+
 
             request.websocket.send(noti_div.encode('utf-8'))
 
@@ -394,3 +402,80 @@ def trade_mark_views(request, order_id):
         order.save()
 
         return redirect(reverse('paying', args=(order.id,)))
+
+@login_required
+def feedback_views(request, feedback_id):
+    if request.method == 'GET':
+        user = User.objects.get(username=request.session['username'])
+        feedback = Feedback.objects.get(id=feedback_id)
+        order = feedback.order
+        good = order.good
+        buyer = order.creator
+        seller = good.creator
+        is_buyer = user == buyer
+        is_creator = user == feedback.creator
+
+        buyer_evis = Evidence.objects.filter(feedback=feedback).filter(creator=buyer)
+        seller_evis = Evidence.objects.filter(feedback=feedback).filter(creator=seller)
+
+        tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
+        return render(request, 'feedback.html', locals())
+
+
+@login_required
+def add_feedback_views(request, order_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id=order_id)
+
+        fb_type = request.POST.get('feedback-type', '')
+        fb_info = request.POST.get('feedback-info', '')
+
+        fb = Feedback(creator=user, order=order, fb_type=fb_type, info=fb_info, is_ongoing=True)
+        fb.save()
+        order.status = 3
+        order.save()
+
+        return redirect(reverse('feedback', args=(fb.id,)))
+
+@login_required
+def cancel_fb_views(request, feedback_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        feedback = Feedback.objects.get(id=feedback_id)
+        order = feedback.order
+        is_buyer = user == order.creator
+        is_seller = user == order.good.creator
+
+        if user != feedback.creator:
+            messages.error(request, '没有权限')
+            return redirect(reverse('feedback', args=(feedback_id,)))
+
+        elif is_buyer:
+            feedback.is_ongoing = False
+            feedback.save()
+            order.status = 1
+            order.save()
+        elif is_seller:
+            feedback.is_ongoing = False
+            feedback.save()
+            order.status = 2
+            order.save()
+
+        return redirect(reverse('paying', args=(order.id,)))    
+    
+@login_required
+def add_evi_views(request, feedback_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        feedback = Feedback.objects.get(id=feedback_id)
+        evi_pic = request.FILES.get('evi_pic')
+        file_path = os.path.join('static','upload','evident',evi_pic.name)
+        f = open(file_path, 'wb')
+        for chunk in evi_pic.chunks():
+            f.write(chunk)
+        f.close()
+        evi = Evidence(creator=user, feedback=feedback, content=file_path)
+        evi.save()
+        return redirect(reverse('feedback', args=(feedback.id,)))
+

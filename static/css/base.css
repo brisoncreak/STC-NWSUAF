@@ -76,7 +76,7 @@ body{
 }
 
 .tabmenu li a{
-    padding: 3px 10px 5px 10px;
+    padding: 3px 10px 4px 10px;
     background-color: #eff7ff;
     text-decoration:none;
     font-size:20px;
@@ -95,7 +95,7 @@ li.selected a {
     border: 1px solid #5f99cf;
     border-bottom: 1px solid white;
     z-index: 100;
-    padding: 3px 10px 6px 10px;
+    padding: 3px 10px 4px 10px;
 
 }
 

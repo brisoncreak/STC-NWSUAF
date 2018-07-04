@@ -54,13 +54,15 @@ class Order(models.Model):
         ordering = ['-create_time']
 
 class Feedback(models.Model):
+    fb_type = ((0, '支付问题'), (1, '其他'))
     creator = models.ForeignKey(User, null=False)
-    good = models.ForeignKey(Order, null=False)
+    order = models.ForeignKey(Order, null=False)
+    fb_type = models.IntegerField(choices=fb_type)
     is_ongoing = models.BooleanField(default=True)
     create_time = models.DateTimeField(default=datetime.now)
     info = models.CharField(max_length = 200)
     def __str__(self):
-        return self.create_time
+        return str(self.id)
     class Meta:
         #改数据库名
         #db_table = 'feedback'
@@ -74,7 +76,7 @@ class Evidence(models.Model):
     create_time = models.DateTimeField(default=datetime.now)
     content = models.ImageField(upload_to='static/upload/evidence', blank=True, default='')
     def __str__(self):
-        return self.content
+        return str(self.id)
     class Meta:
         #改数据库名
         #db_table = 'evidence'

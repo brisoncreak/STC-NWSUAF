@@ -66,7 +66,9 @@
   {% elif order.status == 3%}
   <tr class="danger">
   <td>订单状态</td>
-  <td>投诉处理中</td>
+  <td>投诉处理中  {%if fb%}
+  <a class="btn btn-default" href="{%url 'feedback' fb.id%}">点此查看</a>
+  {%endif%}</td>
   {% else%}
   <tr class="default">
   <td>订单状态</td>
@@ -228,7 +230,7 @@
             <form action="{% url 'buyer_ok' order.id %}" method="POST">
             {%csrf_token%}
             <p>付款留言</p>
-            <input type="text" name="buyer-ok-message" class="form-control" value="支付宝/微信转账 XX元">
+            <input type="text" name="buyer-ok-message" class="form-control" placeholder="支付宝/微信转账 XX元">
             <br>
             <input type="submit" class="btn btn-success btn-block" value="确认已付款">
             </form>
@@ -278,7 +280,7 @@
               <span>差评</span>
               {%endif%}
             {%else%}
-              <input type="radio" id="good-mark" name="mark" value="option1"> 
+              <input type="radio" id="good-mark" name="mark" value="option1" checked> 
               <span>好评</span>
               <input type="radio" id="bad-mark" name="mark" value="option2" >
               <span>差评</span>
@@ -310,12 +312,69 @@
         </form>
     </div> 
 
+<div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div class="panel panel-default">
+ <div class="panel-body">
+ <p>1. 请选择投诉原因并备注您的问题信息，以便后台处理。</p>
+<p>2. 当您遇到交易纠纷，请及时点击“发起投诉”，以便维护您的利益。</p>
+<p>3. 若您已经解决问题，请不要点击“发起投诉”，以免造成交易纠纷以及可能的信用降级。</p>
+
+</div>
+</div>
+            <form action="{% url 'add_feedback' order.id %}" method="POST">
+            {%csrf_token%}
+            <div class="form-group dropdown" style="width: 200px;">
+              <label for="name">投诉原因</label>
+               <select class="form-control" name="feedback-type">
+                {%if is_buyer%}
+                <option value="0">已付款卖家不发货</option>
+                {%else%}
+                <option value="0">未收到钱</option>
+                {%endif%}
+                <option value="1">其他</option>
+              </select>
+            </div>
+            <input type="text" name="feedback-info" class="form-control" placeholder="描述您的问题">
+ 
+            <br>
+            <input type="submit" class="btn btn-danger btn-block" value="发起投诉">
+            </form>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 {% endblock %}
 
 
 {% block side %}
 
-<a class='btn btn-default sidebtn active'>等待付款中</a>
+
+
+{% if order.status == 0 %}
+<a class='btn btn-default sidebtn active' href='#'>等待付款中</a>
+  {% elif order.status == 1%}
+<a class='btn btn-default sidebtn active' href='#'>等待卖家确认</a>
+  {% elif order.status == 2%}
+<a class='btn btn-default sidebtn active' href='#'>交易完成</a>
+  {% elif order.status == 3%}
+<a class='btn btn-default sidebtn active' href='#'>投诉处理中</a>
+  {% else%}
+<a class='btn btn-default sidebtn active' href='#'>交易取消</a>
+  {% endif %}
 
 <!--<a class='btn btn-default sidebtn'>付费文档</a>-->
 
@@ -327,7 +386,14 @@
 {% endif%}
 
 {% if order.status == 1 %}
-<a class='btn btn-danger sidebtn'>发起投诉</a>
+<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#feedback">发起投诉</button>
+
+
+
+{% elif order.status == 2 and order.good.isfile %}
+<a class='btn btn-danger sidebtn'　href="#">查看已购文件</a>
 {% endif%}
+
+
 
 {% endblock %}
