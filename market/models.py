@@ -22,7 +22,7 @@ class Good(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return str(self.id)
     class Meta:
         #改数据库名
         #db_table = 'good'
@@ -31,15 +31,15 @@ class Good(models.Model):
         ordering = ['create_time']
 
 
-
-
 class Order(models.Model):
 
-    status_list = ((0, '等待支付'), (1, '交易完成'), (2, '投诉中'), (3, '交易取消'))
+    status_list = ((0, '等待支付'), (1, '等待卖家确认'),(2, '交易完成'), (3, '投诉中'), (4, '交易取消'))
     creator = models.ForeignKey(User, null=False)
     good = models.ForeignKey(Good, null=False)
     create_time = models.DateTimeField(default=datetime.now)
     status = models.IntegerField(choices=status_list)
+    buyer_ok = models.BooleanField(default=False)
+    seller_ok = models.BooleanField(default=False)
 
     def __str__(self):
          return str(self.id)
@@ -86,6 +86,7 @@ class TradeMessage(models.Model):
     order = models.ForeignKey(Order, null=False)
     create_time = models.DateTimeField(default=datetime.now)
     content = models.CharField(max_length = 200)
+    have_read = models.BooleanField(default=False)
     def __str__(self):
         return self.content
     class Meta:
