@@ -75,6 +75,8 @@ class Migration(migrations.Migration):
                 ('status', models.IntegerField(choices=[(0, '等待支付'), (1, '等待卖家确认'), (2, '交易完成'), (3, '投诉中'), (4, '交易取消')])),
                 ('buyer_ok', models.BooleanField(default=False)),
                 ('seller_ok', models.BooleanField(default=False)),
+                ('buyer_marked', models.BooleanField(default=False)),
+                ('seller_marked', models.BooleanField(default=False)),
                 ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='index.User')),
                 ('good', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='market.Good')),
             ],

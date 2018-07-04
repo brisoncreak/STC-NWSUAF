@@ -19,7 +19,9 @@ window.onload=function(){
 　　})
     //setInterval(myFunction, 1000);
 
-    var wsURI = "ws://172.29.7.232:8000/market/ws/"+order_id+"/"+uid;
+    var host_now = window.location.host;
+
+    var wsURI = "ws://"+host_now+"/market/ws/"+order_id+"/"+uid;
 
     websocket = new WebSocket(wsURI);
 

@@ -30,8 +30,11 @@
 <div id="paycontent">
 <div id="fresh_area">
 
-
 <table class="table table-striped">
+<tr>
+  <td>订单编号</td>
+  <td>{{order.id}}</td>
+</tr>
 <tr>
   <td>商品名称</td>
   <td>{{good.name}}</td>
@@ -48,41 +51,105 @@
   <td>支付信息</td>
   <td><button class="btn btn-info" data-toggle="modal" data-target="#mypay">收款二维码</button></td>
 </tr>
-<tr>
-  <td>订单状态</td>
-  <td>
   {% if order.status == 0 %}
-  等待买家付款
+  <tr class="info">
+  <td>订单状态</td>
+  <td>等待买家付款</td>
   {% elif order.status == 1%}
-  等待卖家确认
+  <tr class="warning">
+  <td>订单状态</td>
+  <td>等待卖家确认</td>
   {% elif order.status == 2%}
-  交易完成
+  <tr class="success">
+  <td>订单状态</td>
+  <td>交易完成</td>
   {% elif order.status == 3%}
-  投诉处理中
+  <tr class="danger">
+  <td>订单状态</td>
+  <td>投诉处理中</td>
   {% else%}
-  交易取消
+  <tr class="default">
+  <td>订单状态</td>
+  <td>交易取消</td>
   {% endif %}
+</tr>
+
+{% if order.status == 2 %}
+<tr class="default">
+  <td>评价详情</td>
+  <td>
+    {%if is_buyer%}
+    <span class="col-md-5" style="font-size: 16px;">
+    我&nbsp;
+    {%if buyer_mark%}
+    {%if buyer_mark.mark_type == 0%}
+    <span class="label label-success">已好评</span>
+    {%elif buyer_mark.mark_type == 1%}
+    <span class="label label-danger">已差评</span>
+    {%endif%}
+    <span>{{buyer_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
+    </span>
+
+    <span class="col-md-5" style="font-size: 16px;">
+    {{good.creator.username}}&nbsp;
+    {%if seller_mark%}
+    {%if seller_mark.mark_type == 0%}
+    <span class="label label-success ">已好评</span>
+    {%elif seller_mark.mark_type == 1%}
+    <span class="label label-danger ">已差评</span>
+    {%endif%}
+    <span>{{seller_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
+    </span>
+
+    {%else%}
+    <span class="col-md-5" style="font-size: 16px;">
+    我&nbsp;
+    {%if seller_mark%}
+    {%if seller_mark.mark_type == 0%}
+    <span class="label label-success ">已好评</span>
+    {%elif seller_mark.mark_type == 1%}
+    <span class="label label-danger ">已差评</span>
+    {%endif%}
+    <span>{{seller_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
+    </span>
+
+    <span class="col-md-5" style="font-size: 16px;">
+    {{order.creator.username}}&nbsp;
+    {%if buyer_mark%}
+    {%if buyer_mark.mark_type == 0%}
+    <span class="label label-success ">已好评</span>
+    {%elif buyer_mark.mark_type == 1%}
+    <span class="label label-danger ">已差评</span>
+    {%endif%}
+    <span>{{buyer_mark.content}}</span>
+    {%else%}<span class="label label-default ">未评价</span>{%endif%}
+    </span>
+    {%endif%}
+
   </td>
 </tr>
+{%endif%}
 </table>
 
 {%csrf_token%}
 
 
   {% if order.status == 0 and is_buyer %}
-  <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#buyer_ok">标记已经付款</button>
+  <button class="btn btn-success btn-block" data-toggle="modal" data-target="#buyer_ok">标记已经付款</button>
   {% elif order.status == 1 and not  is_buyer%}
   <form action="{% url 'seller_ok' order.id %}" method="POST">
   {%csrf_token%}
   <input type="submit" class="btn btn-success btn-block" value="确认已收款">
   </form>
-  {% endif%}
+  {% elif order.status == 2%}
+  <button class="btn btn-success btn-block" data-toggle="modal" data-target="#mark">对用户{{order.creator.username}}评价</button>
 
-
-
-
+  {%endif%}
+ 
 <br>
-
 <div id="chatarea-box">
 <div class="chatarea" id="chatarea">
   {% for tm in tmessages%}
@@ -108,10 +175,12 @@
 </div>
 </div>
 
+
 <input type="text" id="new-content" class="form-control">
 <button class="btn btn-default" id="new-message">发送</button>
 
-
+<br>
+<br>
 
 
 <div class="modal fade" id="mypay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -159,9 +228,66 @@
             <form action="{% url 'buyer_ok' order.id %}" method="POST">
             {%csrf_token%}
             <p>付款留言</p>
-            <input type="text" name="buyer-ok-message" class="form-control" >
+            <input type="text" name="buyer-ok-message" class="form-control" value="支付宝/微信转账 XX元">
             <br>
             <input type="submit" class="btn btn-success btn-block" value="确认已付款">
+            </form>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<div class="modal fade" id="mark" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <form action="{%url 'trade_mark' order.id%}" method="POST">
+            {%csrf_token%}
+            {%if is_buyer and buyer_mark%}
+              {%if buyer_mark.mark_type == 0%}
+              <input type="radio" id="good-mark" name="mark" value="option1" checked> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2" >
+              <span>差评</span>
+              {%elif buyer_mark.mark_type == 1%}
+              <input type="radio" id="good-mark" name="mark" value="option1"> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2"  checked>
+              <span>差评</span>
+              {%endif%}
+            {%elif not is_buyer and seller_mark%}
+              {%if seller_mark.mark_type == 0%}
+              <input type="radio" id="good-mark" name="mark" value="option1" checked> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2" >
+              <span>差评</span>
+              {%elif seller_mark.mark_type == 1%}
+              <input type="radio" id="good-mark" name="mark" value="option1"> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2"  checked>
+              <span>差评</span>
+              {%endif%}
+            {%else%}
+              <input type="radio" id="good-mark" name="mark" value="option1"> 
+              <span>好评</span>
+              <input type="radio" id="bad-mark" name="mark" value="option2" >
+              <span>差评</span>
+
+            {%endif%}
+              
+
+              <input class="form-control" name="mark-content"type="text" value="{%if is_buyer and buyer_mark%}{{buyer_mark.content}}{%elif not is_buyer and seller_mark%}{{seller_mark.content}}{%endif%}">
+              <input class="btn btn-default" type="submit" value="提交">
             </form>
             <div class="modal-footer">
             </div>
@@ -201,7 +327,7 @@
 {% endif%}
 
 {% if order.status == 1 %}
-<a class='btn btn-warning sidebtn'>发起投诉</a>
+<a class='btn btn-danger sidebtn'>发起投诉</a>
 {% endif%}
 
 {% endblock %}

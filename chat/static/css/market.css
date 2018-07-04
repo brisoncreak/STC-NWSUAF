@@ -1,0 +1,52 @@
+.goodlist{
+    float:left;
+    width:200px;
+    min-height:250px;
+    border-top-right-radius:6px ;
+    border-top-left-radius:6px; 
+    border-bottom-right-radius:6px ;
+    border-bottom-left-radius:6px; 
+    background-color: green;
+    margin-left:8px;
+    margin-bottom: 10px;
+
+}
+.title{
+    float:left;
+    width:100%;
+    height:34px;
+    color:#adadad;
+    border-bottom:1px solid #adadad;
+    padding-bottom:5px;
+    font-weight:normal;
+    margin-bottom:40px;
+}
+.more{
+    float: right;
+}
+.pageJeep{
+    float:left;
+    width:100%;
+    height:50px;
+    padding-bottom:20px;
+    font-weight:normal;
+    margin-top:40px;
+    margin-bottom:40px;
+}
+.embed{
+    width: 300px;
+    margin: auto;
+    position: relative;
+}
+.docs{
+    width: 100%;
+}
+.pic{
+    float:left;
+    width:300px;
+    min-height:350px; 
+    background-color: blue;
+    margin-left:8px;
+    margin-bottom: 10px;
+
+}

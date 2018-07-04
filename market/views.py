@@ -3,6 +3,8 @@ from .models import *
 from index.models import User, Notification
 from django.db.models import F,Q
 from django.contrib import messages
+import os
+
 from STC_NWSUAF.tools import login_required
 
 from dwebsocket import require_websocket
@@ -12,11 +14,35 @@ from bs4 import BeautifulSoup
 
 def index_views(request):
     if request.method == 'GET':
-
         return redirect(reverse('goods_index'))
 #付费文档页面
 def docs_views(request):
     if request.method == 'GET':
+        goods = Good.objects.all().order_by('-create_time') 
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 4
+        page_sum = len(goods)//per_page+1
+        if page_sum > 6:
+            page_sum = len(goods)//per_page
+        else:
+            page_sum = len(goods)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        goods = goods[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
         return render(request,'docs_index.html',locals())
 #二手商品页面
 
@@ -58,7 +84,13 @@ def good_detail_views(request,good_id):
 @login_required
 def ordering_views(request, good_id):
     good = Good.objects.get(id=good_id)
+    user = User.objects.get(username=request.session['username'])
+    try:
+        myorder = Order.objects.filter(good = good).filter(creator = user)
+    except:
+        pass
     return render(request, 'ordering.html', locals())
+
 #创建订单视图
 @login_required
 def new_order_views(request, good_id):
@@ -90,6 +122,11 @@ def paying_views(request, order_id):
         order = Order.objects.get(id=order_id)
         good = order.good
         is_buyer = user == order.creator
+        
+        if order.buyer_marked:
+            buyer_mark = TradeMark.objects.get(Q(order=order)&Q(creator=order.creator))
+        if order.seller_marked:
+            seller_mark = TradeMark.objects.get(Q(order=order)&Q(creator=good.creator))
         try:
             noti0 = Notification.objects.filter(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
             for i in noti0:
@@ -127,21 +164,31 @@ def paying_views(request, order_id):
 def add_good_views(request):
     if request.method == 'GET':
         return render(request,'new_good.html',locals())
-
+    else:
+        rname = request.POST.get('good_name')
+        rprice = request.POST.get('price')
+        rpay_way = request.POST.get('pay_way')
+        rpay_pic = request.POST.get('pay_pic')
+        obj = request.FILES.get('good_pic')
+        print(obj)
+        file_path = os.path.join('static','upload','alipay',obj.name)
+        f = open(file_path, 'wb')
+        for chunk in obj.chunks():
+            f.write(chunk)
+        f.close()
+        rinf = request.POST.get('good_inf')
+        username = User.objects.get(username=request.session['username'])
+        new_good = Good(name=rname,creator = username,price = rprice,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0)
+        new_good.save()
+        return redirect(good_list_views)
+@login_required
 def order_views(request,orderstate):
     if request.method == 'GET':
-        order_list = Order.objects.all().order_by('-create_time')
-        #good = order_list.good__set.all()
+        username=request.session['username']
+        order_user = User.objects.get(username  =username)
+        order_list =  order_user.orders.all() 
+        order_list = order_list.filter(status=orderstate).order_by('create_time')
         return render(request,'order_view.html',locals())
-def order_finished_views(request,orderstate):
-    if request.method == 'GET':
-        return render(request,'order_finish.html',locals())
-def order_complaint_views(request,orderstate):
-    if request.method == 'GET':
-        return render(request,'order_complaint.html',locals())
-def order_cancel_views(request,orderstate):
-    if request.method == 'GET':
-        return render(request,'order_cancel.html',locals())
 def order_detail_views(request,goodname):
     if request.method == 'GET':
         return render(request,'order_detail.html',locals())
@@ -259,8 +306,91 @@ def market_ws_views(request, order_id, uid):
             is_buyer = user == order.creator
             tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
 
+            if order.buyer_marked:
+                buyer_mark = TradeMark.objects.get(Q(order=order)&Q(creator=order.creator))
+            if order.seller_marked:
+                seller_mark = TradeMark.objects.get(Q(order=order)&Q(creator=good.creator))
+
+            readt = TradeMessage.objects.filter(Q(order=order)&Q(receiver=user))
+            for t in readt:
+                t.have_read = True
+                t.save()
+            
             html = render(request, 'paying.html', locals()).content
             bs = BeautifulSoup(html, "html.parser")
             noti_div = bs.find('div', id='paycontent').find('div', id='fresh_area')
 
             request.websocket.send(noti_div.encode('utf-8'))
+
+@login_required
+def good_list_views(request):
+    if request.method == 'GET':
+        username=request.session['username']
+        page_now = request.GET.get('page')
+        good_user = User.objects.get(username=username) 
+        goods = good_user.goods.all().order_by('-create_time') 
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 4
+        page_sum = len(goods)//per_page+1
+        if page_sum > 6:
+            page_sum = len(goods)//per_page
+        else:
+            page_sum = len(goods)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        goods = goods[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
+        return render(request,'good_list.html',locals())
+
+@login_required
+def trade_mark_views(request, order_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id=order_id)
+        good = order.good
+        buyer = order.creator
+        seller = good.creator
+
+        mark_type = request.POST.get('mark', '')
+        mark_content = request.POST.get('mark-content', '')
+
+        if order.status != 2:
+            messages.error(request, '订单未完成,无法评价')
+            return render(request, 'paying.html', locals())
+
+        if mark_type == 'option1':
+            #print('好评')
+            try:
+                mark = TradeMark.objects.get(Q(order=order)&Q(creator=user))
+                mark.mark_type = 0
+                mark.content = mark_content
+            except: 
+                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=0)
+        elif mark_type == 'option2':
+            #print('差评')
+            try:
+                mark = TradeMark.objects.get(Q(order=order)&Q(creator=user))
+                mark.mark_type = 1
+                mark.content = mark_content
+            except:
+                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=1)
+        mark.save()
+        if user == buyer:
+            order.buyer_marked = True
+        elif user == seller:
+            order.seller_marked = True
+        order.save()
+
+        return redirect(reverse('paying', args=(order.id,)))
