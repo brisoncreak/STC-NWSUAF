@@ -1,0 +1,160 @@
+.home-banner {
+    min-height: 733px;
+    background-size: cover;
+}
+.dream-home-bann-main h1 {
+    font-size: 3em;
+    color:#ecb731;
+    text-align: center;
+    font-family: 'Ruluko', sans-serif;
+    font-weight: 600;
+}
+.dream-home-bann-main p {
+    font-size: 1em;
+    color: #fff;
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+    line-height: 1.8em;
+}
+span.span-dream-bar {
+    width: 9em;
+    height: 2px;
+    background: #fff;
+    display: block;
+    text-align: center;
+    margin: 1.5em auto 1.5em;
+}
+.dream-home-bann-main {
+    padding:12em 0em 0em 0em;
+}
+h4, h5, h6,
+h1, h2, h3 {margin:0;}
+ul, ol {margin: 0;padding:0;}
+p {margin: 0;}
+html, body{
+  font-family: 'Work Sans', sans-serif;
+   font-size: 100%;
+   margin: 0px;
+   height:100%;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+   text-decoration:none;
+}
+
+
+
+.ftr-grid {
+    float: left;
+    width: 32%;
+}
+.footer {
+    background: #171717;
+     min-height: 376px;
+    padding: 4em 0em;
+}
+.ftr-grid h4{
+    font-size: 2em;
+    color:#ecb731;
+    margin-bottom: 1em;
+    font-family: 'Ruluko', sans-serif;
+        font-weight: 600;
+}
+
+
+/*--foter start--*/
+.ftr-grid ul.ftr-nav {
+    padding-left: 7em;
+    list-style: none;
+}
+.ftr-grid ul.ftr-nav li {
+    margin: 0em 0em 0.8em 0em;
+}
+.ftr-grid ul.ftr-nav li a {
+    color: #fff;
+    text-decoration: none;
+}
+.ftr-grid ul.ftr-nav li a:hover {
+     color:#CCAA09;
+}
+.ftr-grid input[type="text"] {
+    font-size: 1em;
+    color: #000;
+    padding: 0.5em 0.5em;
+    border: none;
+    width: 70%;
+    outline: none;
+    font-family: 'Ruluko', sans-serif;
+}
+.ftr-grid input[type="submit"] {
+    font-size: 1em;
+    color: #fff;
+    background:#821A1A;
+    padding: 0.55em 1em;
+    outline: none;
+    border: none;
+    vertical-align: bottom;
+    font-family: 'Ruluko', sans-serif;
+}
+.ftr-grid input[type="submit"]:hover {
+    background:#CCAA09;
+    transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+
+/*----*/
+.amet-sed h4{
+        font-size: 2em;
+    color: #ecb731;
+    margin-bottom: 1em;
+    font-family: 'Ruluko', sans-serif;
+    font-weight: 600;
+}
+.amet-sed p{
+    margin:0 0 0.5em;
+    font-size:0.9em;
+    color:#fff;
+    line-height: 1.6em;
+}
+ul.social li{
+    list-style:none;
+    padding:0.5em 0;
+    font-size:0.9em;
+    color:#fff;
+    vertical-align: top;
+}
+ul.social li  span{
+    height: 18px;
+    width: 21px;
+    background: url("../static/img/img.png") -13px -104px;
+    display:inline-block;   
+    margin-right: 5px;
+    vertical-align: middle; 
+}
+ul.social li.phone  span{
+    background-position:-102px -104px;  
+}
+ul.social li.mail  span{
+    background-position:-57px -109px;
+}
+ul.social li a {
+    text-decoration:none;
+    font-size:0.9em;
+    color:#fff;
+}
+ul.social li a:hover {
+    color: #ECB731;
+}
+
+.amet-sed h4 ,.ftr-grid h4{
+    margin-bottom: 0.5em;
+}

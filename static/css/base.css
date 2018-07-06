@@ -7,20 +7,26 @@ body{
 .side{
     float:right;
     width:300px;
-    min-height:800px;
-    border:1px solid;
+    min-height:500px;
+    border:0px solid;
     background-color: white;
     margin-right: 10px;
-
+    margin-top: 0px !important;
+    background-color: rgba(255,255,255,0);
 }
 .content{
     margin:5px 5px;
-    background-color: #fff;
+    height: 500px;
+
     width :auto;
     margin:0 auto;
     overflow:hidden;
-    border:1px solid;
+    border:0px solid;
     z-index: 1;
+    /*opacity:70;*/
+    /*filter: alpha(opacity=70)*/
+    background-color: rgba(255,255,255,0)!important;
+    /*background-color: rgba(0,0,0,0.0);*/
 }
 #header-img {
     background-image: url(../img/logo.png);
@@ -51,7 +57,7 @@ body{
     border-radius: 0;
 }
 .navbar-default{
-    background-color: #ceddea;
+    background-color: a1bcbf !important;
 }
 .navbar-header{
     line-height:50px;
@@ -117,6 +123,7 @@ li.selected a {
 }
 .container{
     width:100%;
+    background-color: rgba(0,0,0,0.1);
 }
 .content {
     margin: 5px 310px 0px 5px;

@@ -18,7 +18,7 @@
 </head>
 <body>
 <div style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;position:relative;filter: alpha(opacity=100);">
-  <img src="static/img/bbb.jpg" style="position:absolute;margin: 0px;padding: 0px;border:none;height: 927px ;width: 1648px;max-height: none;max-width: none;top: 0px;z-index: -999999" >
+  <img src="static/img/banner.jpg" style="position:absolute;margin: 0px;padding: 0px;border:none;height: 927px ;width: 1648px;max-height: none;max-width: none;top: 0px;z-index: -999999" >
 
 <nav class="navbar navbar-default">
 
@@ -270,7 +270,7 @@
         <form action="{% url 'login' %}" method="POST" class="login-form-side">
         {% csrf_token %}
             <input class="user form-control" type="text" name="username" placeholder="用户名">
-            <input class="pwd form-control" type="password" name="password" placeholder="密码">
+            <input class="pwd form-control" type="password" name="password" placeholder="密码"><br>
             <div class="blank">
                 <!--显示登录错误信息-->
             </div>
@@ -307,8 +307,13 @@
 </div>
 
 <div class="content" id="content" style="filter: alpha(opacity=100);">
-
 {% block body %}
+
+{% endblock %}
+
+</div>
+<div class='footer'>
+{% block bottom %}
 
 {% endblock %}
 </div>

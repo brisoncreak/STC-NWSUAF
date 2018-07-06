@@ -6,6 +6,9 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
+    <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet" type="text/css" media="all" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/style2.css'%}" />
 {% endblock %}
 
 {% block navbar %}
@@ -18,15 +21,13 @@
 
 {% block body %}
 
-<p>这是主页</p>
-<div class="container">
-   <div class="jumbotron">
-        <h1>欢迎登陆页面！</h1>
-        <p>这是一个超大屏幕（Jumbotron）的实例。</p>
-        <p><a class="btn btn-primary btn-lg" role="button">学习更多</a>
-      </p>
-   </div>
-</div>
+<div class="home-banner">
+        <div class="dream-home-bann-main wow bounceInDown" data-wow-delay="0.3s">
+                <h1>有点东西，可不止这点东西</h1>
+                <span class="span-dream-bar"> </span>
+                <p>市场，社区，资源共享集于一体的创新平台</p>
+        </div>
+    </div>
 {% endblock %}
 
 
@@ -59,6 +60,49 @@
         </form>
     </div>
 
-index
+
 
 {% endblock %}
+{% block js %}
+<link href="{% static 'css/animate.css'%}" rel="stylesheet" type="text/css" media="all">
+        <script src="{% static 'js/wow.min.js'%}"></script>
+        <script>
+         new WOW().init();
+        </script>
+{% endblock %}
+
+{% block bottom %}
+<div class="container">
+            <div class="footer-main">
+            <div class="col-md-4 amet-sed wow bounceInDown" data-wow-delay="0.3s">
+                <h4>Information</h4>
+                <p>有点东西.为你的大学生活提供便捷的优秀平台，我们将丰富你生活的方方面面</p>
+                <ul class="social">
+                    <li><span> </span>西北农林科技大学</li>
+                    <li class="phone"><span> </span> +15877388167</li>
+                    <li class="mail"><a href="1441335655@qq.com"><span> </span> contact@Example.com</a></li>
+                </ul>
+                </div>
+                 
+                 <div class="col-md-5 ftr-grid wow bounceInUp" data-wow-delay="0.3s">
+                    <h4>欢迎来信</h4>
+                    <form>
+                        <input type="text"  placeholder="Email Address" required="">
+                        <input type="submit" value="subscribe">
+                </form>
+                 </div>
+                 <div class="col-md-3 ftr-grid wow bounceInLeft" data-wow-delay="0.3s">
+                    <ul class="ftr-nav">
+                        <li><a href="#">主页</a></li>
+                        <li><a href="{% url 'market_index' %}">市场</a></li>
+                        <li><a href="/share">资源共享</a></li>
+                        <li><a href="/chat">社区</a></li>
+                        <li><a href="menu.html">个人中心</a></li>
+                        <li><a href="contact.html">关于我们</a></li>
+                    </ul>
+                 </div>
+             <div class="clearfix"> </div>
+            </div>
+        </div>
+{% endblock %}
+

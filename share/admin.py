@@ -3,7 +3,7 @@ from .models import *
 from index.models import *
 # Register your models here.
 class FileAdmin(admin.ModelAdmin):
-    list_display=['file_name','file_type','file_size','file_bedown','create_time','file_classify','user']
+    list_display=['file_name','file_size','file_bedown','create_time','file_classify','user']
     # list_display_links=['name','age']
     # list_editable=['email']
     # search_fields=['name','email']
