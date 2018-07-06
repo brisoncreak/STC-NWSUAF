@@ -314,7 +314,7 @@ def market_ws_views(request, order_id, uid):
                 buyer_mark = TradeMark.objects.get(Q(order=order)&Q(creator=order.creator))
             if order.seller_marked:
                 seller_mark = TradeMark.objects.get(Q(order=order)&Q(creator=good.creator))
-
+            
             readt = TradeMessage.objects.filter(Q(order=order)&Q(receiver=user))
             for t in readt:
                 t.have_read = True

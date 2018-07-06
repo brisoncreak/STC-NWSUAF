@@ -123,7 +123,10 @@
 
 </div>
 </div>
-            <a class="btn btn-danger" href="{%url 'cancel_fb' feedback.id%}">确定取消订单</a>
+          <form action="{%url 'cancel_fb' feedback.id%}" method="POST">
+          {%csrf_token%}
+          <input type="submit" class="btn btn-danger btn-block" value="确定取消订单">
+          </form> 
             <div class="modal-footer">
             </div>
         </div><!-- /.modal-content -->
@@ -197,7 +200,6 @@
     </div> 
 
 {% endblock %}
-
 
 {% block side %}
 <a class='btn btn-default sidebtn active' href='#'>投诉处理中</a>
