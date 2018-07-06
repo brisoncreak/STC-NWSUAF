@@ -3,12 +3,13 @@ from datetime import datetime
 from index.models import User
 from share.models import File
 
+
 class Good(models.Model):
 
     pay_way_list = ((0, '支付宝'), (1, '微信'), (2, '当面交易'))
 
-    name = models.CharField(max_length = 30)
-    creator = models.ForeignKey(User, verbose_name='创建者',related_name='goods')
+    name = models.CharField(max_length=30)
+    creator = models.ForeignKey(User, verbose_name='创建者', related_name='goods')
     file = models.ForeignKey(File, blank=True, null=True)
     image = models.ImageField(upload_to='static/upload/alipay', blank=True, default='')
     create_time = models.DateTimeField(default=datetime.now)

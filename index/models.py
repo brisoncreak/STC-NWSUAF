@@ -7,7 +7,7 @@ class User(models.Model):
     password = models.CharField(max_length = 100)
     email = models.EmailField(blank=True)
     create_time = models.DateTimeField(default=datetime.now)
-    profile_photo = models.ImageField(upload_to='static/upload/profile_photo', blank=True, default='')
+    profile_photo = models.ImageField(upload_to='static/upload/profile_photo', blank=True, default='static/img/logo.png')
     degree_good = models.FloatField(default=0)
     good_mark = models.IntegerField(default=0)
     bad_mark = models.IntegerField(default=0)
