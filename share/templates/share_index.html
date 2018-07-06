@@ -7,51 +7,78 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/share_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/demo(1).css'%}"/>
+    
 {% endblock %}
 
 {% block navbar %}
     <li><a href="{% url 'index' %}">热门</a></li>
     <li><a href="{% url 'market_index' %}">市场</a></li>
-    <li><a href="#">讨论</a></li>
+    <li><a href="{% url 'chat_index' %}">社区</a></li>
     <li class="selected"><a href="{% url 'share_index' %}">网盘</a></li>
 {% endblock %}
 
 
 {% block body %}
     <h2 class="title">最新发布</h2>
-<!--     <div class = "goodlist">
-        <p>{{i}}</p>
-    </div> -->
     <table class="table table-hover" border=1>
-           <th>文件id</th>
-           <th>文件名</th>
-           <th>文件大小</th>
-           <th>下载次数</th>
-           <th>创建时间</th>
-           <th>操作</th>
-           <!-- <th>用户名</th>
-           <th>学院类型</th> -->
-        {% for file in sharefileList %}
-                <tr>
-                    <td>{{file.id}}</td>
-                    <td>{{ file.file_name }}</td>
+        <th>文件类别</th>
+        <!-- <th>文件id</th> -->
+        <th>发表用户</th>
+        <th>文件名</th>
+        <th>文件大小</th>
+        <th>下载次数</th>
+        <th>上传时间</th>
+        <th>操作</th>
+        <th>评价</th>
+        <!-- <th>用户名</th>
+        <th>学院类型</th> -->
+        {% for x in sharefileList %}
+            <tr>
+                <!-- 只有college的参数是name -->
+                <td>
+                    <a href="{% url 'show_coll' x.file_classify %}">{{x.file_classify}}</a>
+                </td>
+                <td><a href="{% url 'show_user' x.user_id %}">{{ x.user }}</a></td>
+                <td><a href="{% url 'show_file' x.id %}">{{ x.file_name }}</a></td>
 
-                    {% if file.file_size >　1048576 %}
-                        <td>{% widthratio file.file_size 1048576 1 %}M</td>
-                    {% elif file.file_size >　1024 %}
-                        <td>{% widthratio file.file_size 1024 1 %} K</td>
+                {% if x.file_size >　1048576 %}
+                    <td>{% widthratio x.file_size 1048576 1 %}M</td>
+                {% elif x.file_size >　1024 %}
+                    <td>{% widthratio x.file_size 1024 1 %} K</td>
+                {% else %}
+                    <td>{{ x.file_size }} B</td>
+                {% endif %}
+                <td>{{x.file_bedown}}</td>
+                <td>{{x.create_time}}</td>
+                <td>
+                    {% if x.file_status != 2 %}
+                        <a href="{%url 'd_files' x.id%}">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+                        
                     {% else %}
-                    <td>{{ file.file_size }} B</td>
+                        <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
                     {% endif %}
-                    <td>{{file.file_bedown}}</td>
-                    <td>{{file.create_time}}</td>
-                    <td>
-                    <a href="{%url 'd_files' file.id%}">下载</a>|
-                    <a href="{%url 'del_files' file.id%}">删除</a>
-                    </td>
-                </tr>
-            {% endfor %}
-      </table>
+                    <!-- |<a href="{%url 'del_files' x.id%}">删除</a> -->
+                </td>
+                <td>
+        <!-- 好评端 -->
+                    <span id="goodSpan" onclick="sendGood({{x.id}})">
+                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                    </span>
+                    [<span id="goodnum{{x.id}}">{{x.file_beadmired}}</span>]
+        <!-- 差评端 -->
+                        |
+                    <span id="badSpan" onclick="sendBad({{x.id}})">
+                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/> 
+                    </span>
+                    [<span id="badnum{{x.id}}">{{x.file_benotadmired}}</span>]
+                    <script language="JavaScript" src="../static/js/admire.js"></script>
+                </td>
+
+            </tr>
+        {% endfor %}
+                    
+    </table>
 
 {% endblock %}
 
@@ -74,23 +101,62 @@
 <a class='btn btn-default sidebtn'>付费文档</a> -->
 
 <br>
-<form action="" method="POST">
-    <select name='collegetypelist'>
+<form action="{%url 'share_index'%}" method="POST">
+{% csrf_token %}
+    <!-- <script language="JavaScript" src="../static/js/collegeSearch.js"></script> -->
+    <script>   
+        function change_1()//主分类改变函数
+        {
+            obj1 = document.getElementById("s_1");
+            str1 = obj1.value;
+            obj2 = document.getElementById("s_2"); 
+            nongkecolleges = {{nongkes|safe}}
+            gongkecolleges = {{gongkes|safe}}
+            likecolleges = {{likes|safe}}
+            wenkecolleges = {{wenkes|safe}}
+            if(str1=="农科")
+                createSelect(nongkecolleges)
+            else if(str1=="工科")
+                createSelect(gongkecolleges)
+            else if(str1=="理科")
+                createSelect(likecolleges)
+            else if(str1=="文科")
+                createSelect(wenkecolleges)
+        }
+
+        function createSelect(colleges)
+        {
+            obj2.innerHTML = ""; //删除
+            colleges.forEach(function(college)
+            {
+                op = document.createElement("option");
+                //创建option元素
+                op_text = document.createTextNode(college);
+                //创建文本节点
+                op.appendChild(op_text);
+                //为option添加文本节点
+                op.setAttribute("value",college);
+                //设置value属性
+                obj2.appendChild(op);
+                //为obj2添加子节点
+            })
+        } 
+ </script>
+    请选择学院类别：
+    <select id="s_1" style="width:100px" onchange="change_1();">
         {% for collegetype in collegetypes%}
-        <option value="{{collegetype.title}}">{{collegetype.title}}</option>
+            <option value="{{collegetype.title}}">{{collegetype.title}}</option>
         {% endfor %}
+    </select><br>
+    请   选  择   学  院 ： 
+    <select id="s_2" style="width:100px" name="selcollege">
     </select>
-    <select name='collegelist'>
-        {% for college in colleges%}
-        <option value="{{college.title}}">{{college.title}}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" name="提交" >
-
+    <br><input type="submit" value="查询">
 </form>
-
 <br>
+<!-- <a class='btn btn-default sidebtn active'></a>
+<a class='btn btn-default sidebtn'>付费文档</a> -->
+<a class='btn btn-info sidebtn' href="{% url 'show_user' login_uid %}">我的网盘</a>
 <br>
-
 <a class='btn btn-info sidebtn' href="{%url 'add_file'%}">添加文件</a>
 {% endblock %}

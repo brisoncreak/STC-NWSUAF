@@ -9,55 +9,70 @@
 <h2 class="title">我的订单</h2>
     <div class="order_list">
     {%block order%}
+    <div>
     <ul class="ordermenu">
         <a class="ordera" href="{%url 'ordershow' 0%}">
+        {%if orderstate == "0" %}
         <div class="order_selected">
+        {%else%}
+        <div class="orderli">
+        {%endif%}
         <div class="order-style">
             <li style="width: 42%;margin: auto;">未付款</li>
         </div>
         </div>
         </a>
-        <a class="ordera" href="{%url 'finished' 1%}">
+        <form>
+        <a class="ordera" href="{%url 'ordershow' 1%}">
+         {%if orderstate == "1"%}
+        <div class="order_selected">
+        {%else%}
         <div class="orderli">
+        {%endif%}
         <div class="order-style">
             <li >已完成</li>
         </div>
         </div>
         </a>
-        <a class="ordera" href="{%url 'complaint' 2%}">
+        <a class="ordera" href="{%url 'ordershow' 2%}">
+         {%if orderstate == "2"%}
+        <div class="order_selected">
+        {%else%}
         <div class="orderli">
+        {%endif%}
         <div class="order-style">    
             <li>投诉中</li>
         </div>
         </div>
         </a>
-        <a class="ordera" href="{%url 'cancel' 3%}">
-            <div class="orderli">
-
+        <a class="ordera" href="{%url 'ordershow' 3%}">
+        {%if orderstate == "3"%}
+        <div class="order_selected">
+        {%else%}
+        <div class="orderli">
+        {%endif%}
             <div class="order-style">
             <li>已取消</li>
             </div>
-        </div>
+            </div>
         </a>
         </ul>
+        </div>
         {%endblock%}
-        <div class="docs">
-            <table class="table table-striped" >
-                {%for i in '1 2 3 4 5 6 7 8 9 10'%}
-                <tbody style="border:0px;>
-                    <tr">
-                        <td style="border:0px;">{{i}}pic</a></td>
-                        <td style="border:0px;"><a href="{%url 'orderdetail' 1%}">{{i}}name</a></td>
-                        <td style="border:0px;">{{i}}createtime</td>
-                        <td style="border:0px;">{{i}}state</td>
+        <div class="order_table" >
+            <table class="table table-striped" style="border-top:20px;">
+                    {%for i in order_list%}
+                    <tr>
+                        <td style="border:0px;"><img src="/{{i.good.image}}" style="width: 100px;height: 100px;"></td>
+                        <td style="border:0px;"><a href="{%url 'orderdetail' 1%}">{{i.good.name}}</a></td>
+                        <td style="border:0px;">{{i.create_time}}</td>
+                        <td style="border:0px;">等待支付</td>
                         <td style="border:0px;">{{i}}comment</td>
                     </tr>
-                {%endfor%}
-                </tbody>
+                    {%endfor%}
             </table>
-    }
-    </div>
-       <div class="embed">
+        </div>
+        <div class="embed">
         <nav aria-label="Page navigation">
          <ul class="pagination">
          <li>
@@ -68,13 +83,13 @@
          {% for i in '123456'%}
          <li><a href="#">{{i}}</a></li>
           {%endfor%}
-      <li>
-        <a href="#" aria-label="Next">
+         <li>
+         <a href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
-        </a>
-        </li>
-    </ul>
-    </nav>
-    </div>
+         </a>
+         </li>
+         </ul>
+         </nav>
+         </div>
     </div>
 {%endblock%}

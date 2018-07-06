@@ -11,7 +11,7 @@
 {% block navbar %}
     <li class="selected"><a href="{% url 'index' %}">热门</a></li>
     <li><a href="{% url 'market_index' %}">市场</a></li>
-    <li><a href="#">讨论</a></li>
+    <li><a href="/chat">社区</a></li>
     <li><a href="/share">网盘</a></li>
 {% endblock %}
 
@@ -49,7 +49,7 @@
 {% block side %}
 
     <div class="spacer">
-        <form action="#" id="search">
+        <form action="#" id="search_index">
             <div class="input-group">
             <input type="text" class="form-control" placeholder="发起新讨论">
                 <span class="input-group-btn">

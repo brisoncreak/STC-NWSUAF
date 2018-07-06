@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}订单 - {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/paying.css'%}"/>
+{% endblock %}
+
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="#">讨论</a></li>
+    <li><a href="#">网盘</a></li>
+{% endblock %}
+
+
+{% block body %}
+
+
+{%csrf_token%}
+
+<table class="table">
+<tr>
+  <td>聊天记录</td>
+  <td>
+  <div id="chatarea-box" >
+  <div class="chatarea" id="chatarea">
+  {% for tm in tmessages%}
+  {%if tm.sender.username == request.session.username%}
+  <div class="charline-right">
+  <p>{{tm.sender.username}} {{tm.create_time|date:"Y-m-d H:i:s"}}</p>
+  <h4>{{tm.content}}</h4>
+  </div>
+  {%else%}
+  <div class="charline-left">
+  <p>{{tm.sender.username}} {{tm.create_time|date:"Y-M-d H:i:s"}}</p>
+  <h4>{{tm.content}}</h4>
+
+  </div>
+  {%endif%}
+
+  {%endfor%}
+   <div id="chatbottom"></div>
+  </div>
+  </div>
+  </td>
+</tr>
+
+<tr>
+  <td>买家{{buyer.username}}的证据</td>
+  <td>
+  {%if not buyer_evis%}
+  <p>未上传证据</p>
+  {%else%}
+    {%for i in buyer_evis%}
+    <button data-toggle="modal" data-target="#evi{{i.id}}"><img src="/{{i.content}}" style="width:100px;"/></button>
+    {%endfor%}
+  {%endif%}
+  </td>
+</tr>
+
+<tr>
+  <td>卖家{{seller.username}}的证据</td>
+  <td>
+  {%if not seller_evis%}
+  <p>未上传证据</p>
+  {%else%}
+    {%for i in seller_evis%}
+    <button data-toggle="modal" data-target="#evi{{i.id}}"><img src="/{{i.content}}" style="width:100px;"/></button>
+    {%endfor%}
+  {%endif%}
+  </td>
+</tr>
+
+
+<tr class="danger">
+<td>投诉状态</td>
+{%if feedback.is_ongoing%}
+<td>投诉处理中</td>
+{%else%}
+<td>已处理<a class="btn btn-default" href="{%url 'paying' order.id%}">点此返回订单</a></td>
+{%endif%}
+</tr>
+
+<tr>
+<td>上传证据</td>
+<td>
+<form action="{%url 'add_evi' feedback.id%}" method="POST" enctype="multipart/form-data">
+{%csrf_token%}
+  <div class="form-group">
+  <span>上传付款截图</span><br>
+  <input type="file" name="evi_pic" >
+  <br>
+  <input type="submit" class="btn btn-default"　value="上传"　/>
+  </div>
+</form>
+</td>
+</tr>
+
+
+<div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div class="panel panel-default">
+ <div class="panel-body">
+ {%if is_buyer%}
+ <p>取消后订单状态将变为＂等待卖家确认＂</p>
+ {%else%}
+ <p>取消后订单状态将变为＂交易完成＂</p>
+ {%endif%}
+
+</div>
+</div>
+            <a class="btn btn-danger" href="{%url 'cancel_fb' feedback.id%}">确定取消订单</a>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+{%for i in buyer_evis%}
+<div class="modal fade" id="evi{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div class="panel panel-default">
+ <div class="panel-body">
+<img src="/{{i.content}}"/>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</div>
+</div>
+{%endfor%}
+
+{%for i in seller_evis%}
+<div class="modal fade" id="evi{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div class="panel panel-default">
+ <div class="panel-body">
+<img src="/{{i.content}}"/>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</div>
+{%endfor%}
+
+
+
+{% endblock %}
+
+{% block side-search %}
+    <div class="spacer">
+        <form action="#" id="search">
+            <div class="input-group">
+            <input type="text" class="form-control" placeholder="搜索">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </span>
+            </div>
+        </form>
+    </div> 
+
+{% endblock %}
+
+
+{% block side %}
+<a class='btn btn-default sidebtn active' href='#'>投诉处理中</a>
+<!--<a class='btn btn-default sidebtn'>付费文档</a>-->
+<br>
+<br>
+<br>
+<a class="btn btn-default btn-block" href="{%url 'paying' order.id%}">返回订单</a>
+{% if order.status == 3 and is_creator %}
+<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#feedback">取消投诉</button>
+{% endif%}
+
+{% endblock %}

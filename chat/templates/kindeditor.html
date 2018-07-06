@@ -1,0 +1,23 @@
+<!-- kindeditor.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="width: 500px; margin: 0 auto;">
+    <textarea id="content"></textarea>
+</div>
+
+<script src="/static/jquery-1.12.4.js"></script>
+<script src="/static/kindeditor/kindeditor-all.js"></script>
+<script>
+    $(function(){
+        KindEditor.create('#content',{
+            uploadJson:'/upload_img/'
+        });
+    })
+</script>
+</body>
+</html>

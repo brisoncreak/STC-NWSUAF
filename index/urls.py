@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^reset/$', index_reset,name='reset'),
     url(r'^back/reset/',index_back,name='back'),
     url(r'^notification/$',notify_views, name='notify'),
+    url(r'^ws/$', ws_views),
 ]

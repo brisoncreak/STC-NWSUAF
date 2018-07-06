@@ -1,0 +1,27 @@
+{% extends 'file.html' %}
+{% block body %}
+<h2 class="title">请上传与<<{{name}}>>有关的资料</h2>
+
+    <form action="{%url 'add_file2' collegename%}" method="POST" enctype="multipart/form-data">
+    {%csrf_token%}
+        <div id="outdiv">
+            <div class="indiv">
+                <span>上传文件 : </span><input type="file" name="inputfile" maxlength="20" />
+            </div> 
+            <div class="indiv">
+                <span>资源类型 :</span>{{name}}
+                <br>
+                <span>资源状态 :</span>
+                <select name='fileStaus'>
+                    <option value="私有文档">私有文档</option>
+                    <option value="免费共享文档">免费共享文档</option>
+                    <option value="付费共享文档">付费共享文档</option>
+                </select>  
+            </div> 
+            
+            <div class="indiv">
+                <input type="submit" value="提交">
+            </div>
+        </div>
+    </form>
+{% endblock %}

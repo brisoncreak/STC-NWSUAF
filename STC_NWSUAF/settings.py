@@ -61,6 +61,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR +'/templates'],
+        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,7 +124,9 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
+
+TIME_ZONE = 'Asia/Shanghai'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -142,3 +145,4 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = '1441335655@qq.com'
 EMAIL_HOST_PASSWORD = 'vxqfvwveqytkbadd'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+

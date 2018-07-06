@@ -8,8 +8,10 @@ class User(models.Model):
     email = models.EmailField(blank=True)
     create_time = models.DateTimeField(default=datetime.now)
     profile_photo = models.ImageField(upload_to='static/upload/profile_photo', blank=True, default='')
+    degree_good = models.FloatField(default=0)
     good_mark = models.IntegerField(default=0)
     bad_mark = models.IntegerField(default=0)
+    trade_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.username
@@ -46,6 +48,25 @@ class Colleges(models.Model):
         verbose_name_plural = verbose_name
 
 
+#省份表
+class Province(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+#城市表
+class City(models.Model):
+    name = models.CharField(max_length=40)
+    province = models.ForeignKey(Province)
+
+    def __str__(self):
+        return self.name
+
+#这个主要是用来显示，选择的结果
+class SelectP(models.Model):
+    province = models.ForeignKey(Province)
+    city = models.ForeignKey(City)
 
 class Notification(models.Model):
 
@@ -55,6 +76,9 @@ class Notification(models.Model):
     have_read = models.BooleanField(default=False)
     arg0 = models.IntegerField(null=True)
     arg1 = models.IntegerField(null=True)
+    arg2 = models.IntegerField(null=True)
+    arg3 = models.IntegerField(null=True)
+    arg4 = models.ForeignKey(User, null=True)
     def __str__(self):
         return self.aim_user.username
     class Meta:
@@ -63,3 +87,4 @@ class Notification(models.Model):
         verbose_name = '全局通知'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
+
