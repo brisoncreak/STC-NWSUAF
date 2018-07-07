@@ -19,7 +19,7 @@ class Article(models.Model):
     topic=models.CharField(max_length=30)
     lable=models.CharField(max_length=30)
     content=models.TextField()
-    create_date=models.DateField(default=datetime.now)
+    create_date=models.DateTimeField(default=datetime.now)
     is_reviewed=models.CharField(max_length=30)
     reviewed_num=models.IntegerField(null=True)
     skim_num=models.IntegerField(null=True)
@@ -38,7 +38,7 @@ class Article(models.Model):
   
 class Review(models.Model):
     content=models.TextField()
-    create_date=models.DateField(default=datetime.now)
+    create_date=models.DateTimeField(default=datetime.now)
     user=models.ForeignKey(User,null=True)
     article=models.ForeignKey(Article)
     replys=models.TextField(null=True)
@@ -52,7 +52,7 @@ class Review(models.Model):
 
 class Reply(models.Model):
     content=models.TextField()
-    create_date=models.DateField(default=datetime.now)
+    create_date=models.DateTimeField(default=datetime.now)
     user=models.ForeignKey(User,null=True)
     review=models.ForeignKey(Review)
     def __str__(self):
@@ -64,7 +64,7 @@ class Reply(models.Model):
 
 
 class Like(models.Model):
-    create_date=models.DateField(default=datetime.now)
+    create_date=models.DateTimeField(default=datetime.now)
     user=models.ForeignKey(User)
     article=models.ForeignKey(Article)
     def __str__(self):

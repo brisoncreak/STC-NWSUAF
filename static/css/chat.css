@@ -1,0 +1,100 @@
+
+
+#top{
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    line-height: 58px;
+    padding: 0 20px;
+}
+
+.top1{
+    float: left;
+    width:50%;
+    height: 100px;
+    line-height:100px;
+}
+
+#main{
+    clear:both;
+    -webkit-box-pack: justify;
+}
+
+#left{
+    clear: both;
+    float: left;
+    width:200px;
+}
+
+#Person{
+    clear:both;
+    float: left;
+    margin-left:200px;
+    width:auto;%
+}
+
+#OnePerson{
+    clear:both;
+    width: 660px;
+    height: 180px;
+    
+}/*
+a:visited {font-family:color:gray;}*/
+a:hover {text-transform:uppercase;font-size: 20px;} /*
+a:active {font-family:color:#11FF11;}*/
+
+#author{
+    font-size:20px;
+    color: #E1E;
+    font-weight: bold;
+    clear:both;
+
+}
+
+#essay{
+    clear:both;
+    font-size:25px;
+    color: #111;
+    font-weight: bold;
+}
+
+.a1{
+    clear:both;
+    font-size:18px;
+    font-weight: bold;
+}
+
+#content{
+    float: left;
+}
+
+#side{
+    float: left;
+}
+
+
+#demo{
+    width: 660px;
+    height: 140px;
+
+    word-break: break-all;
+
+    text-overflow: ellipsis;
+
+    display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+
+    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+
+    -webkit-line-clamp: 2; /** 显示的行数 **/
+
+    overflow: hidden; 
+
+}
+
+#demo span{ 
+position:absolute; 
+top:0; 
+right:0; 
+display:block; 
+float:left; 
+}

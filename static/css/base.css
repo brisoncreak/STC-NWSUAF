@@ -1,4 +1,5 @@
 body{
+  
 }
 .glyphicon {font-family: 'Glyphicons Halflings' !important;}
 .logo{
@@ -16,7 +17,7 @@ body{
 .content{
     margin:5px 5px;
     background-color: #fff;
-    //width :auto;
+    width :auto;
     //margin:0 auto;
     //overflow:hidden;
     //border:1px solid ;
@@ -119,7 +120,7 @@ li.selected a {
     width:100%;
 }
 .content {
-    margin: 5px 310px 0px 5px;
+    margin: 5px 10px 0px 5px;
     background-color: #fff;
 }
 .topic-title{

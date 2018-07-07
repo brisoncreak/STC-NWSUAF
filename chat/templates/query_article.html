@@ -5,93 +5,44 @@
 {% block title %}写文章 - {% endblock %}
 
 {% block head %}
-    <!-- <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/> -->
+    <link rel="stylesheet" href="{% static 'css/chat.css'%}"/>
     <style type="text/css">
-        .changestyle{color:red;font-weight:600;}
+        .changestyle{a:link{color:#ccc;}}
     </style>
     <script type="text/javascript">
-        var DOM = (document.getElementById) ? 1 : 0;
 
-        var NS4 = (document.layers) ? 1 : 0;
+    // var oBox=document.getElementById('demo');
+    // var demoHtml = oBox.innerHTML.slice(0,10)+'...';
+    // oBox.innerHTML = demoHtml;
 
-        var IE4 = 0; if (document.all) { IE4 = 1; DOM = 0; }
-        var win = window;
+    function showText()
+    {   
+        $(".changestyle").each(function()
+         {
+                 var xx=$(this).html();  
+                 $(this).replaceWith(xx);
+             });
+        var txt=document.getElementById("field1").value;
 
-        var n = 0;
-        function findIt() {
 
-            if (document.getElementById("field1").value != "")
+        var str=$("#Person").html();
+        str1 = str.replace(/<\/?[^>]*>/g,'');
+        if ($.trim(txt)!="")
+        {
+            var re="<b class='changestyle'>"+txt+"</b>";
+            var nn=str.replace( new RegExp(txt,"gm"),re);
 
-                findInPage(document.getElementById("field1").value);
-
+            $("#Person").html(nn);
+            $(".row").hide().filter(":contains('"+txt+"')").show(); 
+            
         }
+        else
+          {
+            $(".row").show();
+          }
 
-        function findInPage(str) {
-
-            var txt, i, found;
-            if (str == "")
-
-                return false;
-            if (DOM) {
-
-                win.find(str, false, true);
-
-                return true;
-
-            }
-            if (NS4) {
-
-                if (!win.find(str))
-
-                    while (win.find(str, false, true))
-
-                        n++;
-
-                else
-
-                    n++;
-                if (n == 0)
-
-                    alert("未找到指定内容.");
-
-            }
-            if (IE4) {
-
-                txt = win.document.body.createTextRange();
-                for (i = 0; i <= n && (found = txt.findText(str)) != false; i++) {
-
-                    txt.moveStart("character", 1);
-
-                    txt.moveEnd("textedit");
-
-                }
-                if (found) {
-
-                    txt.moveStart("character", -1);
-
-                    txt.findText(str);
-
-                    txt.select();
-
-                    txt.scrollIntoView();
-
-                    n++;
-
-                } else {
-
-                    if (n > 0) {
-
-                        n = 0;
-
-                        findInPage(str);
-
-                    } else
-
-                        alert("未找到指定内容.");
-                }
-            }
-            return false;
-        }     
+    }
+    
     </script>
 {% endblock %}
 
@@ -108,43 +59,43 @@
             <div class="input-group">
             <input type="text" id="field1" class="form-control" placeholder="搜索">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" onclick="findIt()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                    <button class="btn btn-default" type="button" onclick="showText()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                 </span>
             </div>
         </form>
     </div> 
 {% endblock %}
-
 {% block body %}
-
-    <div id="OnePerson">
-            
-        <a href="{%url 'r_m'%}">我发表的文章</a>
-        <a href="{%url 'a_a'%}">我要写文章</a>
-        <table  border="1">
-            <thead>
-                <tr>
-                    <th>发布者</th>
-                    <th>文章名</th>
-                    <th>操作</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                {%for a in listArticle%} 
-                <div class="single">
-                    <tr>
-                    <td><a href="{%url 'r_s' a.user_id%}">{{a.user}}</a></td>
-                    <td><a href="{%url 'r_a' a.id%}">{{a.topic}}</a></td>
-                    <td><a href="{%url 'a_v' a.id%}">我要评论</a></td>
-                    
-                </tr>
-                </div> 
-                
-                {%endfor%}
-            </tbody>
+    <div id="left"> 
         
+    </div>
+    <div id="Person">
+        <div id="top">
+            <div class="top1">
+                <img src="/static/img/home.png" ><a class="a1" href="{%url 'r_m'%}">&nbsp;&nbsp;&nbsp;我的文章</a>
+            </div>
+            <div class="top1">
+                <img src="/static/img/write.png" ><a class="a1" href="{%url 'a_a'%}">&nbsp;&nbsp;&nbsp;写文章</a>
+            </div>           
+        </div>   
+        
+        <div id="main">
+            {%for a in listArticle%} 
+                <div id="OnePerson">
+                    &nbsp;&nbsp;&nbsp;
+                    <a  id="author" href="{%url 'r_s' a.user_id%}">{{a.user}}</a>
+                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <a  id="essay" href="{%url 'r_a' a.id%}">{{a.topic}}</a>
+                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <img src="/static/img/reply.png" >
+                    <a class="a1" href="{%url 'a_v' a.id%}">写评论</a>
+                    <div class="demo" id="demo" ><pre >{{a.content}}</pre></div>
+                    
+                </div>
+                <br>
+            {%endfor%}
 
-        </table>
+        </div>
+        
     </div>
 {% endblock %}
