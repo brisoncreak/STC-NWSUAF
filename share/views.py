@@ -11,7 +11,6 @@ from django.db.models import F
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 from urllib.parse import unquote
-from chat.models import *
 
 # Create your views here.
 
