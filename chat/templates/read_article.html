@@ -5,7 +5,12 @@
 {% block title %}文章 - {% endblock %}
 
 {% block head %}
+
     <link rel="stylesheet" href="{% static 'css/r_a.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
+    <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
+    <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
+
 {% endblock %}
 
 {% block navbar %}
@@ -54,21 +59,27 @@
             </div>
             <!-- 点赞 -->
             <div>
-                
         <!-- 好评端 -->
-                    <span id="goodSpan" onclick="sendGood({{a.id}})">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{a.id}}'/>  
+                    <span id="goodSpan" onclick="sendGood({{a.id}},'article',{{login_uid}})">
+                        {% if a.id in listarticle_admire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px;" id='goodimg{{a.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{a.id}}'/>  
+                        {% endif %}  
                     </span>
                     [<span id="goodnum{{a.id}}">{{a.beadmired_num}}</span>]
         <!-- 差评端 -->
                         |
-                    <span id="badSpan" onclick="sendBad({{a.id}})">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{a.id}}'/> 
+                    <span id="badSpan" onclick="sendBad({{a.id}},'article',{{login_uid}})">
+                        {% if a.id in listarticle_notadmire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{a.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{a.id}}'/>   
+                        {% endif %}
                     </span>
                     [<span id="badnum{{a.id}}">{{a.benotadmired_num}}</span>]
 
                     <script language="JavaScript" src="../static/js/admire.js"></script>
-<!-- 此处点赞还存在问题　　数据库是更改的文件的　　明天修改！！！！！！！！！！！！！！！！！！！ -->
             </div>
         </div>
     </div>

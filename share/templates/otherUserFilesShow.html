@@ -1,11 +1,14 @@
 <!-- otherUserFilesShow.html -->
 {% extends 'userFilesShow.html' %}
 
+
+
 {% block body %}
     <!-- user　　listfile -->
     <h2>{{user.username}}所共享的文件</h2>
     
     <table class="table table-hover" border=1>
+    {%csrf_token%}
         <th>文件类别</th>
         <th>文件名</th>
         <th>文件大小</th>
@@ -14,46 +17,57 @@
         <th>操作</th>
         <th>评价</th>
         <th>文件状态</th>
-        {% for file in listfile%}
+        {% for x in listfile%}
             <tr>
                 <!-- 只有college的参数是name -->
                 <td>
-                    <a href="{% url 'show_coll' file.file_classify %}">{{file.file_classify}}</a>
+                    <a href="{% url 'show_coll' x.file_classify %}">{{x.file_classify}}</a>
                 </td>
-                <td><a href="{% url 'show_file' file.id %}">{{ file.file_name }}</a></td>
+                <td><a href="{% url 'show_file' x.id %}">{{ x.file_name }}</a></td>
 
-                {% if file.file_size >　1048576 %}
-                    <td>{% widthratio file.file_size 1048576 1 %}M</td>
-                {% elif file.file_size >　1024 %}
-                    <td>{% widthratio file.file_size 1024 1 %} K</td>
+                {% if x.file_size >　1048576 %}
+                    <td>{% widthratio x.file_size 1048576 1 %}M</td>
+                {% elif x.file_size >　1024 %}
+                    <td>{% widthratio x.file_size 1024 1 %} K</td>
                 {% else %}
-                    <td>{{ file.file_size }} B</td>
+                    <td>{{ x.file_size }} B</td>
                 {% endif %}
-                <td>{{file.file_bedown}}</td>
-                <td>{{file.create_time}}</td>
+                <td>{{x.file_bedown}}</td>
+                <td>{{x.create_time}}</td>
                 <td>
-                    {% if file.file_status != 2 %}
-                        <a href="{%url 'd_files' file.id%}">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+                    {% if x.file_status != 2 %}
+                        <a href="{%url 'd_files' x.id%}">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
                         
                     {% else %}
                         <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
                     {% endif %}
                 </td>
                 <td>
-        <!-- 好评端 -->
-                    <span id="goodSpan" onclick="sendGood({{file.id}})">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{file.id}}'/>  
+        <!-- 好评端 listfile_admire  listfile_notadmire-->
+                    <span id="goodSpan" onclick="sendGood({{x.id}},'file',{{login_uid}})">
+                        {% if x.id in listfile_admire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                        {% endif %}
                     </span>
-                    [<span id="goodnum{{file.id}}">{{file.file_beadmired}}</span>]
+                    [<span id="goodnum{{x.id}}">{{x.file_beadmired}}</span>]
+
         <!-- 差评端 -->
                         |
-                    <span id="badSpan" onclick="sendBad({{file.id}})">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{file.id}}'/> 
+                    <span id="badSpan" onclick="sendBad({{x.id}},'file',{{login_uid}})">
+                        
+                        {% if x.id in listfile_notadmire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/>   
+                        {% endif %}
                     </span>
-                    [<span id="badnum{{file.id}}">{{file.file_benotadmired}}</span>]
+                    [<span id="badnum{{x.id}}">{{x.file_benotadmired}}</span>]
 
-
+                    <script language="JavaScript" src="../static/js/admire.js"></script>
                 </td>
+
                 <td>
                         {% if file.file_status == 0 %}
                             私有文档
@@ -62,11 +76,9 @@
                            免费共享文档
                         {% else %}
                             付费共享文档
-                        {% endif %}           
+                        {% endif %}         
                 </td>
             </tr>
         {% endfor %}
-                    <script language="JavaScript" src="../static/js/admire.js"></script>
-
     </table>
 {% endblock %}
