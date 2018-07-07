@@ -3,17 +3,6 @@ from datetime import datetime
 
 from index.models import *
     
-# class Block(models.Model):
-#     name=models.CharField(max_length=30)
-#     infor=models.TextField()
-#     create_date=models.DateField(default=datetime.now)
-#     article_num=models.IntegerField(null=True)
-#     def __str__(self):
-#         return self.name
-#     class Meta:
-#         verbose_name = '版块'
-#         verbose_name_plural = verbose_name
-#         ordering = ['name']
 
 class Article(models.Model):
     topic=models.CharField(max_length=30)

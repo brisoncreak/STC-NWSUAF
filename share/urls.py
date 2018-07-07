@@ -15,6 +15,6 @@ urlpatterns = [
     #展示任意一个用户的共享文件/展示一个我的所有文件　　包括私密的
     url(r'^show_User/(\w+)$',show_user,name='show_user'),
     url(r'^show_File/(\d+)$',show_file,name='show_file'),
-    url(r'^share/show_Admirenum/$',admire_num_views,name="show_admirenum"),
-
+    # url(r'^show_goodAdmirenum/$',admire_goodnum_views,name="show_goodadmirenum"),
+    # url(r'^show_badAdmirenum/$',admire_badnum_views,name="show_badadmirenum"),
 ] 

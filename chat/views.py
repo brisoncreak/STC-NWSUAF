@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from .models import *
+from index.models import Admirelog
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.db.models import Q
 from django.contrib import messages
@@ -23,7 +24,6 @@ def query_article_views(request):
     listArticle=Article.objects.all().order_by("-id")
 
     return render(request,'query_article.html',locals())
-
 
 def read_my_views(request):
     if request.session.get('username'):
@@ -54,6 +54,11 @@ def read_sb_views(request,id):
     return render(request,'read_sb.html',locals())
 
 def read_article_views(request,id):
+
+    login_uname=request.session.get('username')
+    login_user=User.objects.get(username=login_uname)
+    login_uid=login_user.id 
+
     a=Article.objects.get(id=id)
     listReview=Review.objects.filter(article_id=a.id).order_by("-id")
     for review in listReview:
@@ -65,6 +70,24 @@ def read_article_views(request,id):
             
             listReplys.append(userreply)
         Review.objects.filter(id=review.id).update(replys=listReplys)
+
+    #用于使显示打赞和数据库中的赞表同步
+    # 获取了对应登录用户　　对文件好评的相应文件列表
+    listarticle_admireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 1).filter(isFile = 0).values('aid_id')
+    listarticle_admire = []
+    for i in listarticle_admireQ:
+        listarticle_admire.append(i['aid_id'])
+    print(listarticle_admire)
+    # 获取了对应登录用户　　对文件差评的相应文件列表
+    listarticle_notadmireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 0).filter(isFile = 0).values('aid_id')
+    listarticle_notadmire = []
+    for j in listarticle_notadmireQ:
+        listarticle_notadmire.append(j['aid_id'])
+    print(listarticle_notadmire)
+
+
+
+
     return render(request,'read_article.html',locals())
 
 def del_article_views(request,id):
@@ -198,7 +221,6 @@ def add_reply_views(request,rid):
 #     a=Article.objects.get(id=aid) 
 
 
-
 import os
 import time
 import json
@@ -250,3 +272,4 @@ def file_manager(request):
         file_list.append(temp)
     dic['file_list'] = file_list
     return HttpResponse(json.dumps(dic))
+

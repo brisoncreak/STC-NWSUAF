@@ -4,12 +4,14 @@ from django.http import FileResponse
 from django.http import HttpResponseRedirect
 from .models import *
 from index.models import *
+from chat.models import *
 from index.templates import *
 import os
 from django.db.models import F
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 from urllib.parse import unquote
+from chat.models import *
 
 # Create your views here.
 
@@ -37,7 +39,7 @@ def upload_file(request):
             user2=User.objects.get(username=user_name)
             userid=user2.id
             #登录且有学院信息　　此时要保存
-            if userid != '' and classifyid!='':
+            if userid != '' and classifyid!='': 
                 obj = request.FILES.get('inputfile')
                 samename_files=File.objects.filter(file_name=obj.name)
                 print(samename_files)
@@ -89,8 +91,7 @@ def upload_file2(request,collegename):
             status = 2
         # 得到文件所属的学院以及学院的id
         file_classify=Colleges.objects.get(title=name)
-        classifyid= file_classify.id
-
+        classifyid= file_classify.id 
         #判断是否登录
         if request.session.get('username'):
             user_name=request.session.get('username')
@@ -196,6 +197,18 @@ def index_views(request):
     login_user=User.objects.get(username=login_uname)
     login_uid=login_user.id
 
+    #用于使显示打赞和数据库中的赞表同步
+    # 获取了对应登录用户　　对文件好评的相应文件列表
+    listfile_admireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 1).filter(isFile = 1).values('fid_id')
+    listfile_admire = []
+    for i in listfile_admireQ:
+        listfile_admire.append(i['fid_id'])
+    # 获取了对应登录用户　　对文件差评的相应文件列表
+    listfile_notadmireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 0).filter(isFile = 1).values('fid_id')
+    listfile_notadmire = []
+    for j in listfile_notadmireQ:
+        listfile_notadmire.append(j['fid_id'])
+
     if request.method == 'GET':
         return render(request,'share_index.html',locals()) 
     else:
@@ -212,31 +225,64 @@ def show_college(request,collegetitle):
 def show_user(request,userid):
     login_uname=request.session.get('username')
     login_user=User.objects.get(username=login_uname)
-    login_uid=login_user.id 
-    # print(type(login_uid))
+    login_uid=login_user.id
+
+    # print(login_uid)
     # print("**********88")
     # print(type(userid))
     user = User.objects.get(id=userid)
+    #看自己的文件　　就不需要得到赞表
     if int(userid) == login_uid:
         listfile = File.objects.filter(user_id=userid).order_by("-id")
         return render(request,'userFilesShow.html',locals())
+    #看其他人的文件　　需要得到赞表
     else:
         listfile = File.objects.filter(user_id=userid).exclude(file_status=0).order_by("-id")
-        return render(request,'otherUserFilesShow.html',locals())
 
+
+        # 获取了对应登录用户　　对文件好评的相应文件列表
+        listfile_admireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 1).filter(isFile = 1).values('fid_id')
+        listfile_admire = []
+        for i in listfile_admireQ:
+            listfile_admire.append(i['fid_id'])
+        # 获取了对应登录用户　　对文件差评的相应文件列表
+        listfile_notadmireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 0).filter(isFile = 1).values('fid_id')
+        listfile_notadmire = []
+        for j in listfile_notadmireQ:
+            listfile_notadmire.append(j['fid_id'])
+
+        return render(request,'otherUserFilesShow.html',locals())
 
 
 def show_file(request,fileid):
     file = File.objects.get(id=fileid)
     return render(request,'fileDetailShow.html',locals())
 
-from django.views.decorators.csrf import csrf_exempt
-@csrf_exempt
-def admire_num_views(request):
-    if request.method == 'POST':
-        good_content = request.POST.get('goodINPUT')
-        good_fileid = request.POST.get('goodID')        
-        bad_content = request.POST.get('badINPUT')
-        bad_fileid = request.POST.get('badID')
-    File.objects.filter(id=good_fileid).update(file_beadmired = good_content)
-    File.objects.filter(id=bad_fileid).update(file_benotadmired = bad_content)
+
+
+#包括article中的方法    已经写到了ｉｎｄｅｘ应用中
+
+# from django.views.decorators.csrf import csrf_exempt
+# @csrf_exempt
+# def admire_goodnum_views(request):
+#     if request.method == 'POST':
+#         good_content = request.POST.get('goodINPUT')
+#         good_id = request.POST.get('goodID')
+#         admireType = request.POST.get('admireType')
+#     print(admireType)
+#     if admireType == 'file':
+#         File.objects.filter(id=good_id).update(file_beadmired = good_content)
+#     else:
+#         Article.objects.filter(id=good_id).update(beadmired_num=good_content)
+        
+
+# def admire_badnum_views(request):
+#     if request.method == 'POST':      
+#         bad_content = request.POST.get('badINPUT')
+#         bad_id = request.POST.get('badID')
+#         admireType = request.POST.get('admireType')
+#     print(admireType)
+#     if admireType == 'file':  
+#         File.objects.filter(id=bad_id).update(file_benotadmired = bad_content)
+#     else:
+#         Article.objects.filter(id=bad_id).update(benotadmired_num=bad_content) 

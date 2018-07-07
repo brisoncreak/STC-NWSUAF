@@ -13,4 +13,7 @@ urlpatterns = [
     url(r'^back/reset/',index_back,name='back'),
     url(r'^notification/$',notify_views, name='notify'),
     url(r'^ws/$', ws_views),
-]
+
+    url(r'^show_goodAdmirenum/$',admire_goodnum_views,name="show_goodadmirenum"),
+    url(r'^show_badAdmirenum/$',admire_badnum_views,name="show_badadmirenum"),
+] 
