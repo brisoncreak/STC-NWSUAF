@@ -79,8 +79,10 @@ def index_register(request):
                 return redirect('/')
         if password1 == password2 and username!='' and email!='' and password1!='':
             password = make_password(password1)
-            User.objects.create(username = username,password = password, email = email)
-            messages.success(request,'注册成功,请登录')
+            user = User.objects.create(username = username,password = password, email = email)
+            messages.success(request,'注册成功')
+            request.session['username'] = user.username
+            request.session.set_expiry(7200)
             return redirect('/')
         else:
             messages.error(request,'注册失败,请重新注册')

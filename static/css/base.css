@@ -8,7 +8,7 @@ body{
     float:right;
     width:300px;
     min-height:800px;
-    border:1px solid;
+    //border:1px solid;
     background-color: white;
     margin-right: 10px;
 
@@ -19,7 +19,7 @@ body{
     width :auto;
     margin:0 auto;
     overflow:hidden;
-    border:1px solid;
+    //border:1px solid;
     z-index: 1;
 }
 #header-img {
