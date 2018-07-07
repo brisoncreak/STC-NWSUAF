@@ -22,7 +22,6 @@ def query_article_views(request):
     if request.session.get('id'):
         uid=request.session.get('id')
     listArticle=Article.objects.all().order_by("-id")
-
     return render(request,'query_article.html',locals())
 
 def read_my_views(request):

@@ -129,6 +129,7 @@ USE_TZ = False
 TIME_ZONE = 'Asia/Shanghai'
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

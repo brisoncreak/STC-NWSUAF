@@ -4,9 +4,9 @@
 
 {% block title %}{{u.username}}的主页 - {% endblock %}
 
-<!-- {% block head %}
-    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
-{% endblock %} -->
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/r_m.css'%}"/>
+{% endblock %}
 
 {% block navbar %}
     <li><a href="{% url 'index' %}">热门</a></li>
@@ -18,28 +18,57 @@
 
 {% block body %}
  
-    <p id="demo"></p>
-    <script>
-        
-    </script>
-
     <div id="main" class="">
-        
-        <div id="top" class="">
-            <h3>社区|{{u.username}}的文章</h3>
-            <hr>
+        <div id="bg">  
+                  
+            <div id="top" class="t">
+                <div id="l" class="t">
+                    <img src="/static/img/my.png" alt="">
+                </div>
+                <div id="r" class="t">
+                    <p class="sub">&nbsp;&nbsp;&nbsp;{{u.username}}的文章&nbsp;&nbsp;&nbsp;</p>
+                    <hr>
+                </div> 
+            </div>
+        </div>
+        <div class="a2" id="b">
+            <a id="back" href="{%url 'articles'%}">< 社区主页</a>
         </div>
         <div id="middle" class="">
             {% for a in listArticle %}
-                    <div id="article" class="">                
-                        <h3>{{a.topic}}</h3>
-                        <p>{{a.content}}</p>
-                        <p>{{a.create_date}}</p>
+                <div id="one">
+                    <div id="article" class="">  
+                        <div class="a1">
+                            <div class="t1" >
+                                <h2>{{a.topic}}&nbsp;&nbsp;&nbsp;</h2>
+                            </div>
+                            <div class="t1">
+                                <img id="i1" src="/static/img/feather.png" alt="">
+                            </div>
+                            <div class="a2">
+                                <div class="t1">
+                                    <img id="i2" src="/static/img/del.png" alt="">
+                                </div>
+                                <div class="t1">
+                                    <a href="{%url 'd_a' a.id%}">删除文章</a>
+                                </div>
+                            </div>
+                        </div>              
+                        <div class="a1">
+                            <pre>{{a.content}}</pre>
+                            <p id="time">{{a.create_date}}</p>
+                        </div>
+                        
                     </div>
                     <div>
-                        总赞数：{{a.like_num}}
+                        <div class="t1">
+                            <img id="like" src="/static/img/like.png" alt="">
+                        </div>
+                        <div class="t1" id="l">
+                            &nbsp;&nbsp;&nbsp;{{a.like_num}}
+                        </div>
                     </div>
-                    <div id="review" class="">
+                    <div id="rev" >
                         <h4>评论</h4> 
                         
                         {{a.reviews}}                  
@@ -55,10 +84,12 @@
                         
                         {%endfor%}  -->
                     </div>
-                    <a href="{%url 'd_a' a.id%}">删除文章</a>
+                    
+
                     <hr>
-                               
+                </div>              
             {%endfor%}   
+        </div>
         </div>
     </div>
 {% endblock %}
