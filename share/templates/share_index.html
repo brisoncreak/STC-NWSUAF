@@ -8,6 +8,10 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/share_index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/demo(1).css'%}"/>
+
+    <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
+    <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
+
     
 {% endblock %}
 
@@ -22,6 +26,7 @@
 {% block body %}
     <h2 class="title">最新发布</h2>
     <table class="table table-hover" border=1>
+    {%csrf_token%}
         <th>文件类别</th>
         <!-- <th>文件id</th> -->
         <th>发表用户</th>
@@ -61,17 +66,27 @@
                     <!-- |<a href="{%url 'del_files' x.id%}">删除</a> -->
                 </td>
                 <td>
+
         <!-- 好评端 -->
-                    <span id="goodSpan" onclick="sendGood({{x.id}})">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                    <span id="goodSpan" onclick="sendGood({{x.id}},'file',{{login_uid}})">
+                        {% if x.id in listfile_admire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                        {% endif %}
                     </span>
                     [<span id="goodnum{{x.id}}">{{x.file_beadmired}}</span>]
         <!-- 差评端 -->
                         |
-                    <span id="badSpan" onclick="sendBad({{x.id}})">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/> 
+                    <span id="badSpan" onclick="sendBad({{x.id}},'file',{{login_uid}})">
+                        {% if x.id in listfile_notadmire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/>   
+                        {% endif %}
                     </span>
                     [<span id="badnum{{x.id}}">{{x.file_benotadmired}}</span>]
+                    
                     <script language="JavaScript" src="../static/js/admire.js"></script>
                 </td>
 
@@ -85,6 +100,7 @@
 {% block side-search %}
     <div class="spacer">
         <form action="#" id="search">
+        {% csrf_token %}
             <div class="input-group">
             <input type="text" class="form-control" placeholder="搜索">
                 <span class="input-group-btn">
