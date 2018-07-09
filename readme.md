@@ -5,6 +5,8 @@
 
 * Django==1.11.8
 * PyMySQL==0.7.11
+* BeautifulSoap4==4.6.0
+* dwebsocket==0.4.2
 
 #### django-admin
 用户名:admin
@@ -15,6 +17,5 @@
 用户名:root
 密码：123456
 
-遇到table’*.djang_session‘doesn't exist
-报错 运行指令manage.py migrate
-
+数据库迁移直接运行指令 migrate
+遇到冲突可以重建数据库

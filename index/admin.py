@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'password']
+    list_display = ['username', 'password','degree_good','trade_count', 'good_mark', 'bad_mark']
     #添加链接
     list_display_links = ['username']
     #添加可编辑字段
@@ -13,19 +13,15 @@ class UserAdmin(admin.ModelAdmin):
     #date_hierarchy = DateField
     #右面添加过滤器
     list_filter = ['username']
-    #详细页面顺序
-    #fields = ('email', 'name', 'age')
-    #详细页面 属性分组
-    #fieldsets = (
-    #    ('基本设置',{
-    #       'fields':('country', 'website')
-    #    }),
-    #    ('高级设置',{
-    #        'fields':('name', 'address','city'),
-    #        'classes':('collapse',)
-    #    }),
-    #)
+
 admin.site.register(User, UserAdmin)
+
+class AdmirelogAdmin(admin.ModelAdmin):
+    list_display = ['uid','fid','aid','isGood','isFile']
+    list_display_links = ['uid']
+# uid　fid　　aid　isGood　　isFile
+
+admin.site.register(Admirelog, AdmirelogAdmin)
 
 
 class CollegetypeAdmin(admin.ModelAdmin):
@@ -42,4 +38,7 @@ class CollegesAdmin(admin.ModelAdmin):
     list_filter = ['title']
 admin.site.register(Colleges, CollegesAdmin)
 
-
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ['aim_user','have_read','arg0','arg1']
+    list_display_links = ['aim_user']
+admin.site.register(Notification, NotificationAdmin)

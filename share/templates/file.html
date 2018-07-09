@@ -7,7 +7,6 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/upload.css' %}">
-
 {% endblock %}
 
 {% block navbar %}
@@ -29,7 +28,16 @@
             </div> 
             <div class="indiv">
                 <span>资源类型 :</span><select name='list'>{% for college in colleges%}<option value="{{college.title}}">{{college.title}}</option>{% endfor %}</select>  
+                <br>
+                <span>资源状态 :</span>
+                <select name='fileStaus'>
+                    <option value="私有文档">私有文档</option>
+                    <option value="免费共享文档">免费共享文档</option>
+                    <option value="付费共享文档">付费共享文档</option>
+                </select>  
+
             </div> 
+            
             <div class="indiv">
                 <input type="submit" value="提交">
             </div>
@@ -41,6 +49,7 @@
 
 {% block side-search %}
     <div class="spacer">
+
         <form action="#" id="search">
             <div class="input-group">
             <input type="text" class="form-control" placeholder="搜索">
@@ -64,7 +73,5 @@
             </div>
         </form>
     </div>
-
 index
-
 {% endblock %}

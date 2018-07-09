@@ -61,6 +61,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR +'/templates'],
+        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'index.contexts.notify'
             ],
         },
     },
@@ -82,7 +84,7 @@ WSGI_APPLICATION = 'STC_NWSUAF.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stcdb1',
+        'NAME': 'stcdb',
 	    'USER': 'root',
 	    'PASSWORD': '123456',
 	    'HOST': 'localhost',
@@ -122,8 +124,10 @@ USE_I18N = True
 
 USE_L10N = True
 
-# USE_TZ = True
 USE_TZ = False
+
+TIME_ZONE = 'Asia/Shanghai'
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -136,9 +140,10 @@ STATICFILES_DIRS = (BASE_DIR,'static')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'mywebsite/static/')
 #send email
-# EMAIL_HOST = 'smtp.qq.com'
-# EMAIL_PORT = 25
-# EMAIL_HOST_USER = 'XXXX@qq.com' # 登陆第三方的邮箱账号
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_USE_TLS = True  # 必须配置为true
-# EMAIL_FROM = 'XXXX@qq.com'  # 主动发送的邮箱
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = '1441335655@qq.com'
+EMAIL_HOST_PASSWORD = 'vxqfvwveqytkbadd'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+

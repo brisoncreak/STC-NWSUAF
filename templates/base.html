@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/base.js' %}"></script>
     {% block head %}{% endblock %}
 
     <script>
@@ -35,9 +36,10 @@
         {% endblock %}
     </ul>
     {%endblock%}
-      <div class="header-bottom-right">
+    <div id="refresh-nav">
+      <div class="header-bottom-right" id="header-bottom-right">
           {% if request.session.username %}
-              <span><a href="#">{{ request.session.username }}</a>|<a href="#">消息</a>|<a href="/logout/">退出</a></span>
+              <span><a href="#">{{ request.session.username }}</a>|<a href="{%url 'notify'%}">消息<span class="badge">{{lang}}</span></a>|<a href="/logout/">退出</a></span>
           {% else %}
               <span>想加入讨论? 立即<a href="#" data-toggle="modal" data-target="#myModal">注册</a>
               或<a href="#" data-toggle="modal" data-target="#myModal1">登录</a>
@@ -45,6 +47,7 @@
               </span>
           {% endif %}
       </div>
+    </div>
 
 </nav>
 
@@ -109,6 +112,7 @@
                 </div>
                 <div class="login-ic">
                     <i class="icon"></i>
+
                     <input type="password"  name="password1" placeholder="请输入密码" onFocus="this.value = '';" onBlur="if (this.value == '') " onchange="checkPassword()"/>
                     <div class="clear"> </div>
                 </div>
@@ -125,7 +129,8 @@
                 </form>
             </div>
                  <p class="copy"> 注册即表示您同意
-                         ? 2018 STC-NWSAUF　有点东西平台</p>
+                         © 2018 STC-NWSAUF　有点东西平台</p>
+
             </div>  
 </div>    
 
@@ -167,23 +172,23 @@
                 </div>
                 <div class="login-ic">
                     <i class="icon"></i>
-                    <input type="password"  name="password" placeholder="请输入密码"  onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'password';}"
-                     required oninvalid="this.setCustomValidity('6~20字母数字或下划线')" oninput="setCustomValidity('')" onchange="checkPassword()"/>
+                    <input type="password"  name="password" placeholder="请输入密码"  onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'password';}"/>
                     <div class="clear"> </div>
                 </div>
                 <div class="copy">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input class="rem" type="checkbox" name="rem" id="rem-login-main">
+                <input class="rem" type="checkbox" name="rem" id="rem-login-main1">
                 <label for="rem-login-main" class="text-muted">记住我</label>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="copy1" class="text-muted" href="#" data-toggle="modal" data-target="#myModal2">忘记密码</a>
+                <a class="copy1" class="text-muted" href="#">忘记密码</a>
             </div>
                 <div class="log-bwn">
                     <input type="submit" value="Login" >
                 </div>
                 </form>
             </div>
-            <p class="copy"> 欢迎您加入我们<br>? 2018 STC-NWSAUF　有点东西平台</p>
+            <p class="copy"> 欢迎您加入我们<br>© 2018 STC-NWSAUF　有点东西平台</p>
+
         </div>  
 </div>    
 
@@ -212,6 +217,7 @@
             </div>
             <br>
             <div class="login-top">
+
             <form  action='/reset/' name="form1" method='POST' ">
                 {%csrf_token%}
                 <div class="login-ic">
@@ -225,7 +231,8 @@
                 </form>
             </div>
                  <p class="copy"> 找回密码
-                         ? 2018 STC-NWSAUF　有点东西平台</p>
+                         © 2018 STC-NWSAUF　有点东西平台</p>
+
             </div>  
 </div>    
 
@@ -243,7 +250,7 @@
 
     {% block side-search %}
     <div class="spacer">
-        <form action="#" id="search">
+        <form action="#" id="mysearch">
             <div class="input-group">
             <input type="text" class="form-control" placeholder="搜索">
                 <span class="input-group-btn">

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
+{% endblock %}
+
+{% block navbar %}
+    <li class="selected"><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="#">讨论</a></li>
+    <li><a href="/share">网盘</a></li>
+{% endblock %}
+
+
+{% block body %}
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {%if page_now != 1%}<li>
+    <a href="{%url 'notify'%}?page={{page_now|add:-1}}" aria-label="Previous">
+    {%else%}
+    <li class="disabled">
+    <a href="{%url 'notify'%}?page=1" aria-label="Previous">
+    {%endif%}
+      
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {%for i in page_range%}
+    {%if i == page_now%}
+    <li class="active"><a href="{%url 'notify'%}?page={{i}}">{{i}}</a></li>
+    {%else%}
+    <li><a href="{%url 'notify'%}?page={{i}}">{{i}}</a></li>
+    {%endif%}
+    {%endfor%}
+    
+    {%if page_now != page_sum%}
+    <li>
+    <a href="{%url 'notify'%}?page={{page_now|add:1}}" aria-label="Next">
+    {%else%}
+    <li class="disabled">
+    <a href="{%url 'notify'%}?page={{page_sum}}" aria-label="Next">
+    {%endif%}
+      
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+
+
+{%for noti in notis%}
+{%if noti.arg0 == 0%}
+<div class="panel panel-default">
+{%elif noti.arg0 == 1 %}
+<div class="panel panel-success">
+{%elif noti.arg0 == 2 %}
+<div class="panel panel-danger">
+{%elif noti.arg0 == 3 %}
+<div class="panel panel-danger">
+{%endif%}
+  <div class="panel-heading">{{noti.create_time|date:"Y-m-d H:i:s"}}
+  {%if not noti.have_read %}
+  <span class="label label-danger">未读</span>
+  {%else%}
+   <span class="label label-default">已读</span>
+  {%endif%}
+  </div>
+  <div class="panel-body">
+    {%if noti.arg0 == 0%}
+    
+    你收到来自{%if noti.arg3 == 0%}买家{%else%}卖家{%endif%}<a>{{noti.arg4.username}}</a>的聊天信息<span class="badge">{{noti.arg2}}</span>
+    <a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+    {%elif noti.arg0 == 1 %}
+    你收到来自买家<a>{{noti.arg4.username}}</a>的商品订单<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+    {%elif noti.arg0 == 2 %}
+    买家<a>{{noti.arg4.username}}</a>已付款<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+    {%elif noti.arg0 == 3 %}
+    卖家<a>{{noti.arg4.username}}</a>已确认收款<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+    {%endif%}
+
+  </div>
+</div>
+{% endfor %}
+
+
+
+
+
+{% endblock %}
+
+{% block side %}
+
+    <div class="spacer">
+        <form action="#" id="search">
+            <div class="input-group">
+            <input type="text" class="form-control" placeholder="发起新讨论">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

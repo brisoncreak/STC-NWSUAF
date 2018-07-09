@@ -3,17 +3,6 @@ from datetime import datetime
 
 from index.models import *
     
-# class Block(models.Model):
-#     name=models.CharField(max_length=30)
-#     infor=models.TextField()
-#     create_date=models.DateField(default=datetime.now)
-#     article_num=models.IntegerField(null=True)
-#     def __str__(self):
-#         return self.name
-#     class Meta:
-#         verbose_name = '版块'
-#         verbose_name_plural = verbose_name
-#         ordering = ['name']
 
 class Article(models.Model):
     topic=models.CharField(max_length=30)
@@ -25,7 +14,12 @@ class Article(models.Model):
     skim_num=models.IntegerField(null=True)
     like_num=models.IntegerField(null=True)
     user=models.ForeignKey(User)
-    collegetype=models.ForeignKey(Collegetype)
+    collegetype=models.ForeignKey(Collegetype) 
+    college = models.ForeignKey(Colleges)
+    #点赞
+    beadmired_num = models.IntegerField(default=0)
+    benotadmired_num = models.IntegerField(default=0)
+
     reviews = models.TextField(null=True)
 
     def __str__(self):
@@ -60,8 +54,6 @@ class Reply(models.Model):
     class Meta:
         verbose_name = '评论回复表'
         verbose_name_plural = verbose_name
-        
-
 
 class Like(models.Model):
     create_date=models.DateTimeField(default=datetime.now)
@@ -72,5 +64,3 @@ class Like(models.Model):
     class Meta:
         verbose_name = '赞表'
         verbose_name_plural = verbose_name
-
-

@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 
 
+
 # class BlockAdmin(admin.ModelAdmin):
 #     list_display = ['name', 'infor']
 #     #添加可编辑字段
@@ -10,11 +11,6 @@ from .models import *
 #     search_fields = ['name']
 #     #右面添加过滤器
 #     list_filter = ['name']
-    
-class LikeAdmin(admin.ModelAdmin):
-    list_display = ['create_date', 'user', 'article']
-    #添加搜索框
-    search_fields = ['user']
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -25,7 +21,10 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ['topic']
     #右面添加过滤器
     list_filter = ['topic']
-
+    class Media:
+        js = ('/static/js/kindeditor/kindeditor-all-min.js',
+              '/static/js/kindeditor/lang/zh-CN.js',
+              '/static/js/kindeditor/config.js')
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['article','user', 'create_date','content']
@@ -48,7 +47,6 @@ class ReplyAdmin(admin.ModelAdmin):
 
 
 # admin.site.register(Block, BlockAdmin)
-admin.site.register(Like, LikeAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Reply, ReplyAdmin)

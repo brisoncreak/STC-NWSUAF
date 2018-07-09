@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+{% endblock %}
+{%block body%}
+    <div class="good_inf">
+    <h2 class="title">我的订单</h2>
+    <div class="pic">
+    </div>
+    <div class="inf">    
+    <table class="table table-striped" style="width:100%;">
+    <tbody> 
+    <tr>
+        <td class="alone_inf" style="border:0px;">name:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">number:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">支付方式:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">下单时间:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+     <tr>
+        <td class="alone_inf" style="border:0px;">卖家name:</td>
+        <td class="alone_inf" style="border:0px;">10</td>
+    </tr>
+    <tr>
+        <td class="alone_inf" style="border:0px;">联系方式:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+     <tr>
+        <td class="alone_inf" style="border:0px;">订单状态:</td>
+        <td class="alone_inf" style="border:0px;">100</td>
+    </tr>
+    </tbody>
+    </table>
+    <div class="order_button"></div>
+    <a href="{% url 'ordershow' 0 %}" class="btn btn-default">返回订单目录</a>
+    <a href="{% url 'complaint_page' 0 %}" style="float: right;" class="btn btn-default">投诉</a>
+    </div>
+    </div>
+{%endblock%}
