@@ -36,7 +36,7 @@
 #OnePerson{
     clear:both;
     width: 660px;
-    height: 180px;
+    height: 120px;
     
 }/*
 a:visited {font-family:color:gray;}*/
@@ -75,7 +75,7 @@ a:active {font-family:color:#11FF11;}*/
 
 #demo{
     width: 660px;
-    height: 140px;
+    height: 70px;
 
     word-break: break-all;
 
