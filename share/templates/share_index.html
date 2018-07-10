@@ -11,8 +11,6 @@
 
     <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
     <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
-
-    
 {% endblock %}
 
 {% block navbar %}
@@ -58,12 +56,11 @@
                 <td>{{x.create_time}}</td>
                 <td>
                     {% if x.file_status != 2 %}
-                        <a href="{%url 'd_files' x.id%}">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
-                        
+                        <a href="{%url 'd_files' x.id%}" id="down">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+                       <!--  <input id="down" name="down" type="button" value="下载" onclick="window.location.href='/download_file/{{x.id}}'"> -->
                     {% else %}
                         <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
                     {% endif %}
-                    <!-- |<a href="{%url 'del_files' x.id%}">删除</a> -->
                 </td>
                 <td>
 

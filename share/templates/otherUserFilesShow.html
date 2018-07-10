@@ -69,10 +69,9 @@
                 </td>
 
                 <td>
-                        {% if file.file_status == 0 %}
-                            私有文档
-                           
-                        {% elif file.file_status == 1 %}
+                        {% if x.file_status == 0 %}
+                            私有文档     
+                        {% elif x.file_status == 1 %}
                            免费共享文档
                         {% else %}
                             付费共享文档

@@ -215,12 +215,12 @@ def index_views(request):
         return HttpResponseRedirect('/show_College/'+collegetitle)
 
 
-
+#按照学院显示文件
 def show_college(request,collegetitle):
     college = Colleges.objects.get(title=collegetitle)
     files = File.objects.filter(file_classify_id=college.id)
     return render(request,'singleCollegeShow.html',locals()) 
-
+#按照用户显示文件
 def show_user(request,userid):
     login_uname=request.session.get('username')
     login_user=User.objects.get(username=login_uname)
@@ -252,11 +252,12 @@ def show_user(request,userid):
 
         return render(request,'otherUserFilesShow.html',locals())
 
-
+#商品详情
 def show_file(request,fileid):
     file = File.objects.get(id=fileid)
     return render(request,'fileDetailShow.html',locals())
 
+#分页
 
 
 #包括article中的方法    已经写到了ｉｎｄｅｘ应用中
