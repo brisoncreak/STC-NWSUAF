@@ -243,7 +243,7 @@
 <br>
 <br>
 {% if is_buyer and order.status == 0%}
-<a class='btn btn-warning sidebtn'>取消交易</a>
+<a class='btn btn-warning sidebtn' href="{%url 'cancel' order.id%}">取消交易</a>
 {% endif%}
 
 {% if order.status == 1 %}

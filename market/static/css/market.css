@@ -107,7 +107,7 @@ a {
 
 .orderli{
     float: left;
-    width: 25%;
+    width: 20%;
 }
 .order_list{
     width: 80%;
@@ -115,7 +115,7 @@ a {
 }
 .order_selected{
     float: left;
-    width: 25%;
+    width: 20%;
     height: 50px;
     border: 1px solid ;
     background-color: white;

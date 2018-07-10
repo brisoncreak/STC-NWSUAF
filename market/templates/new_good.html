@@ -2,7 +2,7 @@
 {%block body%}
     <div class="add_good">
     <h2 class="title">添加商品</h2>
-  <form role="form" action="{%url 'addgood'%}" method="POST" enctype="multipart/form-data">
+  <form role="form" action="{%url 'addgood' isfile%}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
     <div class="form-group" style="width: 20%">
         <label for="name">商品名称</label>
@@ -20,7 +20,7 @@
         <option value="2">当面交易</option>
         </select>
     </div>
-       <div class="form-group">
+    <div class="form-group">
         <span>二维码</span><br>
         <input type="file" maxlength="20" name="pay_pic" />
     </div>

@@ -48,7 +48,7 @@ def docs_views(request):
 
 def goods_views(request):
     if request.method == 'GET':
-        goods = Good.objects.all().order_by('-create_time') 
+        goods = Good.objects.filter(isfile = False).filter(sell_times=0).order_by('-create_time') 
         page_now = request.GET.get('page')
         if not page_now:
             page_now = 1
@@ -75,19 +75,48 @@ def goods_views(request):
         print(page_sum)
         return render(request,'goods_index.html',locals())
 #商品详情页面
+@login_required
 def good_detail_views(request,good_id):
     if request.method=='GET':
+        user = User.objects.get(username=request.session['username'])
         good = Good.objects.get(id=good_id)
+        print(good.info)
+        remark = GoodRemark.objects.filter(good = good.id).order_by('-create_time')
+        comment = []
+        for i in remark:
+            x = 1
+            user = User.objects.get(username = i.creator)
+            print(user.profile_photo)
+            dic = {
+            'id':user.username,
+            'image':user.profile_photo,
+            'createtime':i.create_time,
+            'comment':i.content
+            }
+            
+            comment.append(dic)
         return render(request,'good_detail.html',locals())
 
 #确认购买页面
 @login_required
 def ordering_views(request, good_id):
-    good = Good.objects.get(id=good_id)
-    user = User.objects.get(username=request.session['username'])
-    order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
-    order_len = len(order)
-    return render(request, 'ordering.html', locals())
+    if request.method == 'GET':
+        good = Good.objects.get(id=good_id)
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
+        if order:
+            order = Order.objects.get(id = order)
+            print(order.status)
+            status = order.status
+            isfile = good.isfile
+        return render(request, 'ordering.html', locals())
+    else:
+        good = Good.objects.get(id=good_id)
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)        
+        order = Order.objects.get(id = order)
+        return redirect(reverse('paying', args=(order.id,)))
+
 
 #创建订单视图
 @login_required
@@ -101,16 +130,23 @@ def new_order_views(request, good_id):
         else:
             good = Good.objects.get(id=good_id)
             user = User.objects.get(username=request.session['username'])
-            
+            order = Order.objects.filter(good_id = good_id).filter(creator = user.id)
+            print(order)
+        if good.isfile == True or len(order)==0:
             if good.creator == user:
                 messages.warning(request, '不允许购买自己发布的商品')
                 return render(request, 'ordering.html', locals())
 
             new_order = Order(status=0, creator=user, good=good)
             new_order.save()
+            st = good.sell_times + 1
+            good.sell_times = st
+            good.save()
             n = Notification(aim_user=good.creator, arg0=1, arg1=new_order.id, arg4=user)
             n.save()
             return redirect(reverse('paying', args=(new_order.id,)))
+        else:
+            return redirect(reverse('paying', args=(order,)))
 
 #支付页面
 @login_required
@@ -154,7 +190,7 @@ def paying_views(request, order_id):
 
 #创建新商品页面
 @login_required
-def add_good_views(request):
+def add_good_views(request,isfile):
     if request.method == 'GET':
         return render(request,'new_good.html',locals())
     else:
@@ -171,7 +207,7 @@ def add_good_views(request):
         f.close()
         rinf = request.POST.get('good_inf')
         username = User.objects.get(username=request.session['username'])
-        new_good = Good(name=rname,creator = username,price = rprice,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0)
+        new_good = Good(name=rname,creator = username,price = rprice,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0,isfile = isfile)
         new_good.save()
         return redirect(good_list_views)
 @login_required
@@ -181,6 +217,34 @@ def order_views(request,orderstate):
         order_user = User.objects.get(username  =username)
         order_list =  order_user.orders.all() 
         order_list = order_list.filter(status=orderstate).order_by('create_time')
+        status_list = ['未付款','等待卖家确认','已完成','投诉中','已取消']
+        for i in order_list:
+            i.status = status_list[i.status]
+        status = orderstate
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 4
+        page_sum = len(order_list)//per_page+1
+        if page_sum > 6:
+            page_sum = len(order_list)//per_page
+        else:
+            page_sum = len(order_list)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        order_list = order_list[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
         return render(request,'order_view.html',locals())
 def order_detail_views(request,goodname):
     if request.method == 'GET':
@@ -342,3 +406,27 @@ def good_list_views(request):
         print(page_sum)
         return render(request,'good_list.html',locals())
 
+def cancel_order_views(request,order_id):
+    order = Order.objects.get(id = order_id)
+    order.status = 4
+    order.save()
+    return redirect(reverse('ordershow', args=(4,)))
+def comment_views(request,good_id):
+    if request.method == 'POST':
+        username=request.session['username']
+        user = User.objects.get(username=username)
+        good = Good.objects.get(id=good_id) 
+        contents = request.POST.get('content')
+        goodremark = GoodRemark.objects.get(creator = user.id,good = good)
+        remark_type = request.POST.get("remark")
+        if not goodremark:
+            remark = GoodRemark(creator = user,good = good,content=contents,remark_type=remark_type)
+            remark.save()
+        order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
+        comment_status = 1
+        goodremark = GoodRemark.objects.get(creator = user.id,good = good)
+        if order:
+            order = Order.objects.get(id = order)
+            status = order.status
+            isfile = good.isfile
+        return render(request, 'ordering.html', locals())
