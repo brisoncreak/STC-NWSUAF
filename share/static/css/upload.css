@@ -12,7 +12,7 @@ li{
 #outdiv{
     margin: 0 auto;
     width: 100%;
-    background-image: url(/static/img/bk1.jpg);
+    
 }
 span{
     font-size: 20px;
@@ -20,4 +20,13 @@ span{
 
 input,select{
     width:200px;
+}
+.content{
+    height: 800px;
+    background: url(/static/img/ppt.jpg)no-repeat;
+}
+.upload{
+    position: relative;
+    left:30%;
+    top:20%;
 }

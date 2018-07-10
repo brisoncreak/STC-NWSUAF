@@ -304,6 +304,55 @@ else {
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label>修改头像</label> 
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div class="login-form" style="background-image: url(/static/img/bbb.jpg);">
+            <div class="top-login">
+                    <span><img src="/static/img/logo.png" alt=""/></span>
+            </div>
+            <div class="login_log">
+            </div>
+            <br>
+            <div class="login-top">
+            <form action="/image/" method="POST" enctype="multipart/form-data">
+        {%csrf_token%}
+        <div id="outdiv">
+            <div class="indiv">
+                <span><font size="5">上传头像 :</font> </span><input type="file" name="image" placeholder="请上传文件" />
+            </div> 
+            <br>
+            <br>
+            <div class="log-bwn">
+                <input type="submit" value="提交">
+            </div>
+        </div>
+    </form>
+          
+            </div>
+                 <p class="copy">修改头像
+                         © 2018 STC-NWSAUF　有点东西平台</p>
+
+            </div>  
+</div>    
+
+        </div>
+  
+</div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 <div class="side" style="filter: alpha(opacity=100);float: right; ">
 
@@ -320,12 +369,13 @@ else {
             </div>
         </form>
     </div> 
+
     {% endblock %}
   
     <div class="spacer">
     {% if request.session.username %}
 <div class="img_wd">
-   <div class="c1_img"><img class="top1" src="/{{user.profile_photo}}" width="50px" height="50px" /><br>
+   <div class="c1_img"><a href="#" data-toggle="modal" data-target="#myModal3"><img class="top1" src="/{{user.profile_photo}}" width="50px" height="50px" /></a><br>
    <span ><font size="5">&nbsp;&nbsp;{{request.session.username}}</font></span></div>
 
 </div>

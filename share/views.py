@@ -17,6 +17,8 @@ from urllib.parse import unquote
 
 #upload files
 def upload_file(request):
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     if request.method == 'GET':
         colleges = Colleges.objects.all()
         return render(request,'file.html',locals())
@@ -64,9 +66,14 @@ def upload_file(request):
                 for chunk in obj.chunks():
                     f.write(chunk)
                 f.close()
+
                 File.objects.create(file_name=filename,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_status=status,file_classify_id=classifyid,file_beadmired=0,file_benotadmired=0)
-                messages.success(request,'上传成功')
-                return HttpResponseRedirect('/share')
+                if status==1 or status==0:
+                    messages.success(request,'上传成功')
+                    return HttpResponseRedirect('/share')
+                elif status==2:
+                    messages.success(request,'上传成功')
+                    return HttpResponseRedirect('/add_good/1')
             messages.error(request,'上传失败')
             return HttpResponseRedirect('/upload_file')
         messages.error(request,'请登录')
@@ -74,6 +81,8 @@ def upload_file(request):
 
 #upload files
 def upload_file2(request,collegename):
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     name = unquote(collegename, 'utf-8')
     #上传文件
     if request.method == 'GET':
@@ -356,7 +365,6 @@ def show_file(request,fileid):
     user=User.objects.get(username=login_uname)
     return render(request,'fileDetailShow.html',locals())
 
-#分页
 
 
 #包括article中的方法    已经写到了ｉｎｄｅｘ应用中

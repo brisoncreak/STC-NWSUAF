@@ -68,19 +68,54 @@ function validate() {
       
     var pwd = $("#password1").val();
     var pwd1 = $("#password2").val();
-
+    console.log(pwd+"-"+pwd1);
     if(pwd == pwd1)
      {
         $("#tishi").html("password ok");
          $("#tishi").css("color","green");
     $("#xiugai").removeAttr("disabled");
+    return true;
      }
 else {
         $("#tishi").html("password not same");
          $("#tishi").css("color","red")
           $("button").attr("disabled","disabled");  
+          return false;
       }
 }
+
+    function checkLoginPassword(str){
+        var xmlHttp;
+        var username = document.getElementById("username1").value;
+        var url = "/check_pass?password=" + str + "&username=" + username;
+        console.log(url);
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function(){
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                document.getElementById("tipPass").innerHTML = xmlHttp.responseText;
+                console.log(xmlHttp.responseText);
+            }
+        }
+        xmlHttp.open("GET",url,true);
+        xmlHttp.send(null);
+    }
+
+    function submitform(){
+        var tip = document.getElementById("tip2").innerHTML;
+        var tips = tip.substr(tip.length-17, 9);
+        var tipPassword = document.getElementById("tipPass").innerHTML;
+        var tipPass1 = tipPassword.substr(1, 3);
+        console.log(tipPass1);
+        var bool2 = (tipPass1 == "suc");
+        var bool1 = (tips == "available");
+        if(bool1 && bool2){
+            return true;
+        }else{
+            alert("用户名与密码不匹配");
+            return false;
+        }
+    }
+
 </script>
 </head>
 {% block bodyonload %}<body>{% endblock %}
@@ -176,7 +211,7 @@ else {
             </div>
             <br>
             <div class="login-top">
-            <form  action='/register/' method='post'>
+            <form  action='/register/' method='post' onsubmit="return validate();">
                 {%csrf_token%}
                 <div class="login-ic">
                     <i ></i>
@@ -249,15 +284,17 @@ else {
                 {%csrf_token%}
                 <div class="login-ic">
                     <i ></i>
-                    <input type="text" id="username" name="username" placeholder="请输入用户名" onFocus="this.value = '';" onBlur="check2(this.value)"
+                    <input type="text" id="username1" name="username" placeholder="请输入用户名" onFocus="this.value = '';" onBlur="check2(this.value)"
                     required oninvalid="setCustomValidity('用户名不能为空')" oninput="setCustomValidity('')"/>
                 <div class="clear"> </div>
                 <div id="tip2" style="float:center;"></div>
                 </div>
                 <div class="login-ic">
                     <i class="icon"></i>
-                    <input type="password"  id="password" name="password" placeholder="请输入密码"  onFocus="this.value = '';" required ="required" onBlur="if (this.value == '') " onchange="checkPassword()"/>
+                    <input type="password"  id="password" name="password" placeholder="请输入密码"  onFocus="this.value = '';" required ="required" onBlur="checkLoginPassword(this.value) " onchange="" />
+                    
                     <div class="clear"> </div>
+                    <div id="tipPass" style="display:none" > </div>
                 </div>
                 <div class="copy">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -267,11 +304,12 @@ else {
                 <a class="copy1" class="text-muted" href="#" data-toggle="modal" data-target="#myModal2">忘记密码</a>
             </div>
                 <div class="log-bwn">
-                    <input type="submit" value="Login" >
+                    <input type="submit" value="Login" onclick="return submitform();" >
                 </div>
                 </form>
             </div>
             <p class="copy"> 欢迎您加入我们<br>? 2018 STC-NWSAUF　有点东西平台</p>
+
         </div>  
 </div>    
 
