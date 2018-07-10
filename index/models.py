@@ -24,7 +24,7 @@ class User(models.Model):
         ordering = ['create_time']
         
 class Collegetype(models.Model):
-    title=models.CharField(max_length=20)
+    title=models.CharField(max_length=20,default="工科")
     desc=models.TextField()
     # picture = models.ImageField(null=True)
 
@@ -37,7 +37,7 @@ class Collegetype(models.Model):
 
 class Colleges(models.Model):
 
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=30,default="信息工程学院")
     classify = models.ForeignKey(Collegetype)
     desc = models.TextField()
     picture = models.ImageField(null=True)

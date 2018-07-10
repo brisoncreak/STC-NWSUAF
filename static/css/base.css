@@ -1,5 +1,4 @@
 body{
-  
 }
 .glyphicon {font-family: 'Glyphicons Halflings' !important;}
 .logo{
@@ -9,7 +8,7 @@ body{
     float:right;
     width:300px;
     min-height:800px;
-    //border:1px solid;
+    border:1px solid;
     background-color: white;
     margin-right: 10px;
 
@@ -18,11 +17,8 @@ body{
     margin:5px 5px;
     background-color: #fff;
     width :auto;
-
     margin:0 auto;
     overflow:hidden;
-    //border:1px solid;
-
     z-index: 1;
 }
 #header-img {
@@ -79,7 +75,7 @@ body{
 }
 
 .tabmenu li a{
-    padding: 3px 10px 4px 10px;
+    padding: 3px 10px 5px 10px;
     background-color: #eff7ff;
     text-decoration:none;
     font-size:20px;
@@ -98,7 +94,7 @@ li.selected a {
     border: 1px solid #5f99cf;
     border-bottom: 1px solid white;
     z-index: 100;
-    padding: 3px 10px 4px 10px;
+    padding: 3px 10px 6px 10px;
 
 }
 
@@ -120,10 +116,6 @@ li.selected a {
 }
 .container{
     width:100%;
-}
-.content {
-    margin: 5px 10px 0px 5px;
-    background-color: #fff;
 }
 .topic-title{
     font-size: 20px;
@@ -500,5 +492,3 @@ body {
 body {
     min-height: 540px;
 }
-
-
