@@ -85,10 +85,10 @@ else {
     {%block tabmenu%}
     <ul class="tabmenu">
         {% block navbar %}
-            <li><a href="#">主页</a></li>
-            <li><a href="#">商城</a></li>
-            <li><a href="#">社区</a></li>
-            <li><a href="#">资源共享</a></li>
+            <li><a href="{% url 'index' %}">主页</a></li>
+            <li><a href="{% url 'market_index' %}">商城</a></li>
+            <li><a href="/chat">社区</a></li>
+            <li><a href="/share">资源共享</a></li>
         {% endblock %}
     </ul>
     {%endblock%}
@@ -323,11 +323,86 @@ else {
     {% endblock %}
   
     <div class="spacer">
-    {% if request.user.is_authenticated %}
-    <h1>已登录</h1>
-    <a href="{% url 'logout'%}">logout</a>
+    {% if request.session.username %}
+<div class="img_wd">
+   <div class="c1_img"><img class="top1" src="/{{user.profile_photo}}" width="50px" height="50px" /><br>
+   <span ><font size="5">&nbsp;&nbsp;{{request.session.username}}</font></span></div>
 
-    {% endif %}
+</div>
+
+   <!--  <img src="/{{user.profile_photo}}" width="50px" height="50px" />
+    <br>{{request.session.username}}<br> -->
+    <div class="container">
+    <div class="row clearfix">
+        <div class="col-md-4 column">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            好评度
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{user.degree_good}}
+                        </td>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 column">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            好评数
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{user.good_mark}}
+                        </td>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 column">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            差评数
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{user.bad_mark}}
+                        </td>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    <br>
+    <span style="text-align: center;display: block;"><a class='btn btn-info sidebtn' href="{% url 'logout'%}">logout</a></span>
+    {% else %}
+    
         <form action="{% url 'login' %}" method="POST" class="login-form-side">
         {% csrf_token %}
             <input class="user form-control" type="text" name="username" placeholder="用户名">
@@ -346,6 +421,7 @@ else {
             </div>
             <div class="clear"></div>
         </form>
+    {% endif %}
     </div>
 
 <!--

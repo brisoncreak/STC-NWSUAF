@@ -96,13 +96,24 @@ else {
     {%block tabmenu%}
     <ul class="tabmenu">
         {% block navbar %}
-            <li><a href="#">热门</a></li>
-            <li><a href="#">市场</a></li>
-            <li><a href="#">讨论</a></li>
-            <li><a href="/share">网盘</a></li>
+            <li><a href="{% url 'index' %}">主页</a></li>
+            <li><a href="{% url 'market_index' %}">商城</a></li>
+            <li><a href="/chat">社区</a></li>
+            <li><a href="/share">资源共享</a></li>
         {% endblock %}
     </ul>
     {%endblock%}
+    <div class="spacer">
+        <form action="#" id="search">
+        {% csrf_token %}
+            <div class="input-group">
+            <input type="text" class="form-control" placeholder="搜索">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </span>
+            </div>
+        </form>
+    </div>
     <div id="refresh-nav">
       <div class="header-bottom-right" id="header-bottom-right">
           {% if request.session.username %}
