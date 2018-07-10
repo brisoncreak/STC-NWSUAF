@@ -1,28 +1,33 @@
 body{
-  
 }
 .glyphicon {font-family: 'Glyphicons Halflings' !important;}
 .logo{
     height:50px;
 }
+img.top1{
+    vertical-align: top;
+
+}
+.c1_img{
+    width: 300px;
+    position: relative;
+    left:40%;
+    top:50%;
+}
 .side{
     float:right;
     width:300px;
     min-height:800px;
-    //border:1px solid;
+    border:0px solid;
     background-color: white;
     margin-right: 10px;
-
 }
 .content{
     margin:5px 5px;
     background-color: #fff;
     width :auto;
-
     margin:0 auto;
     overflow:hidden;
-    //border:1px solid;
-
     z-index: 1;
 }
 #header-img {
@@ -54,7 +59,7 @@ body{
     border-radius: 0;
 }
 .navbar-default{
-    background-color: #ceddea;
+    background-color: #ececec !important;
 }
 .navbar-header{
     line-height:50px;
@@ -79,7 +84,7 @@ body{
 }
 
 .tabmenu li a{
-    padding: 3px 10px 4px 10px;
+    padding: 3px 10px 5px 10px;
     background-color: #eff7ff;
     text-decoration:none;
     font-size:20px;
@@ -98,7 +103,7 @@ li.selected a {
     border: 1px solid #5f99cf;
     border-bottom: 1px solid white;
     z-index: 100;
-    padding: 3px 10px 4px 10px;
+    padding: 3px 10px 6px 10px;
 
 }
 
@@ -107,9 +112,9 @@ li.selected a {
     position: absolute;
     bottom:0;
     right:0;
-    background-color: #EFF7FF;
+    background-color: #ececec;
     border-top-left-radius: 7px;
-    font-size: 16px;
+    font-size: 22px;
     padding: 2px 2px 1px 5px;
     color:gray;
 }
@@ -120,10 +125,6 @@ li.selected a {
 }
 .container{
     width:100%;
-}
-.content {
-    margin: 5px 10px 0px 5px;
-    background-color: #fff;
 }
 .topic-title{
     font-size: 20px;
@@ -500,5 +501,3 @@ body {
 body {
     min-height: 540px;
 }
-
-

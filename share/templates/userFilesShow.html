@@ -7,23 +7,24 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/upload.css' %}">
+    <link rel="stylesheet" href="{% static 'css/share_index.css' %}">
     <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
     <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
 {% endblock %}
 
 {% block navbar %}
-    <li ><a href="{% url 'index' %}">热门</a></li>
-    <li><a href="{% url 'market_index' %}">市场</a></li>
-    <li><a href="#">讨论</a></li>
-    <li class="selected"><a href="{% url 'share_index' %}">网盘</a></li>
+    <li ><a href="{% url 'index' %}">主页</a></li>
+    <li><a href="{% url 'market_index' %}">商城</a></li>
+    <li><a href="/chat">社区</a></li>
+    <li class="selected"><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
 {% block side %}
-
+<a class='btn btn-info sidebtn' href="{%url 'share_index'%}">文件列表</a>
 {% endblock %}
 
 {% block body %}
     <!-- user　　listfile -->
-
+<div class="buju">
     <h2>我上传的文件</h2>
     
     <table class="table table-hover" border=1>
@@ -65,25 +66,61 @@
 
                 </td>
                 <td>
-                    <select name="fileStaus" id="">
-
-                        {% if file.file_status == 0 %}
-                            <option value="私有文档" selected="selected">私有文档</option>
-                            <option value="免费共享文档">免费共享文档</option>
-                            <option value="付费共享文档">付费共享文档</option>
-                        {% elif file.file_status == 1 %}
-                            <option value="私有文档">私有文档</option>
-                            <option value="免费共享文档" selected="selected">免费共享文档</option>
-                            <option value="付费共享文档">付费共享文档</option>
+                    {% if file.file_status == 0 %}
+                    私有文档
+                            
+                        {% elif file.file_status == 1 %}免费共享文档
                         {% else %}
-                            <option value="私有文档">私有文档</option>
-                            <option value="免费共享文档">免费共享文档</option>
-                            <option value="付费共享文档" selected="selected">付费共享文档</option>
-                        {% endif %}                      
-                    </select>
-
+                            付费共享文档
+                        {% endif %}
                 </td>
             </tr>
         {% endfor %}
     </table>
+</div>
+<div class="pageJeep">
+    <div class="embed">
+       <nav aria-label="...">
+    <ul class="pagination">
+    {% if page_now == 1 %}
+    <li class="disabled">
+      <span>
+      <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    {%else%}
+    <li >
+      <span>
+      <span aria-hidden="true"><a href="{%url 'show_user' userid %}?page={{pre_page}}">&laquo;</a></span>
+      </span>
+    </li>
+    {%endif%}
+    {% for i in ranges %}
+    {% if i == page_now %}
+    <li class="active">
+      <span><a href="{%url 'show_user' userid %}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% else %}
+        <li>
+      <span><a href="{%url 'show_user' userid %}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% endif %}
+    {%endfor%}
+    {% if page_now == page_sum %}
+    <li class="disabled">
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%else%}
+    <li>
+      <a href="{%url 'show_user' userid %}?page={{next_page }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+    </div>
+    </div>
 {% endblock %}

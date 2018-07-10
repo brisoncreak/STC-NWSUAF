@@ -11,19 +11,18 @@
 
     <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
     <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
-
-    
 {% endblock %}
 
 {% block navbar %}
-    <li><a href="{% url 'index' %}">热门</a></li>
+    <li><a href="{% url 'index' %}">主页</a></li>
     <li><a href="{% url 'market_index' %}">市场</a></li>
     <li><a href="{% url 'chat_index' %}">社区</a></li>
-    <li class="selected"><a href="{% url 'share_index' %}">网盘</a></li>
+    <li class="selected"><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
 
 
 {% block body %}
+<div class="buju">
     <h2 class="title">最新发布</h2>
     <table class="table table-hover" border=1>
     {%csrf_token%}
@@ -58,12 +57,11 @@
                 <td>{{x.create_time}}</td>
                 <td>
                     {% if x.file_status != 2 %}
-                        <a href="{%url 'd_files' x.id%}">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
-                        
+                        <a href="{%url 'd_files' x.id%}" id="down">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+                       <!--  <input id="down" name="down" type="button" value="下载" onclick="window.location.href='/download_file/{{x.id}}'"> -->
                     {% else %}
                         <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
                     {% endif %}
-                    <!-- |<a href="{%url 'del_files' x.id%}">删除</a> -->
                 </td>
                 <td>
 
@@ -94,6 +92,52 @@
         {% endfor %}
                     
     </table>
+</div>
+<div class="pageJeep">
+    <div class="embed">
+       <nav aria-label="...">
+    <ul class="pagination">
+    {% if page_now == 1 %}
+    <li class="disabled">
+      <span>
+      <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    {%else%}
+    <li >
+      <span>
+      <span aria-hidden="true"><a href="{%url 'share_index' %}?page={{pre_page}}">&laquo;</a></span>
+      </span>
+    </li>
+    {%endif%}
+    {% for i in ranges %}
+    {% if i == page_now %}
+    <li class="active">
+      <span><a href="{%url 'share_index' %}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% else %}
+        <li>
+      <span><a href="{%url 'share_index' %}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% endif %}
+    {%endfor%}
+    {% if page_now == page_sum %}
+    <li class="disabled">
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%else%}
+    <li>
+      <a href="{%url 'share_index' %}?page={{next_page }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+    </div>
+    </div>
 
 {% endblock %}
 
@@ -164,10 +208,10 @@
             <option value="{{collegetype.title}}">{{collegetype.title}}</option>
         {% endfor %}
     </select><br>
-    请   选  择   学  院 ： 
+    请&nbsp;&nbsp;选 &nbsp;&nbsp;择&nbsp;&nbsp;学&nbsp;&nbsp;院 ： 
     <select id="s_2" style="width:100px" name="selcollege">
     </select>
-    <br><input type="submit" value="查询">
+    <br><input type="submit" class='btn btn-info sidebtn' value="查询">
 </form>
 <br>
 <!-- <a class='btn btn-default sidebtn active'></a>

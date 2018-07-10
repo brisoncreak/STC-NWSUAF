@@ -16,12 +16,6 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 
-class AdmirelogAdmin(admin.ModelAdmin):
-    list_display = ['uid','fid','aid','isGood','isFile']
-    list_display_links = ['uid']
-# uid　fid　　aid　isGood　　isFile
-
-admin.site.register(Admirelog, AdmirelogAdmin)
 
 
 class CollegetypeAdmin(admin.ModelAdmin):
