@@ -18,10 +18,10 @@
 {% endblock %}
 
 {% block navbar %}
-    <li><a href="{% url 'index' %}">热门</a></li>
-    <li class="selected"><a href="{% url 'market_index' %}">市场</a></li>
-    <li><a href="#">讨论</a></li>
-    <li><a href="#">网盘</a></li>
+    <li><a href="{% url 'index' %}">主页</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">商城</a></li>
+    <li><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
 
 
@@ -423,4 +423,16 @@
 
 
 
+{% endblock %}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
 {% endblock %}

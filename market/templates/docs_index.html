@@ -5,23 +5,24 @@
     <table class="table table-striped">
     <thead>
     <tr>
-        <th>docname</th>
-        <th>size</th>
-        <th>money</th>
-        <th>createtime</th>
+        <th>商品名称</th>
+        <th>价格</th>
+        <th>售出次数</th>
+        <th>好评率</th>
     </tr>
     </thead>
-    {%for i in '1 2 3'%}
+     {%for good in goods%}
     <tbody>
     <tr>
-        <div class="doc"><td>{{i}}name</td>
-        <td>{{i}}size</td>
-        <td>{{i}}money</td>
-        <td>{{i}}createtime</td>
+        <div class="doc">
+        <td><a href="{%url 'good_detail' good.id %}">{{good.name}}</a></td>
+        <td>{{good.price}}</td>
+        <td>{{good.sell_times}}</td>
+        <td>好评率</td>
         </div>
     </tr>
-    {%endfor%}
     </tbody>
+    {%endfor%}
     </table>
     </div>
 <div class="pageJeep">
@@ -71,6 +72,8 @@
 
 {%endblock%}
 {% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
 <a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
 <a class='btn btn-default sidebtn active' href="{% url 'docs_index' %}">付费文档</a>
 

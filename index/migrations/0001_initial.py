@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='Colleges',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=30)),
+                ('title', models.CharField(default='信息工程学院', max_length=30)),
                 ('desc', models.TextField()),
                 ('picture', models.ImageField(null=True, upload_to='')),
             ],
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
             name='Collegetype',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=20)),
+                ('title', models.CharField(default='工科', max_length=20)),
                 ('desc', models.TextField()),
             ],
             options={

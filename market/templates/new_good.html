@@ -2,11 +2,11 @@
 {%block body%}
     <div class="add_good">
     <h2 class="title">添加商品</h2>
-  <form role="form" action="{%url 'addgood' isfile%}" method="POST" enctype="multipart/form-data">
+  <form role="form" action="{%url 'addgood' file%}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
     <div class="form-group" style="width: 20%">
         <label for="name">商品名称</label>
-        <input type="text" required oninvalid="setCustomValidity('请输入商品姓名');"oninput="setCustomValidity('');" class="form-control" name="good_name" placeholder="请输入名称">
+        <input type="text" required oninvalid="setCustomValidity('请输入商品姓名');"oninput="setCustomValidity('');" class="form-control" name="good_name" value="{{filegood.file_name}}" >
     </div>
     <div class="form-group" style ="width: 20%">
         <label for="name">价格</label>
@@ -30,7 +30,7 @@
 
      <div class="form-group">
          <div class="indiv">
-             <span>商品图片</span><br><input type="file" name="good_pic" maxlength="20" value="/home/tarena/MyProject/fruitday/static/upload/goods/1-270x270-32-DBR4THAT_1nRC1Mv.jpg" 　required oninvalid="setCustomValidity('请上传商品图片');"/>
+             <span>商品图片</span><br><input type="file" name="good_pic" maxlength="20"  　required oninvalid="setCustomValidity('请上传商品图片');" oninput="setCustomValidity('');"/>
         </div> 
     </div>
     <div class="form-group">
@@ -46,3 +46,15 @@
     
 </script>
 {%endblock%}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+{% endblock %}

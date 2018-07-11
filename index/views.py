@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from STC_NWSUAF.tools import login_required
-
+import os
 from dwebsocket import require_websocket
 from bs4 import BeautifulSoup
 import json
@@ -267,7 +267,7 @@ def check_email(request):
     return HttpResponse(json.dumps(str1))
 def check_name1(request):
     username1 = request.GET.get("username")
-    user=User.objects.filter(username=username1)
+    user=User.objects.get(username=username1)
     if user:
         str1 = "<font color='green'>username is available</font>"
     elif username1=='':
@@ -276,3 +276,32 @@ def check_name1(request):
         str1 = "<font color='red'>username not exist</font>"
         
     return HttpResponse(json.dumps(str1))
+
+def check_pass(request):
+    password1 = request.GET.get("password")
+    username1 = request.GET.get("username")
+    print(password1 + username1)
+    user=User.objects.get(username=username1)
+    print(user.email)
+    if check_password(password1,user.password):
+        str1 = "success"
+    else: 
+        str1 = "fail"
+        
+    return HttpResponse(json.dumps(str1))
+
+def image_view(request):
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
+    if request.method == 'POST':
+        obj=request.FILES.get('image')
+        file_path = os.path.join('static','upload','profile_photo',obj.name)
+        f = open(file_path, 'wb')
+        for chunk in obj.chunks():
+            f.write(chunk)
+        f.close()
+        user.profile_photo=file_path
+        user.save()
+        return HttpResponseRedirect('/share')
+    message.error("修改头像失败")
+    return HttpResponseRedirect('/')

@@ -15,13 +15,14 @@ from bs4 import BeautifulSoup
 def index_views(request):
     if request.method == 'GET':
         login_uname=request.session.get('username')
-        user=User.objects.get(username=login_uname)
+        if login_uname:
+            user=User.objects.get(username=login_uname)
         return redirect(reverse('goods_index'))
 
 #付费文档页面
 def docs_views(request):
     if request.method == 'GET':
-        goods = Good.objects.all().order_by('-create_time') 
+        goods = Good.objects.filter(isfile = True).order_by('-create_time') 
         page_now = request.GET.get('page')
         if not page_now:
             page_now = 1
@@ -78,10 +79,11 @@ def goods_views(request):
         print(page_sum)
         return render(request,'goods_index.html',locals())
 #商品详情页面
-@login_required
 def good_detail_views(request,good_id):
     if request.method=='GET':
-        user = User.objects.get(username=request.session['username'])
+        username=request.session.get('username')
+        if username:
+            user = User.objects.get(username=username)
         good = Good.objects.get(id=good_id)
         print(good.info)
         remark = GoodRemark.objects.filter(good = good.id).order_by('-create_time')
@@ -201,8 +203,10 @@ def paying_views(request, order_id):
 
 #创建新商品页面
 @login_required
-def add_good_views(request,isfile):
+def add_good_views(request,file):
     if request.method == 'GET':
+        if  int(file)== True :
+            filegood = File.objects.get(id = file)
         return render(request,'new_good.html',locals())
     else:
         rname = request.POST.get('good_name')
@@ -211,15 +215,25 @@ def add_good_views(request,isfile):
         rpay_pic = request.POST.get('pay_pic')
         obj = request.FILES.get('good_pic')
         if not obj :
+            filegood = File.objects.get(id = file)
+            messages.warning(request, '请上传商品图片')
             return render(request,'new_good.html',locals())
         file_path = os.path.join('static','upload','alipay',obj.name)
         f = open(file_path, 'wb')
         for chunk in obj.chunks():
             f.write(chunk)
         f.close()
+        print(file_path)
         rinf = request.POST.get('good_inf')
         username = User.objects.get(username=request.session['username'])
-        new_good = Good(name=rname,creator = username,price = rprice,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0,isfile = isfile)
+        if file == '0':
+            isfile = 0
+            new_good = Good(name=rname,creator = username,price = rprice,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0,isfile = isfile)
+        else :
+            isfile = 1
+            filegood = File.objects.get(id = file)
+            print(1)
+            new_good = Good(name=rname,creator = username,price = rprice,file=filegood,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0,isfile = isfile)
         new_good.save()
         return redirect(good_list_views)
 @login_required
@@ -339,7 +353,22 @@ def seller_ok_views(request, order_id):
         if user != order.good.creator:
             messages.error(request, '没有权限')
             return render(request, '/', locals())
-
+        good =order.good
+        good = Good.objects.get(id = good.id)
+        receiver = order.creator
+        file = good.file
+        if file:
+            file = File.objects.get(id =file.id)
+            print(file.file_bedown)
+            f = File(
+                file_name=file.file_name,
+                file_size=file.file_size,
+                file_bedown = file.file_bedown,
+                file_classify = file.file_classify,
+                file = file.file,
+                user = receiver
+            )
+            f.save()
         order.buyer_ok = True
         order.status = 2
         order.save()
@@ -360,7 +389,7 @@ def seller_ok_views(request, order_id):
         #消息处理
         n = Notification(aim_user=buyer, arg0=3, arg1=order_id, arg4=user)
         n.save()
-
+        messages.warning(request, '文件已放入您的网盘中')
         return redirect(reverse('paying', args=(order.id,)))
 
 @require_websocket

@@ -5,7 +5,7 @@ from index.models import *
     
 
 class Article(models.Model):
-    topic=models.CharField(max_length=30)
+    topic=models.CharField(max_length=30,default="1")
     lable=models.CharField(max_length=30)
     content=models.TextField()
     create_date=models.DateTimeField(default=datetime.now)

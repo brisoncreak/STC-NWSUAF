@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='Article',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('topic', models.CharField(max_length=30)),
+                ('topic', models.CharField(default='1', max_length=30)),
                 ('lable', models.CharField(max_length=30)),
                 ('content', models.TextField()),
                 ('create_date', models.DateTimeField(default=datetime.datetime.now)),
@@ -50,8 +50,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='index.User')),
             ],
             options={
-                'verbose_name_plural': '赞表',
                 'verbose_name': '赞表',
+                'verbose_name_plural': '赞表',
             },
         ),
         migrations.CreateModel(
@@ -62,8 +62,8 @@ class Migration(migrations.Migration):
                 ('create_date', models.DateTimeField(default=datetime.datetime.now)),
             ],
             options={
-                'verbose_name_plural': '评论回复表',
                 'verbose_name': '评论回复表',
+                'verbose_name_plural': '评论回复表',
             },
         ),
         migrations.CreateModel(
@@ -77,8 +77,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='index.User')),
             ],
             options={
-                'verbose_name_plural': '文章评论表',
                 'verbose_name': '文章评论表',
+                'verbose_name_plural': '文章评论表',
             },
         ),
         migrations.AddField(

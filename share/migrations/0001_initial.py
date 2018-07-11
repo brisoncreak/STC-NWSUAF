@@ -27,9 +27,10 @@ class Migration(migrations.Migration):
                 ('aid', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='chat.Article')),
             ],
             options={
-                'verbose_name_plural': '点赞表',
+
                 'ordering': ['create_time'],
                 'verbose_name': '点赞表',
+                'verbose_name_plural': '点赞表',
             },
         ),
         migrations.CreateModel(
@@ -48,8 +49,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='index.User')),
             ],
             options={
-                'verbose_name_plural': '文件',
                 'verbose_name': '文件',
+                'verbose_name_plural': '文件',
             },
         ),
         migrations.AddField(

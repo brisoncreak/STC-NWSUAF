@@ -9,10 +9,10 @@
 {% endblock %}
 
 {% block navbar %}
-    <li><a href="{% url 'index' %}">热门</a></li>
-    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="{% url 'index' %}">主页</a></li>
+    <li><a href="{% url 'market_index' %}">商城</a></li>
     <li class="selected"><a href="{% url 'chat_index' %}">社区</a></li>
-    <li><a href="{% url 'share_index' %}">网盘</a></li>
+    <li><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
 
 
@@ -40,29 +40,95 @@
                     <div id="article" class="">  
                         <div class="a1">
                             <div class="t1" >
-                                <h2>{{a.topic}}&nbsp;&nbsp;&nbsp;</h2>
+                                <p id="at">{{a.topic}}&nbsp;&nbsp;&nbsp;</p>
                             </div>
                             <div class="t1">
                                 <img id="i1" src="/static/img/feather.png" alt="">
                             </div>
+                            
                         </div>              
                         <div class="a1">
-                            <pre>{{a.content}}</pre>
+                            <div id="cont"><p>{{a.content|safe}}</p></div>
                             <p id="time">{{a.create_date}}</p>
                         </div>
                         
                     </div>
-                    <div>
-                        <div class="t1">
-                            <img id="like" src="/static/img/like.png" alt="">
+                    <div id="lik">
+                        <div class="t0">
+                            <div class="t1">
+                                <img id="like" src="/static/img/like.png" alt="">
+                            </div>
+                            <div class="t1" id="l">
+                                &nbsp;&nbsp;&nbsp;{{a.beadmired_num}}
+                            </div>  
                         </div>
-                        <div class="t1" id="l">
-                            &nbsp;&nbsp;&nbsp;{{a.like_num}}
-                        </div>
-                    </div>     
-                </div>             
+                        <div class="t0">
+                            <div class="t1">
+                                <img id="like" src="/static/img/unlike.png" alt="">
+                            </div>
+                            <div class="t1" id="l">
+                                &nbsp;&nbsp;&nbsp;{{a.benotadmired_num}}
+                            </div> 
+                        </div> 
+                                   
+                    </div>
+                    <div id="rev" >
+                        <p>评论</p> 
+                        
+                        {{a.reviews | safe}}                  
+                        
+                    </div>
+                    
+
+                    <hr>
+                </div>              
             {%endfor%}   
         </div>
         </div>
+        <div class="pageJeep">
+            <div class="embed">
+                <nav aria-label="...">
+                <ul class="pagination">
+                {% if page_now == 1 %}
+                <li class="disabled">
+                  <span>
+                  <span aria-hidden="true">&laquo;</span>
+                  </span>
+                </li>
+                {%else%}
+                <li >
+                  <span>
+                  <span aria-hidden="true"><a href="{%url 'r_m'%}?page={{pre_page}}">&laquo;</a></span>
+                  </span>
+                </li>
+                {%endif%}
+                {% for i in ranges %}
+                {% if i == page_now %}
+                <li class="active">
+                  <span><a href="{%url 'r_m'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                    <li>
+                  <span><a href="{%url 'r_m'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+                </li>
+                {% endif %}
+                {%endfor%}
+                {% if page_now == page_sum %}
+                <li class="disabled">
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {%else%}
+                <li>
+                  <a href="{%url 'r_m'%}?page={{next_page }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {%endif%}
+              </ul>
+            </nav>
+                </div>
+
     </div>
 {% endblock %}

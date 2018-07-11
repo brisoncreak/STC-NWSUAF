@@ -12,8 +12,8 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('index', '0001_initial'),
         ('share', '0001_initial'),
+        ('index', '0001_initial'),
     ]
 
     operations = [
