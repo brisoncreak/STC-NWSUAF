@@ -9,13 +9,13 @@
 }
 
 #bg{
-    background: url("/static/img/bg.jpg");
+    background: url("/static/img/bgc.jpg");
     height: 120px;
     display: flex;
     line-height: 58px;
     padding: 0 20px;
     position:relative;
-    width: 1186px;
+    width: 1250px;
     margin-bottom: 50px;
 }
 
@@ -64,6 +64,10 @@
     font-size: 16px;
 }
 
+.t0{
+    float: left;
+    width: 10%;
+}
 .t1{
     float: left;
 }
@@ -94,6 +98,7 @@
 #rev{
     clear:both;
     margin-top: 50px;
+    font-size: 19px;
 }
 
 #l{
@@ -107,4 +112,19 @@
 #b{
     margin-right: 20px;
     margin-bottom: 15px;
+}
+
+#at{
+    font-size: 35px;
+}
+
+#cont{
+    background-color: #f5f5f5;
+    margin-top: 5px;
+    margin-bottom: 18px;
+    border-radius: 20px;
+}
+
+#lik{
+    margin: 15px 0 10px 0;
 }

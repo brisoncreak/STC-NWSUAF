@@ -116,10 +116,12 @@ function checkLoginPassword(str){
     {%block tabmenu%}
     <ul class="tabmenu">
         {% block navbar %}
+
             <li><a href="{% url 'index' %}">主页</a></li>
             <li><a href="{% url 'market_index' %}">商城</a></li>
             <li><a href="/chat">社区</a></li>
             <li><a href="/share">资源共享</a></li>
+
         {% endblock %}
     </ul>
     {%endblock%}
