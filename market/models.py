@@ -36,7 +36,7 @@ class Good(models.Model):
 class Order(models.Model):
 
     status_list = ((0, '等待支付'), (1, '等待卖家确认'),(2, '交易完成'), (3, '投诉中'), (4, '交易取消'))
-    creator = models.ForeignKey(User, null=False)
+    creator = models.ForeignKey(User, null=False,related_name='orders')
     good = models.ForeignKey(Good, null=False)
     create_time = models.DateTimeField(default=datetime.now)
     status = models.IntegerField(choices=status_list)

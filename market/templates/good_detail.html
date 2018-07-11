@@ -17,7 +17,7 @@
     <div class="good_inf">
     <h2 class="title">{{good.name}}</h2>
     <div class="col-xs-6 col-md-4" >
-      <img src="/{{good.image}}"  class="img-circle">
+      <img src="/{{good.image}}"  class="img-circle" style="width: 190px;height: 190px;">
     </div>
     <div class="inf">    
     <table class="table table-striped" style="width:100%;">
@@ -48,30 +48,42 @@
     </div>
 
     </div>
+    {%if good.isfile == True%}
     <div class="comment">
     <h2 class="title" style="width:100%;">评论</h2>
     <div class="panel panel-default"  style="
     position: relative;
     margin: auto;
     overflow: hidden;">
-        {%for i in '123456'%}
-        <div style="width: 70px;float:left; height: 60px; overflow: hidden;">
-        <img  src="/{{good.image}}"  style="width: 50px; float:left; height: 50px;" class="img-circle">
-        </div>
+            {%for i in comment%}
+            <div style="width: 70px;float:left; height: 60px; overflow: hidden;">
+            {%if i.image%}
+            <img  src="/{{i.image}}"  style="width: 50px; float:left; height: 50px;" class="img-circle">
+            {%else%}
+            <img  src="/static/upload/默认头像.jpg"  style="width: 50px; float:left; height: 50px;" class="img-circle">
+            {%endif%}
+            </div>
             <div style="width:92%;float:left; overflow: hidden; ">
-            ID <font size="1">2015-12-03</font>
+             {{i.id}}<font size="1">{{i.createtime}}</font>
             </div> 
             <div style="width:92%;float:left;height: 44px;">
-                Panel content
+            {{i.comment}}
             </div>
-        {%endfor%}
+            {%endfor%}
     </div>
     </div>
+    {%endif%}
 {% endblock %}
 {% block side %}
-<a class='btn btn-default sidebtn active'>校园二手</a>
-<a class='btn btn-default sidebtn'>付费文档</a>
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
 <br>
 <br>
 <br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+{% endblock %}
 {% endblock %}

@@ -5,22 +5,24 @@
     <table class="table table-striped">
     <thead>
     <tr>
-        <th>docname</th>
-        <th>size</th>
-        <th>money</th>
-        <th>createtime</th>
+        <th>商品名称</th>
+        <th>价格</th>
+        <th>售出次数</th>
+        <th>好评率</th>
     </tr>
     </thead>
-    {%for i in '1 2 3 4 5 6 7 8 9 10'%}
+     {%for good in goods%}
     <tbody>
     <tr>
-        <td>{{i}}name</td>
-        <td>{{i}}size</td>
-        <td>{{i}}money</td>
-        <td>{{i}}createtime</td>
+        <div class="doc">
+        <td><a href="{%url 'good_detail' good.id %}">{{good.name}}</a></td>
+        <td>{{good.price}}</td>
+        <td>{{good.sell_times}}</td>
+        <td>好评率</td>
+        </div>
     </tr>
-    {%endfor%}
     </tbody>
+    {%endfor%}
     </table>
     </div>
 <div class="pageJeep">
@@ -36,18 +38,18 @@
     {%else%}
     <li >
       <span>
-      <span aria-hidden="true"><a href="{%url 'goods_index'%}?page={{pre_page}}">&laquo;</a></span>
+      <span aria-hidden="true"><a href="{%url 'docs_index'%}?page={{pre_page}}">&laquo;</a></span>
       </span>
     </li>
     {%endif%}
     {% for i in ranges %}
     {% if i == page_now %}
     <li class="active">
-      <span><a href="{%url 'goods_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+      <span><a href="{%url 'docs_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
     </li>
     {% else %}
         <li>
-      <span><a href="{%url 'goods_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+      <span><a href="{%url 'docs_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
     </li>
     {% endif %}
     {%endfor%}
@@ -59,7 +61,7 @@
     </li>
     {%else%}
     <li>
-      <a href="{%url 'goods_index'%}?page={{next_page }}" aria-label="Next">
+      <a href="{%url 'docs_index'%}?page={{next_page }}" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
@@ -70,6 +72,8 @@
 
 {%endblock%}
 {% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
 <a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
 <a class='btn btn-default sidebtn active' href="{% url 'docs_index' %}">付费文档</a>
 
@@ -77,5 +81,5 @@
 <br>
 <br>
 
-<a class='btn btn-info sidebtn' href="{% url 'addgood' %}">添加新商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
 {% endblock %}

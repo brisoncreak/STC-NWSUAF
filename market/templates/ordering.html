@@ -54,26 +54,46 @@
   </div>
 </div>
 <div class="panel panel-default">
- <div class="panel-body">
- <p>1. 交易发起前，请您确认已阅读并同意卖家提出的条款，并再次确认交易内容无误后，再点击购买按钮。</p>
+<div class="panel-body">
+<p>1. 交易发起前，请您确认已阅读并同意卖家提出的条款，并再次确认交易内容无误后，再点击购买按钮。</p>
 <p>2. 交易发起后，请您于付款期限截止前转帐至指定账户，并标记已付款完毕，逾期系统将自动取消交易。</p>
 <p>3. 建议您在交易前先查看卖家信息，检视相关交易记录及评价，以減少交易纠纷。</p>
 <p>4. 交易过程请使用平台的聊天系统进行沟通，平台外的对话记录将无法作为交易纠纷的依据。</p>
 <p>5. 温馨提示：超过三笔取消订单，将被冻结当天下单权限。</p>
 </div>
 </div>
-{%if True%}
+{%if not order%}
 <form action="{% url 'add_order' good.id %}" method="POST"> 
 {% csrf_token %}
 <input type="checkbox" id="confirm-buy" name="confirm-buy">
 <label for="confirm-buy" class="text-muted" >我已经阅读并确认以上交易信息</label>
 <input class="btn btn-default" type="submit" value="立即购买">
 </form>
-{%elif good.isfile and order and order.status == 2%}
-   <h2 class="title" style="width:100%;">发表评价</h2>
-  <form action="{% url 'good_detail' good.id %}" method="POST"> 
+{%elif status == 0%}
+  <form action="{% url 'ordering' good.id %}" method="POST"> 
   {% csrf_token %}
-  <div class="panel panel-default"  style="
+  <input class="btn btn-default" type="submit" value="去付款">
+  </form>
+{%elif comment_status == 1 %}
+   <div style="width: 70px;float:left; height: 60px; overflow: hidden;">
+            {%if user.image%}
+            <img  src="/{{user.image}}"  style="width: 50px; float:left; height: 50px;" class="img-circle">
+            {%else%}
+            <img  src="/static/upload/默认头像.jpg"  style="width: 50px; float:left; height: 50px;" class="img-circle">
+            {%endif%}
+            </div>
+            <div style="width:92%;float:left; overflow: hidden; ">
+             {{user.username}}<font size="1">{{goodremark.create_time}}</font>
+            </div> 
+            <div style="width:92%;float:left;height: 44px;">
+            {{goodremark.content}}
+            </div>
+            <a href="{% url　'goods_index'%}" class="btn btn-default">返回商品主页</a>
+{%elif status == 2 and isfile == 0%}
+  <h2 class="title" style="width:100%;">发表评价</h2>
+<form action="{% url 'comment' good.id %}" method="POST" enctype="multipart/form-data"> 
+{% csrf_token %}
+<div class="panel panel-default"  style="
     position: relative;
     margin: auto;
     overflow: hidden;">
@@ -81,13 +101,19 @@
         <img  src="/{{good.image}}"  style="width: 50px; float:left; height: 50px;" class="img-circle">
         </div>
             <div style="width:86%;float:left; overflow: hidden; ">
-              <textarea  style="resize:none;" class="form-control" id="name" placeholder="请输入名称"></textarea>
+              <textarea  style="resize:none;" class="form-control" name="content" placeholder="发表您的评论"></textarea>
             </div> 
             <div style="width:92%;float:left;height: 44px;">
+              <label class="radio-inline">
+              <input type="radio" name="remark" id="type1" value="0" checked="true"> 好评
+              </label>
+              <label class="radio-inline">
+              <input type="radio" name="remark" id="type2" value="1"> 差评
+              </label>
               　　<input style="float: right;" type="submit" name="" value="提交论评">
             </div>
     </div>
-  </form>
+</form>
 {%endif%}
 
 
@@ -119,4 +145,16 @@
 <br>
 
 <a class='btn btn-warning sidebtn'>返回</a>
+{% endblock %}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
 {% endblock %}

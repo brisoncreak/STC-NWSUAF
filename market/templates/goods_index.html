@@ -3,7 +3,7 @@
     <h2 class="title">二手商品</h2>
     {% for good in goods %}
     <div class = "goodlist" align="center">
-        <a href="{% url 'good_detail' good.id %}"><img src="/{{good.image}}"></a>
+        <a href="{% url 'good_detail' good.id %}"><img src="/{{good.image}}" style="width: 200px;height: 230px;"></a>
         <a href="{% url 'good_detail' good.id %}" >{{good.name}}</a>
     </div>
     {%endfor%}
@@ -52,4 +52,16 @@
 </nav>
     </div>
 
+{% endblock %}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn active' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
 {% endblock %}

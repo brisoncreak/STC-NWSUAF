@@ -409,7 +409,7 @@
 <br>
 <br>
 {% if is_buyer and order.status == 0%}
-<a class='btn btn-warning sidebtn'>取消交易</a>
+<a class='btn btn-warning sidebtn' href="{%url 'cancel' order.id%}">取消交易</a>
 {% endif%}
 
 {% if order.status == 1 %}
@@ -423,4 +423,16 @@
 
 
 
+{% endblock %}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
 {% endblock %}
