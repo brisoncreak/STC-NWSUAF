@@ -12,7 +12,7 @@
     <li class="selected"><a href="{% url 'index' %}">主页</a></li>
     <li><a href="{% url 'market_index' %}">商城</a></li>
     <li><a href="/chat">社区</a></li>
-    <li><a href="/share">资源共享</a></li>
+    <li><a href="/share">共享文章</a></li>
 {% endblock %}
 
 
@@ -63,6 +63,10 @@
 <div class="panel panel-danger">
 {%elif noti.arg0 == 3 %}
 <div class="panel panel-danger">
+{%elif noti.arg0 == 4 %}
+<div class="panel panel-success">
+{%elif noti.arg0 == 6 %}
+<div class="panel panel-success">
 {% else %}
 <div class="panel panel-default">
 {%endif%}
@@ -90,11 +94,12 @@
     {%elif noti.arg0 == 3 %}
 
     卖家<a>{{noti.arg4.username}}</a>已确认收款<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
-    
+    {%elif noti.arg0 == 4 %}
+    用户<a>{{noti.arg4.username}}</a>踩了你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
+    {%elif noti.arg0 == 6 %}
+    用户<a>{{noti.arg4.username}}</a>赞你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
     {%else%}
-
     {{noti.content}}
-
     {%endif%}
 
   </div>
