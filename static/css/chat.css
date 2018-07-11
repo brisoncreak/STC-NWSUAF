@@ -20,27 +20,31 @@
     -webkit-box-pack: justify;
 }
 
-#left{
-    clear: both;
-    float: left;
-    width:200px;
-}
-
 #Person{
     clear:both;
     float: left;
     margin-left:200px;
-    width:auto;%
+    width:75%; 
+}
+
+#side{
+    width:25%;
 }
 
 #OnePerson{
     clear:both;
-    width: 660px;
-    height: 180px;
+    width: 800px;
+    height: 115px;
     
-}/*
+}
+
+#otop{
+    border-top-left-radius: 30px;
+    background-color: rgba(255,255,255,0.6);
+}
+/*
 a:visited {font-family:color:gray;}*/
-a:hover {text-transform:uppercase;font-size: 20px;} /*
+a:hover {text-transform:uppercase;font-size: 21px;} /*
 a:active {font-family:color:#11FF11;}*/
 
 #author{
@@ -60,13 +64,25 @@ a:active {font-family:color:#11FF11;}*/
 
 .a1{
     clear:both;
-    font-size:18px;
+    font-size:20px;
     font-weight: bold;
 }
 
+#r{
+    clear:both;
+    font-size:18px;
+    font-weight: bold;
+}
+#r:hover {font-size: 21px;} 
+
 #content{
     float: left;
+    width: 80%; 
+
+    background:url(/static/img/cbg.png) no-repeat;
+    background-size: 100% 100%;
 }
+
 
 #side{
     float: left;
@@ -74,9 +90,11 @@ a:active {font-family:color:#11FF11;}*/
 
 
 #demo{
-    width: 660px;
-    height: 140px;
-
+    margin-top: 7px;
+    width: 800px;
+    height: 70px;
+    background-color: #f5f5f5;
+    border-bottom-right-radius: 30px;
     word-break: break-all;
 
     text-overflow: ellipsis;
@@ -89,12 +107,13 @@ a:active {font-family:color:#11FF11;}*/
 
     overflow: hidden; 
 
+
 }
 
 #demo span{ 
-position:absolute; 
 top:0; 
 right:0; 
 display:block; 
 float:left; 
 }
+

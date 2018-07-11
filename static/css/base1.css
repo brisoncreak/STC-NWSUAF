@@ -45,7 +45,6 @@ body{
 .brand-name{
     width:100px;
     margin-left:60px;
-    font-size:22px;
     color: #141414;
     font-weight:200;
     margin-top: 10px;
@@ -53,12 +52,14 @@ body{
 .brand-name a{
     text-decoration:none;
     color:black;
+    font-size:20px;
 }
 .navbar
 {
     border-bottom:1px solid #7c9db9;
     margin-bottom: 0px !important;
     border-radius: 0;
+    min-height: 80px;
 }
 .navbar-default{
     background-color: #ececec !important;

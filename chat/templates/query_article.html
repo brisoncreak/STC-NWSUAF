@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}写文章 - {% endblock %}
+{% block title %}社区文章 - {% endblock %}
 
 {% block head %}
 
@@ -12,12 +12,17 @@
 
     <style type="text/css">
         .changestyle{a:link{color:#ccc;}}
-    </style>
-    <script type="text/javascript">
 
-    // var oBox=document.getElementById('demo');
-    // var demoHtml = oBox.innerHTML.slice(0,10)+'...';
-    // oBox.innerHTML = demoHtml;
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+        .text {
+            border: 1px solid #ccc;
+            height: 400px;
+        }
+    </style>
+
+    <script type="text/javascript">
 
     function showText()
     {   
@@ -51,10 +56,10 @@
 {% endblock %}
 
 {% block navbar %}
-    <li><a href="{% url 'index' %}">热门</a></li>
-    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="{% url 'index' %}">主页</a></li>
+    <li><a href="{% url 'market_index' %}">商城</a></li>
     <li class="selected"><a href="{% url 'chat_index' %}">社区</a></li>
-    <li><a href="{% url 'share_index' %}">网盘</a></li>
+    <li><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
 
 {% block side-search %}
@@ -78,26 +83,70 @@
             </div>
             <div class="top1">
                 <img src="/static/img/write.png" ><a class="a1" href="{%url 'a_a'%}">&nbsp;&nbsp;&nbsp;写文章</a>
-            </div>           
+            </div>      
         </div>   
         
         <div id="main">
             {%for a in listArticle%} 
                 <div id="OnePerson">
-                    &nbsp;&nbsp;&nbsp;
-                    <a  id="author" href="{%url 'r_s' a.user_id%}">{{a.user}}</a>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                    <a  id="essay" href="{%url 'r_a' a.id%}">{{a.topic}}</a>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                    <img src="/static/img/reply.png" >
-                    <a class="a1" href="{%url 'a_v' a.id%}">写评论</a>
-                    <div class="demo" id="demo" ><pre >{{a.content}}</pre></div>
-                    
+                    <div id="otop">
+                      &nbsp;&nbsp;&nbsp;
+                        <a  id="author" href="{%url 'r_s' a.user_id%}">{{a.user}}</a>
+                        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                        <a  id="essay" href="{%url 'r_a' a.id%}">{{a.topic}}</a>
+                        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                        <img src="/static/img/reply.png" >
+                        <a id="r" href="{%url 'a_v' a.id%}">写评论</a>  
+                    </div> 
+                    <div class="demo" id="demo" >{{a.content|safe}}</div>                
                 </div>
                 <br>
             {%endfor%}
-
         </div>
+        <div class="pageJeep">
+            <div class="embed">
+                <nav aria-label="...">
+                <ul class="pagination">
+                {% if page_now == 1 %}
+                <li class="disabled">
+                  <span>
+                  <span aria-hidden="true">&laquo;</span>
+                  </span>
+                </li>
+                {%else%}
+                <li >
+                  <span>
+                  <span aria-hidden="true"><a href="{%url 'articles'%}?page={{pre_page}}">&laquo;</a></span>
+                  </span>
+                </li>
+                {%endif%}
+                {% for i in ranges %}
+                {% if i == page_now %}
+                <li class="active">
+                  <span><a href="{%url 'articles'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                    <li>
+                  <span><a href="{%url 'articles'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+                </li>
+                {% endif %}
+                {%endfor%}
+                {% if page_now == page_sum %}
+                <li class="disabled">
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {%else%}
+                <li>
+                  <a href="{%url 'articles'%}?page={{next_page }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {%endif%}
+              </ul>
+            </nav>
+                </div>
 
     </div>
 {% endblock %}

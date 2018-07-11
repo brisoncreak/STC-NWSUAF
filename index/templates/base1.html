@@ -68,26 +68,61 @@ function validate() {
       
     var pwd = $("#password1").val();
     var pwd1 = $("#password2").val();
-
+    console.log(pwd+"-"+pwd1);
     if(pwd == pwd1)
      {
         $("#tishi").html("password ok");
          $("#tishi").css("color","green");
     $("#xiugai").removeAttr("disabled");
+    return true;
      }
 else {
         $("#tishi").html("password not same");
          $("#tishi").css("color","red")
           $("button").attr("disabled","disabled");  
+          return false;
       }
 }
+
+    function checkLoginPassword(str){
+        var xmlHttp;
+        var username = document.getElementById("username1").value;
+        var url = "/check_pass?password=" + str + "&username=" + username;
+        console.log(url);
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function(){
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                document.getElementById("tipPass").innerHTML = xmlHttp.responseText;
+                console.log(xmlHttp.responseText);
+            }
+        }
+        xmlHttp.open("GET",url,true);
+        xmlHttp.send(null);
+    }
+
+    function submitform(){
+        var tip = document.getElementById("tip2").innerHTML;
+        var tips = tip.substr(tip.length-17, 9);
+        var tipPassword = document.getElementById("tipPass").innerHTML;
+        var tipPass1 = tipPassword.substr(1, 3);
+        console.log(tipPass1);
+        var bool2 = (tipPass1 == "suc");
+        var bool1 = (tips == "available");
+        if(bool1 && bool2){
+            return true;
+        }else{
+            alert("用户名与密码不匹配");
+            return false;
+        }
+    }
+
 </script>
 </head>
 {% block bodyonload %}<body>{% endblock %}
 <div style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;position:relative;filter: alpha(opacity=100);">
   <!-- <img src="static/img/banner.jpg" style="position:absolute;margin: 0px;padding: 0px;border:none;max-height: none;max-width: none;top: 0px;z-index: -999999" > -->
 
-<nav class="navbar navbar-default">
+<!--<nav class="navbar navbar-default">
 
     <div class="navbar-header"  style="filter: alpha(opacity=100);">
         <a class="navbar-brand" id="header-img" href="#"></a>
@@ -127,12 +162,70 @@ else {
       </div>
     </div>
 
+</nav>-->
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div class="navbar-header"  style="filter: alpha(opacity=100);margin-top: 0;">
+        <a class="navbar-brand" id="header-img" href="#" style="margin-top: 8px;"></a>
+        <div class="brand-name" style="margin-top: 1px;font-size: 20px;"><a href="/">有点东西</a></div>
+    </div>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'index' %}">主页 <span class="sr-only">(current)</span></a></li>
+        <li><a href="{% url 'market_index' %}">商城</a></li>
+        <li><a href="/chat">社区</a></li>
+        <li><a href="/share">资源共享</a></li>
+      </ul>
+    　　
+      <ul class="nav navbar-nav navbar-right">
+      {% if not request.session.username %}
+        <li><a href="#" data-toggle="modal" data-target="#myModal1">登录</a></li> 
+        <li><a href="#" data-toggle="modal" data-target="#myModal">注册</a></li>  
+             
+      {% else %}
+        <li><a href="#">消息<span class="badge">{{lang}}</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.session.username}}&nbsp;<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{% url 'logout'%}">退出登录</a></li>
+          </ul>
+        </li>
+      {% endif %}</ul>
+      <form class="navbar-form navbar-right" style="margin-right: 50px;">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>
 
+
+
+
 {% if messages %}
-<ul class="messages">
+<ul class="messages" style="margin-bottom: 0">
     {% for message in messages %}
     <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div
+    style="margin-bottom: 0"
     {% if message.tags == 'info' %}
     class="alert alert-info"
     {% elif message.tags == 'success' %}
@@ -176,7 +269,7 @@ else {
             </div>
             <br>
             <div class="login-top">
-            <form  action='/register/' method='post'>
+            <form  action='/register/' method='post' onsubmit="return validate();">
                 {%csrf_token%}
                 <div class="login-ic">
                     <i ></i>
@@ -249,15 +342,17 @@ else {
                 {%csrf_token%}
                 <div class="login-ic">
                     <i ></i>
-                    <input type="text" id="username" name="username" placeholder="请输入用户名" onFocus="this.value = '';" onBlur="check2(this.value)"
+                    <input type="text" id="username1" name="username" placeholder="请输入用户名" onFocus="this.value = '';" onBlur="check2(this.value)"
                     required oninvalid="setCustomValidity('用户名不能为空')" oninput="setCustomValidity('')"/>
                 <div class="clear"> </div>
                 <div id="tip2" style="float:center;"></div>
                 </div>
                 <div class="login-ic">
                     <i class="icon"></i>
-                    <input type="password"  id="password" name="password" placeholder="请输入密码"  onFocus="this.value = '';" required ="required" onBlur="if (this.value == '') " onchange="checkPassword()"/>
+                    <input type="password"  id="password" name="password" placeholder="请输入密码"  onFocus="this.value = '';" required ="required" onBlur="checkLoginPassword(this.value) " onchange="" />
+                    
                     <div class="clear"> </div>
+                    <div id="tipPass" style="display:none" > </div>
                 </div>
                 <div class="copy">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -267,11 +362,12 @@ else {
                 <a class="copy1" class="text-muted" href="#" data-toggle="modal" data-target="#myModal2">忘记密码</a>
             </div>
                 <div class="log-bwn">
-                    <input type="submit" value="Login" >
+                    <input type="submit" value="Login" onclick="return submitform();" >
                 </div>
                 </form>
             </div>
             <p class="copy"> 欢迎您加入我们<br>? 2018 STC-NWSAUF　有点东西平台</p>
+
         </div>  
 </div>    
 

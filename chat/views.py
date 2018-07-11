@@ -9,19 +9,70 @@ from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 
 
-# Create your views here.
+# 游客访问
 def index_views(request):
-    
-    listArticle=Article.objects.all().order_by("-id")
+    if request.method == 'GET':
+        listArticle=Article.objects.all().order_by("-id")
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 5
+        page_sum = len(listArticle)//per_page+1
+        if page_sum > 6:
+            page_sum = len(listArticle)//per_page
+        else:
+            page_sum = len(listArticle)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        listArticle = listArticle[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
 
-    return render(request,'query_article.html',locals())
+        return render(request,'query_article.html',locals())
 
+
+#　登录用户访问
 @login_required
 def query_article_views(request):
     
     if request.session.get('id'):
         uid=request.session.get('id')
     listArticle=Article.objects.all().order_by("-id")
+    page_now = request.GET.get('page')
+    if not page_now:
+        page_now = 1
+    page_now = int(page_now)
+    per_page = 5
+    page_sum = len(listArticle)//per_page+1
+    if page_sum > 6:
+        page_sum = len(listArticle)//per_page
+    else:
+        page_sum = len(listArticle)//per_page+1
+    start_page = (page_now-1)*per_page
+    next_page = page_now + 1
+    pre_page = page_now - 1
+    listArticle = listArticle[start_page:start_page+per_page]
+    show_sum = page_sum//6+1 
+    lis = []
+    for i in range(1,show_sum+1):
+        lis.append(i)
+    for i in lis:
+        if page_now in range(i*6-5,i*6+1):
+                ranges = range(i*6-5,i*6+1)
+    if page_sum in ranges:
+                ranges = range(i*6-5,page_sum+1)
+    print(page_sum)
+
     return render(request,'query_article.html',locals())
 
 def read_my_views(request):
@@ -42,6 +93,31 @@ def read_my_views(request):
                 listReviews.append(usercomment)
             Article.objects.filter(id=article.id).update(reviews=listReviews)
 
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 3
+        page_sum = len(listArticle)//per_page+1
+        if page_sum > 6:
+            page_sum = len(listArticle)//per_page
+        else:
+            page_sum = len(listArticle)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        listArticle = listArticle[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
+
         return render(request,'read_my.html',locals())
     else:
         messages.error(request,'请登录!')
@@ -54,10 +130,6 @@ def read_sb_views(request,id):
 
 def read_article_views(request,id):
 
-    login_uname=request.session.get('username')
-    login_user=User.objects.get(username=login_uname)
-    login_uid=login_user.id 
-
     a=Article.objects.get(id=id)
     listReview=Review.objects.filter(article_id=a.id).order_by("-id")
     for review in listReview:
@@ -69,22 +141,6 @@ def read_article_views(request,id):
             
             listReplys.append(userreply)
         Review.objects.filter(id=review.id).update(replys=listReplys)
-
-    #用于使显示打赞和数据库中的赞表同步
-    # 获取了对应登录用户　　对文件好评的相应文件列表
-    listarticle_admireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 1).filter(isFile = 0).values('aid_id')
-    listarticle_admire = []
-    for i in listarticle_admireQ:
-        listarticle_admire.append(i['aid_id'])
-    print(listarticle_admire)
-    # 获取了对应登录用户　　对文件差评的相应文件列表
-    listarticle_notadmireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 0).filter(isFile = 0).values('aid_id')
-    listarticle_notadmire = []
-    for j in listarticle_notadmireQ:
-        listarticle_notadmire.append(j['aid_id'])
-    print(listarticle_notadmire)
-
-
 
 
     return render(request,'read_article.html',locals())

@@ -4,34 +4,72 @@
 
 {% block title %}写评论 - {% endblock %}
 
-<!-- {% block head %}
-    <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
-{% endblock %} -->
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/a_r.css'%}"/>
+    <style type="text/css">
+    .toolbar {
+        border: 1px solid #ccc;
+    }
+    .text {
+        border: 1px solid #ccc;
+        height: 400px;
+    }
+    </style>
+
+{% endblock %}
 
 {% block navbar %}
-    <li><a href="{% url 'index' %}">热门</a></li>
-    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="{% url 'index' %}">主页</a></li>
+    <li><a href="{% url 'market_index' %}">商城</a></li>
     <li class="selected"><a href="{% url 'chat_index' %}">社区</a></li>
-    <li><a href="{% url 'share_index' %}">网盘</a></li>
+    <li><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
 
 
 {% block body %}
 <div id="main" class="">       
         <div id="top" class="">
-            <h3>写评论|{{a.topic}}</h3>
+            <img id="pic" src="/static/img/write.gif" alt="">
+            写评论|{{a.topic}}
         </div>
         <div id="bottom" class="">
             <form action="#" method="post">
             {% csrf_token %}
                 
-                <div>
+                <!-- <div>
                     <textarea rows="20" cols="80" name="content"></textarea>
+                </div> -->
+
+                <div>
+                   <!--  <p>内容:</p>
+                    <textarea rows="20" cols="80" name="content"></textarea> -->
+                    <div id="div1" class="toolbar"></div>
+                    <div style="padding: 4px 0; color: #ccc"></div>
+                    <div id="div2" class="text"></div>
+
+                    <textarea id="text1" name="content" style="display:none"></textarea>
+
+                    <!-- 实现富文本 -->
+                    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+                    <script type="text/javascript" src="../../static/editor/wangEditor.js"></script>
+                    <script type="text/javascript">
+                        var E = window.wangEditor
+                        var editor = new E('#div1','#div2')
+                        var $text1 = $('#text1')
+                        editor.customConfig.onchange = function (html) {
+                            // 监控变化，同步更新到 textarea
+                            $text1.val(html)
+                        }
+                        editor.create()
+                        // 初始化 textarea 的值
+                        $text1.val(editor.txt.html())
+                    </script>
+                    <!-- 实现富文本 -->
                 </div>
+
                 
                 <br><br>
                 <div>
-                    <input type="reset" value="清空">
                     <input type="submit" value="提交">
                 </div>
                 
