@@ -14,7 +14,7 @@ from urllib.parse import unquote
 
 # Create your views here.
 
-
+@login_required
 #upload files
 def upload_file(request):
     login_uname=request.session.get('username')
@@ -78,7 +78,7 @@ def upload_file(request):
             return HttpResponseRedirect('/upload_file')
         messages.error(request,'请登录')
         return HttpResponseRedirect('/login')
-
+@login_required
 #upload files
 def upload_file2(request,collegename):
     login_uname=request.session.get('username')
@@ -144,7 +144,7 @@ def upload_file2(request,collegename):
         messages.error(request,'请登录')
         return HttpResponseRedirect('/login')
 
-		
+@login_required	
 #download files
 def download_files(request,fileid):  
     file=File.objects.get(id=fileid)
@@ -156,7 +156,7 @@ def download_files(request,fileid):
     response['Content-Type']='application/octet-stream'  
     response['Content-Disposition']='attachment;filename='+file_name  
     return response
-
+@login_required
 #delete files
 def delete_files(request,fileid):
     file=File.objects.get(id=fileid)
@@ -166,7 +166,7 @@ def delete_files(request,fileid):
     if os.path.isfile(file_path):
         os.remove(file_path)
     return HttpResponseRedirect('/share')
-@login_required
+
 #show files
 def index_views(request):
     sharefileList = File.objects.all().exclude(file_status=0)
@@ -279,6 +279,7 @@ def show_college(request,collegetitle):
                 ranges = range(i*6-5,page_sum+1)
     print(page_sum)
     return render(request,'singleCollegeShow.html',locals()) 
+@login_required
 #按照用户显示文件
 def show_user(request,userid):
     login_uname=request.session.get('username')
