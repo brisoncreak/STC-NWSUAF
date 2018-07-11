@@ -7,11 +7,11 @@ from index.models import *
 from chat.models import *
 from index.templates import *
 import os
-from django.db.models import F
+from django.db.models import F,Q
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 from urllib.parse import unquote
-
+from index.models import Notification
 # Create your views here.
 
 @login_required
@@ -73,7 +73,7 @@ def upload_file(request):
                     return HttpResponseRedirect('/share')
                 elif status==2:
                     messages.success(request,'上传成功')
-                    return HttpResponseRedirect('/add_good/1')
+                    return HttpResponseRedirect('/share')
             messages.error(request,'上传失败')
             return HttpResponseRedirect('/upload_file')
         messages.error(request,'请登录')
@@ -169,7 +169,7 @@ def delete_files(request,fileid):
 @login_required
 #show files
 def index_views(request):
-    sharefileList = File.objects.all().exclude(file_status=0)
+    sharefileList = File.objects.all().filter(file_status=1).order_by('-id')
 
     colleges = Colleges.objects.all()
     collegetypes = Collegetype.objects.all()
@@ -204,7 +204,17 @@ def index_views(request):
     login_uname=request.session.get('username')
     user=User.objects.get(username=login_uname)
     login_uid=user.id
-
+    try:
+        noti0 = Notification.objects.filter(Q(arg0=4)&Q(aim_user=user))
+        for i in noti0:
+            i.have_read = True
+            i.save()
+        noti1 = Notification.objects.filter(Q(arg0=6)&Q(aim_user=user))
+        for i in noti1:
+            i.have_read = True
+            i.save()
+    except:
+        pass
     #用于使显示打赞和数据库中的赞表同步
     # 获取了对应登录用户　　对文件好评的相应文件列表
     listfile_admireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 1).filter(isFile = 1).values('fid_id')
@@ -253,7 +263,7 @@ def show_college(request,collegetitle):
     login_uname=request.session.get('username')
     user=User.objects.get(username=login_uname)
     college = Colleges.objects.get(title=collegetitle)
-    files = File.objects.filter(file_classify_id=college.id)
+    files = File.objects.filter(file_classify_id=college.id).filter(file_status=1).order_by('-id')
     page_now = request.GET.get('page')
     if not page_now:
         page_now = 1
@@ -292,7 +302,7 @@ def show_user(request,userid):
     user1 = User.objects.get(id=userid)
     #看自己的文件　　就不需要得到赞表
     if int(userid) == login_uid:
-        listfile = File.objects.filter(user_id=userid).order_by("-id")
+        listfile = File.objects.filter(user_id=userid).filter(file_status=1).order_by('-id')
         page_now = request.GET.get('page')
         if not page_now:
             page_now = 1
@@ -366,7 +376,14 @@ def show_file(request,fileid):
     user=User.objects.get(username=login_uname)
     return render(request,'fileDetailShow.html',locals())
 
-
+#search
+def search_view(request):
+    if request.method=='POST':
+        content=request.POST.get('search')
+        sharefileList=File.objects.filter(Q(file_name__contains=content))
+        return render(request,'share_index.html',locals())
+    else:
+        return HttpResponseRedirect('/')
 
 #包括article中的方法    已经写到了ｉｎｄｅｘ应用中
 

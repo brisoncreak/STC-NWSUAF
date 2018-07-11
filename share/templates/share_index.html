@@ -56,12 +56,12 @@
                 <td>{{x.file_bedown}}</td>
                 <td>{{x.create_time}}</td>
                 <td>
-                    {% if x.file_status != 2 %}
+<!--                     {% if x.file_status != 2 %} -->
                         <a href="{%url 'd_files' x.id%}" id="down">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px;"></a>
                        <!--  <input id="down" name="down" type="button" value="下载" onclick="window.location.href='/download_file/{{x.id}}'"> -->
-                    {% else %}
+                    <!-- {% else %}
                         <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt="></a>
-                    {% endif %}
+                    {% endif %} -->
                 </td>
                 <td>
 
@@ -75,7 +75,7 @@
                     </span>
                     [<span id="goodnum{{x.id}}">{{x.file_beadmired}}</span>]
         <!-- 差评端 -->
-                        |
+                        &nbsp;&nbsp;&nbsp;
                     <span id="badSpan" onclick="sendBad({{x.id}},'file',{{login_uid}})">
                         {% if x.id in listfile_notadmire %}
                             <img src="../static/img/like_aft.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/>  
@@ -143,12 +143,12 @@
 
 {% block side-search %}
     <div class="spacer">
-        <form action="#" id="search">
+        <form action="/search/" id="search" method="POST">
         {% csrf_token %}
             <div class="input-group">
-            <input type="text" class="form-control" placeholder="搜索">
+            <input type="text" class="form-control" placeholder="搜索" name="search">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                    <input class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                 </span>
             </div>
         </form>

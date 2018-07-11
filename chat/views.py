@@ -11,13 +11,42 @@ from STC_NWSUAF.tools import login_required
 
 # 游客访问
 def index_views(request):
+    
     if request.method == 'GET':
+        # 获取所有的学院类型已经其下的所有学院　级联下拉框###########################
+        collegetypes = Collegetype.objects.all()
+        #1
+        wenketype = Collegetype.objects.get(title='文科')
+        wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
+        wenkes = []
+        for wenke in wenkecolleges:
+            wenkes.append(wenke.title)
+        #2
+        liketype = Collegetype.objects.get(title='理科')
+        likecolleges = Colleges.objects.filter(classify_id=liketype.id)
+        likes = []
+        for like in likecolleges:
+            likes.append(like.title)
+        #3
+        gongketype = Collegetype.objects.get(title='工科')
+        gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
+        gongkes = []
+        for gongke in gongkecolleges:
+            gongkes.append(gongke.title)
+        #4
+        nongketype = Collegetype.objects.get(title='农科')
+        nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)   #得到了querySet集合
+        # print(nongkecolleges)
+        #转化为列表
+        nongkes = []
+        for nongke in nongkecolleges:
+            nongkes.append(nongke.title)
         listArticle=Article.objects.all().order_by("-id")
         page_now = request.GET.get('page')
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 5
+        per_page = 4
         page_sum = len(listArticle)//per_page+1
         if page_sum > 6:
             page_sum = len(listArticle)//per_page
@@ -39,12 +68,41 @@ def index_views(request):
         print(page_sum)
 
         return render(request,'query_article.html',locals())
-
+    return HttpResponseRedirect('/chat')
 
 #　登录用户访问
 @login_required
 def query_article_views(request):
-    
+    # 获取所有的学院类型已经其下的所有学院　级联下拉框###########################
+    collegetypes = Collegetype.objects.all()
+    #1
+    wenketype = Collegetype.objects.get(title='文科')
+    wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
+    wenkes = []
+    for wenke in wenkecolleges:
+        wenkes.append(wenke.title)
+    #2
+    liketype = Collegetype.objects.get(title='理科')
+    likecolleges = Colleges.objects.filter(classify_id=liketype.id)
+    likes = []
+    for like in likecolleges:
+        likes.append(like.title)
+    #3
+    gongketype = Collegetype.objects.get(title='工科')
+    gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
+    gongkes = []
+    for gongke in gongkecolleges:
+        gongkes.append(gongke.title)
+    #4
+    nongketype = Collegetype.objects.get(title='农科')
+    nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)   #得到了querySet集合
+    # print(nongkecolleges)
+    #转化为列表
+    nongkes = []
+    for nongke in nongkecolleges:
+        nongkes.append(nongke.title)
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     if request.session.get('id'):
         uid=request.session.get('id')
     listArticle=Article.objects.all().order_by("-id")
@@ -52,7 +110,7 @@ def query_article_views(request):
     if not page_now:
         page_now = 1
     page_now = int(page_now)
-    per_page = 5
+    per_page = 4
     page_sum = len(listArticle)//per_page+1
     if page_sum > 6:
         page_sum = len(listArticle)//per_page
@@ -195,6 +253,8 @@ def add_article_views(request):
 
 
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        user=User.objects.get(username=login_uname)
         return render(request,'add_article.html',locals())
     else:
         atopic=request.POST.get('topic')

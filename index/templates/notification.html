@@ -63,6 +63,10 @@
 <div class="panel panel-danger">
 {%elif noti.arg0 == 3 %}
 <div class="panel panel-danger">
+{%elif noti.arg0 == 4 %}
+<div class="panel panel-success">
+{%elif noti.arg0 == 6 %}
+<div class="panel panel-success">
 {%endif%}
   <div class="panel-heading">{{noti.create_time|date:"Y-m-d H:i:s"}}
   {%if not noti.have_read %}
@@ -82,6 +86,14 @@
     买家<a>{{noti.arg4.username}}</a>已付款<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
     {%elif noti.arg0 == 3 %}
     卖家<a>{{noti.arg4.username}}</a>已确认收款<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+    {%elif noti.arg0 == 4 %}
+    用户<a>{{noti.arg4.username}}</a>踩了你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
+    {%elif noti.arg0 == 5 %}
+    用户<a>{{noti.arg4.username}}</a>取消踩你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
+    {%elif noti.arg0 == 6 %}
+    用户<a>{{noti.arg4.username}}</a>赞你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
+    {%elif noti.arg0 == 7 %}
+    用户<a>{{noti.arg4.username}}</a>取消赞你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
     {%endif%}
 
   </div>
