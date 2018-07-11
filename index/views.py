@@ -298,6 +298,7 @@ def check_pass(request):
 def image_view(request):
     login_uname=request.session.get('username')
     user=User.objects.get(username=login_uname)
+    request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
     if request.method == 'POST':
         obj=request.FILES.get('image')
         file_path = os.path.join('static','upload','profile_photo',obj.name)
@@ -307,6 +308,6 @@ def image_view(request):
         f.close()
         user.profile_photo=file_path
         user.save()
-        return HttpResponseRedirect('/share')
+        return HttpResponseRedirect(request.session['login_from'])
     message.error("修改头像失败")
     return HttpResponseRedirect('/')

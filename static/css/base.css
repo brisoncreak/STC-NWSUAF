@@ -127,6 +127,9 @@ li.selected a {
 .container{
     width:100%;
 }
+.container1{
+    width:300px;
+}
 .topic-title{
     font-size: 20px;
     margin:0;
