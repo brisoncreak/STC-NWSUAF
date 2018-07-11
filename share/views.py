@@ -11,13 +11,14 @@ from django.db.models import F
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 from urllib.parse import unquote
-from chat.models import *
 
 # Create your views here.
 
 
 #upload files
 def upload_file(request):
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     if request.method == 'GET':
         colleges = Colleges.objects.all()
         return render(request,'file.html',locals())
@@ -65,9 +66,14 @@ def upload_file(request):
                 for chunk in obj.chunks():
                     f.write(chunk)
                 f.close()
+
                 File.objects.create(file_name=filename,user_id=userid,file_size=obj.size,file_bedown=0,file=file_path,file_status=status,file_classify_id=classifyid,file_beadmired=0,file_benotadmired=0)
-                messages.success(request,'上传成功')
-                return HttpResponseRedirect('/share')
+                if status==1 or status==0:
+                    messages.success(request,'上传成功')
+                    return HttpResponseRedirect('/share')
+                elif status==2:
+                    messages.success(request,'上传成功')
+                    return HttpResponseRedirect('/add_good/1')
             messages.error(request,'上传失败')
             return HttpResponseRedirect('/upload_file')
         messages.error(request,'请登录')
@@ -75,6 +81,8 @@ def upload_file(request):
 
 #upload files
 def upload_file2(request,collegename):
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     name = unquote(collegename, 'utf-8')
     #上传文件
     if request.method == 'GET':
@@ -194,8 +202,8 @@ def index_views(request):
     # print(nongkes)
 
     login_uname=request.session.get('username')
-    login_user=User.objects.get(username=login_uname)
-    login_uid=login_user.id
+    user=User.objects.get(username=login_uname)
+    login_uid=user.id
 
     #用于使显示打赞和数据库中的赞表同步
     # 获取了对应登录用户　　对文件好评的相应文件列表
@@ -210,30 +218,104 @@ def index_views(request):
         listfile_notadmire.append(j['fid_id'])
 
     if request.method == 'GET':
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 14
+        page_sum = len(sharefileList)//per_page+1
+        if page_sum > 6:
+            page_sum = len(sharefileList)//per_page
+        else:
+            page_sum = len(sharefileList)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        sharefileList = sharefileList[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
         return render(request,'share_index.html',locals()) 
     else:
         collegetitle = request.POST.get('selcollege')  
         return HttpResponseRedirect('/show_College/'+collegetitle)
 
 
-
+#按照学院显示文件
 def show_college(request,collegetitle):
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     college = Colleges.objects.get(title=collegetitle)
     files = File.objects.filter(file_classify_id=college.id)
+    page_now = request.GET.get('page')
+    if not page_now:
+        page_now = 1
+    page_now = int(page_now)
+    per_page = 14
+    page_sum = len(files)//per_page+1
+    if page_sum > 6:
+        page_sum = len(files)//per_page
+    else:
+        page_sum = len(files)//per_page+1
+    start_page = (page_now-1)*per_page
+    next_page = page_now + 1
+    pre_page = page_now - 1
+    files = files[start_page:start_page+per_page]
+    show_sum = page_sum//6+1 
+    lis = []
+    for i in range(1,show_sum+1):
+        lis.append(i)
+    for i in lis:
+        if page_now in range(i*6-5,i*6+1):
+                ranges = range(i*6-5,i*6+1)
+    if page_sum in ranges:
+                ranges = range(i*6-5,page_sum+1)
+    print(page_sum)
     return render(request,'singleCollegeShow.html',locals()) 
-
+#按照用户显示文件
 def show_user(request,userid):
     login_uname=request.session.get('username')
-    login_user=User.objects.get(username=login_uname)
-    login_uid=login_user.id
+    user=User.objects.get(username=login_uname)
+    login_uid=user.id
 
     # print(login_uid)
     # print("**********88")
     # print(type(userid))
-    user = User.objects.get(id=userid)
+    user1 = User.objects.get(id=userid)
     #看自己的文件　　就不需要得到赞表
     if int(userid) == login_uid:
         listfile = File.objects.filter(user_id=userid).order_by("-id")
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 14
+        page_sum = len(listfile)//per_page+1
+        if page_sum > 6:
+            page_sum = len(listfile)//per_page
+        else:
+            page_sum = len(listfile)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        listfile = listfile[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
         return render(request,'userFilesShow.html',locals())
     #看其他人的文件　　需要得到赞表
     else:
@@ -250,12 +332,37 @@ def show_user(request,userid):
         listfile_notadmire = []
         for j in listfile_notadmireQ:
             listfile_notadmire.append(j['fid_id'])
-
+        page_now = request.GET.get('page')
+        if not page_now:
+            page_now = 1
+        page_now = int(page_now)
+        per_page = 14
+        page_sum = len(listfile)//per_page+1
+        if page_sum > 6:
+            page_sum = len(listfile)//per_page
+        else:
+            page_sum = len(listfile)//per_page+1
+        start_page = (page_now-1)*per_page
+        next_page = page_now + 1
+        pre_page = page_now - 1
+        listfile = listfile[start_page:start_page+per_page]
+        show_sum = page_sum//6+1 
+        lis = []
+        for i in range(1,show_sum+1):
+            lis.append(i)
+        for i in lis:
+            if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+        if page_sum in ranges:
+                    ranges = range(i*6-5,page_sum+1)
+        print(page_sum)
         return render(request,'otherUserFilesShow.html',locals())
 
-
+#商品详情
 def show_file(request,fileid):
     file = File.objects.get(id=fileid)
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     return render(request,'fileDetailShow.html',locals())
 
 

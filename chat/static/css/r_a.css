@@ -16,6 +16,7 @@
 
 
 #top{
+    clear: both;
     height: 50px;
     margin-top: 130px;
 }

@@ -4,14 +4,24 @@ body{
 .logo{
     height:50px;
 }
+img.top1{
+    vertical-align: top;
+
+}
+.c1_img{
+    width: 300px;
+    position: relative;
+    left:40%;
+    top:50%;
+}
+
 .side{
     float:right;
     width:300px;
     min-height:800px;
-    border:1px solid;
+    border:0px solid;
     background-color: white;
     margin-right: 10px;
-
 }
 .content{
     margin:5px 5px;
@@ -50,7 +60,7 @@ body{
     border-radius: 0;
 }
 .navbar-default{
-    background-color: #ceddea;
+    background-color: #ececec !important;
 }
 .navbar-header{
     line-height:50px;
@@ -103,9 +113,9 @@ li.selected a {
     position: absolute;
     bottom:0;
     right:0;
-    background-color: #EFF7FF;
+    background-color: #ececec;
     border-top-left-radius: 7px;
-    font-size: 16px;
+    font-size: 22px;
     padding: 2px 2px 1px 5px;
     color:gray;
 }
