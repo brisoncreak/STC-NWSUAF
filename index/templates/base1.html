@@ -115,6 +115,14 @@ else {
             return false;
         }
     }
+window.onload=function(){
+$("#messages").slideDown();
+}
+
+function close_message()
+{
+    $("#messages").slideUp();
+}
 
 </script>
 </head>
@@ -198,7 +206,7 @@ else {
         <li><a href="#" data-toggle="modal" data-target="#myModal1"><div id="header-bottom-right">
       <div id="rec">登录</div></div></a></li> 
         <li><a href="#" data-toggle="modal" data-target="#myModal">注册</a></li>   
-        
+
       {% else %}
 
         <li><a href="#"><div id="header-bottom-right">
@@ -228,7 +236,7 @@ else {
 
 
 {% if messages %}
-<ul class="messages" style="margin-bottom: 0">
+<ul class="messages" id="messages" style="margin-bottom: 0;display:none;">
     {% for message in messages %}
     <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div
     style="margin-bottom: 0"
@@ -242,9 +250,8 @@ else {
     class="alert alert-danger"
     {% else %}
     class="alert alert-success"
-    {% endif %} class="alert-dismissable">
-  <button type="button" class="close" data-dismiss="alert"
-                    aria-hidden="true">
+    {% endif %} class="alert-dismissable" onclick="close_message()">
+  <button type="button" class="close"  onclick="close_message()">
                 &times;</button>
         <strong>{{message}}</strong> 
 </div></li>

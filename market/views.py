@@ -11,7 +11,7 @@ from dwebsocket import require_websocket
 from bs4 import BeautifulSoup
 
 # Create your views here.
-
+@login_required
 def index_views(request):
     if request.method == 'GET':
         return redirect(reverse('goods_index'))

@@ -137,7 +137,7 @@ else {
 </nav>
 
 {% if messages %}
-<ul class="messages" style="margin-bottom: 0">
+<ul class="messages" id="messages" style="margin-bottom: 0;display:none;">
     {% for message in messages %}
     <li{%if message.tags %} class="{{ message.tags }}"{% endif %} style="list-style-type:none;"><div
     style="margin-bottom: 0"
@@ -151,9 +151,8 @@ else {
     class="alert alert-danger"
     {% else %}
     class="alert alert-success"
-    {% endif %} class="alert-dismissable">
-  <button type="button" class="close" data-dismiss="alert"
-                    aria-hidden="true">
+    {% endif %} class="alert-dismissable" onclick="close_message()">
+  <button type="button" class="close" onclick="close_message()">
                 &times;</button>
         <strong>{{message}}</strong> 
 </div></li>
