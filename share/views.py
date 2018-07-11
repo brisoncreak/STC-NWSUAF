@@ -166,7 +166,8 @@ def delete_files(request,fileid):
     if os.path.isfile(file_path):
         os.remove(file_path)
     return HttpResponseRedirect('/share')
-@login_required
+
+
 #show files
 def index_views(request):
     sharefileList = File.objects.all().exclude(file_status=0)

@@ -130,7 +130,7 @@ else {
     </div>
     {%block tabmenu%}
     <ul class="tabmenu">
-        {% block navbar %}
+        {% block navbar0 %}
             <li><a href="{% url 'index' %}">主页</a></li>
             <li><a href="{% url 'market_index' %}">商城</a></li>
             <li><a href="/chat">社区</a></li>
@@ -177,29 +177,35 @@ else {
       </button>
       <div class="navbar-header"  style="filter: alpha(opacity=100);margin-top: 0;">
         <a class="navbar-brand" id="header-img" href="#" style="margin-top: 8px;"></a>
-        <div class="brand-name" style="margin-top: 1px;font-size: 20px;"><a href="/">有点东西</a></div>
+        <a href="/" class="navbar-brand">有点东西</a>
     </div>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+        {% block navbar %}
         <li class="active"><a href="{% url 'index' %}">主页 <span class="sr-only">(current)</span></a></li>
         <li><a href="{% url 'market_index' %}">商城</a></li>
         <li><a href="/chat">社区</a></li>
         <li><a href="/share">资源共享</a></li>
+        {% endblock %}
       </ul>
     　　
       <ul class="nav navbar-nav navbar-right">
       {% if not request.session.username %}
-        <li><a href="#" data-toggle="modal" data-target="#myModal1">登录</a></li> 
-        <li><a href="#" data-toggle="modal" data-target="#myModal">注册</a></li>  
-             
+
+        <li><a href="#" data-toggle="modal" data-target="#myModal1"><div id="header-bottom-right">
+      <div id="rec">登录</div></div></a></li> 
+        <li><a href="#" data-toggle="modal" data-target="#myModal">注册</a></li>   
+        
       {% else %}
-        <li><a href="#">消息<span class="badge">{{lang}}</span></a></li>
+
+        <li><a href="#"><div id="header-bottom-right">
+      <div id="rec">消息<span class="badge">{{lang}}</span></div>
+      </div></a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.session.username}}&nbsp;<span class="caret"></span></a>
-          <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>

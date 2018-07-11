@@ -172,7 +172,7 @@ def ws_views(request):
             #print(message)
             html = render(request, 'index.html').content
             bs = BeautifulSoup(html, "html.parser")
-            noti_div = bs.find('div', id='header-bottom-right').find('span')
+            noti_div = bs.find('div', id='header-bottom-right').find('div', id='rec')
 
             request.websocket.send(noti_div.encode('utf-8'))
 
