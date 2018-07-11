@@ -9,8 +9,9 @@ window.onload=function(){
     // else{
     //     alert('not support WebSocket');
     // }
+    var host_now = window.location.host;
 
-    var wsURI = "ws://172.29.7.232:8000/ws/"
+    var wsURI = "ws://"+host_now+"/ws/"
 
     websocket = new WebSocket(wsURI);
 

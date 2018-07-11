@@ -13,19 +13,9 @@ class UserAdmin(admin.ModelAdmin):
     #date_hierarchy = DateField
     #右面添加过滤器
     list_filter = ['username']
-    #详细页面顺序
-    #fields = ('email', 'name', 'age')
-    #详细页面 属性分组
-    #fieldsets = (
-    #    ('基本设置',{
-    #       'fields':('country', 'website')
-    #    }),
-    #    ('高级设置',{
-    #        'fields':('name', 'address','city'),
-    #        'classes':('collapse',)
-    #    }),
-    #)
+
 admin.site.register(User, UserAdmin)
+
 
 
 class CollegetypeAdmin(admin.ModelAdmin):
@@ -45,8 +35,4 @@ admin.site.register(Colleges, CollegesAdmin)
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ['aim_user','have_read','arg0','arg1']
     list_display_links = ['aim_user']
-    #search_fields = ['title']
-    #list_filter = ['title']
 admin.site.register(Notification, NotificationAdmin)
-
-

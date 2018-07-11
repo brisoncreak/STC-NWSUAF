@@ -1,13 +1,14 @@
 from django.db import models
 from datetime import datetime
 
+
 # Create your models here.
 class User(models.Model):
     username = models.CharField(max_length = 30)
     password = models.CharField(max_length = 100)
     email = models.EmailField(blank=True)
     create_time = models.DateTimeField(default=datetime.now)
-    profile_photo = models.ImageField(upload_to='static/upload/profile_photo', blank=True, default='')
+    profile_photo = models.ImageField(upload_to='static/upload/profile_photo', blank=True, default='static/img/logo.png')
     degree_good = models.FloatField(default=0)
     good_mark = models.IntegerField(default=0)
     bad_mark = models.IntegerField(default=0)
@@ -48,26 +49,6 @@ class Colleges(models.Model):
         verbose_name_plural = verbose_name
 
 
-#省份表
-class Province(models.Model):
-    name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.name
-
-#城市表
-class City(models.Model):
-    name = models.CharField(max_length=40)
-    province = models.ForeignKey(Province)
-
-    def __str__(self):
-        return self.name
-
-#这个主要是用来显示，选择的结果
-class SelectP(models.Model):
-    province = models.ForeignKey(Province)
-    city = models.ForeignKey(City)
-
 class Notification(models.Model):
 
     aim_user = models.ForeignKey(User, related_name='aim_user')
@@ -87,4 +68,6 @@ class Notification(models.Model):
         verbose_name = '全局通知'
         verbose_name_plural = verbose_name
         ordering = ['create_time']
+# from chat.models import Article
+# from share.models import File
 

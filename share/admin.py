@@ -3,22 +3,15 @@ from .models import *
 from index.models import *
 # Register your models here.
 class FileAdmin(admin.ModelAdmin):
-    list_display=['file_name','file_type','file_size','file_bedown','create_time','file_classify','user']
-    # list_display_links=['name','age']
-    # list_editable=['email']
-    # search_fields=['name','email']
-    # list_filter=['age']
-    #fields=('email','name','age')
-    # fieldsets=(
-    #     ('基本设置',{
-    #         'fields':('name','age','book')
+    list_display=['file_name','file_size','file_bedown','create_time','file_classify','user']
 
-    #     }),
-    #     ('高级设置',{
-    #          'fields':('email',),
-    #          #折叠属性
-    #          'classes':('collapse',)
-    #     }),
-    # )
 admin.site.register(File,FileAdmin)
 # admin.site.register(FileClassify)
+
+
+class AdmirelogAdmin(admin.ModelAdmin):
+    list_display = ['uid','fid','aid','isGood','isFile']
+    list_display_links = ['uid']
+# uid　fid　　aid　isGood　　isFile
+
+admin.site.register(Admirelog, AdmirelogAdmin)

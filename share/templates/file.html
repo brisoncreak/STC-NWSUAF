@@ -28,6 +28,14 @@
             </div> 
             <div class="indiv">
                 <span>资源类型 :</span><select name='list'>{% for college in colleges%}<option value="{{college.title}}">{{college.title}}</option>{% endfor %}</select>  
+                <br>
+                <span>资源状态 :</span>
+                <select name='fileStaus'>
+                    <option value="私有文档">私有文档</option>
+                    <option value="免费共享文档">免费共享文档</option>
+                    <option value="付费共享文档">付费共享文档</option>
+                </select>  
+
             </div> 
             
             <div class="indiv">
@@ -65,7 +73,5 @@
             </div>
         </form>
     </div>
-
 index
-
 {% endblock %}

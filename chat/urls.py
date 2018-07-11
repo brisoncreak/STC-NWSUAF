@@ -14,4 +14,7 @@ urlpatterns=[
     url(r'^read_sb/(\d+)$', read_sb_views,name="r_s"),
     # url(r'^like_article/(\d+)$', like_article_views,name="l_a"),
 
+    url(r'^kindeditor/$', file_manager),
+
+
 ]

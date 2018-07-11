@@ -1,3 +1,5 @@
+mouse_not_down = true;
+
 window.onload=function(){
 
 
@@ -16,24 +18,35 @@ window.onload=function(){
 
             });
 
+
 　　})
+    document.onkeydown = function(){
+    var oEvent = window.event;
+    if (oEvent.keyCode ==13) {
+            $("#new-message").click();
+    }
+
+}
+  
     //setInterval(myFunction, 1000);
 
-    var wsURI = "ws://172.29.7.232:8000/market/ws/"+order_id+"/"+uid;
+    var host_now = window.location.host;
+
+    var wsURI = "ws://"+host_now+"/market/ws/"+order_id+"/"+uid;
 
     websocket = new WebSocket(wsURI);
 
     websocket.onopen = function(evt){
         console.log("Connection open ..."); 
-        setInterval("websocket.send('456')", 1000);
+        setInterval("if(mouse_not_down){websocket.send('456')}", 1000);
     };
      websocket.onclose = function(evt){
          console.log("Connection closed.");
     };
     websocket.onmessage = function(evt){
         //console.log( "Received Message: " + evt.data);
+        
         $('#paycontent').html(evt.data);
-
         var div = document.getElementById("chatarea")
         div.scrollTop = div.scrollHeight;
 
@@ -51,5 +64,12 @@ window.onload=function(){
     
 // }
 
-
-
+function mouseDown()
+{
+mouse_not_down = false; 
+}
+ 
+function mouseUp()
+{
+mouse_not_down = true; 
+}

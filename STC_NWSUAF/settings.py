@@ -129,6 +129,7 @@ USE_TZ = False
 TIME_ZONE = 'Asia/Shanghai'
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
@@ -145,3 +146,4 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = '1441335655@qq.com'
 EMAIL_HOST_PASSWORD = 'vxqfvwveqytkbadd'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+

@@ -1,0 +1,53 @@
+#left{
+    clear: both;
+    float: left;
+    width: 200px;
+}
+
+#main{
+    clear:both;
+    float: left;
+    margin-left:200px;
+    width:auto;
+    height: auto;
+}
+
+.body1{
+    width:700px;
+}
+
+
+
+#top{
+    clear: both;
+    height: 50px;
+}
+
+#middle{
+    height: 400px;
+}
+
+#name{
+    color: #f2f;
+}
+#time{
+    font-size: 16px;
+    color: #888;
+}
+
+
+#lab{
+    width:50px;
+    font-size: 16px;
+    color: #0084ff;
+    background-color: #d9edff; 
+    text-align:center;
+}
+
+#cont{
+
+}
+
+#rev{
+    color: #605760;
+}

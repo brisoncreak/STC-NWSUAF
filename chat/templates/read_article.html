@@ -4,9 +4,14 @@
 
 {% block title %}文章 - {% endblock %}
 
-<!-- {% block head %}
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'css/r_a.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
-{% endblock %} -->
+    <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
+    <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
+
+{% endblock %}
 
 {% block navbar %}
     <li><a href="{% url 'index' %}">热门</a></li>
@@ -17,25 +22,25 @@
 
 
 {% block body %}
-    <div id="main" class="">
+    <div id="left">  
+    </div>
+    <div id="main" class="body1">
         
-        <div id="top" class="">
-            <div id="left" class="">
-                <h3>社区|{{a.user}}的文章</h3>
-            </div>
-
+        <div id="top" class="body1">           
+            <p style="font-size:30px; ">{{a.topic}}</p>
         </div>
-        <div id="middle" class="">
-            <div><h3>{{a.topic}}</h3></div>  
-            <div><h4>{{a.lable}}</h4></div>
-            <div><p>{{a.content}}</p></div>
+        <div id="middle" class="body1">
+            <div><h3 id="name">{{a.user}}</h3></div>  
+            <div><p id="lab">{{a.lable}}</h4></div>
+            <div><p id="cont" class="body1">{{a.content}}</p></div>
             <div><p>{{a.block}}</p></div>
-            <div><p>{{a.create_date}}</p></div>
+            <div><p id="time">发布于：{{a.create_date}}</p></div>
         </div>
-        <div id="bottom" class="">
+        <div id="bottom" class="body1">
             <div>
-                
-                <h4>评论</h4>
+                <h3 id="rev">评论</h3>
+            </div>
+            <div>
                 {%for r in listReview%}
                 
                 <li>
@@ -46,13 +51,35 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{r.replys}}
                 </li>
 
-
-
-
                 {%endfor%}
             </div>
             <div>
-                <a href="{%url 'a_v' a.id%}">我也要评论</a>
+                <img src="/static/img/reply.png" >
+                <a href="{%url 'a_v' a.id%}">写评论</a>
+            </div>
+            <!-- 点赞 -->
+            <div>
+        <!-- 好评端 -->
+                    <span id="goodSpan" onclick="sendGood({{a.id}},'article',{{login_uid}})">
+                        {% if a.id in listarticle_admire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px;" id='goodimg{{a.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{a.id}}'/>  
+                        {% endif %}  
+                    </span>
+                    [<span id="goodnum{{a.id}}">{{a.beadmired_num}}</span>]
+        <!-- 差评端 -->
+                        |
+                    <span id="badSpan" onclick="sendBad({{a.id}},'article',{{login_uid}})">
+                        {% if a.id in listarticle_notadmire %}
+                            <img src="../static/img/like_aft.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{a.id}}'/>  
+                        {% else %}
+                            <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{a.id}}'/>   
+                        {% endif %}
+                    </span>
+                    [<span id="badnum{{a.id}}">{{a.benotadmired_num}}</span>]
+
+                    <script language="JavaScript" src="../static/js/admire.js"></script>
             </div>
         </div>
     </div>

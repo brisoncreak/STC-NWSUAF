@@ -1,0 +1,33 @@
+while 语句：
+练习:
+打印1-20每行５个数据
+i=1
+while i<20:
+    a=0
+    while a<5:
+        print(i,end='')
+        i+=1
+        a+=1
+    print()
+打印如下图形
+输入５
+打印１２３４５
+　　　２３４５６
+　　　３４５６７
+　　　４５６７８
+　　　５６７８９
+输入４
+打印１２３４
+　　　　２３４５
+　　　　３４５６
+　　　　４５６７
+x=int(input())
+i=1
+while i<x+1:
+    a=0
+    while a<x:
+        print(i,end='')
+        i+=1
+        a+=1
+    i=i-(x-1)
+    print()

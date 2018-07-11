@@ -14,7 +14,10 @@ from bs4 import BeautifulSoup
 
 def index_views(request):
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        user=User.objects.get(username=login_uname)
         return redirect(reverse('goods_index'))
+
 #付费文档页面
 def docs_views(request):
     if request.method == 'GET':
@@ -117,7 +120,6 @@ def ordering_views(request, good_id):
         order = Order.objects.get(id = order)
         return redirect(reverse('paying', args=(order.id,)))
 
-
 #创建订单视图
 @login_required
 def new_order_views(request, good_id):
@@ -156,6 +158,11 @@ def paying_views(request, order_id):
         order = Order.objects.get(id=order_id)
         good = order.good
         is_buyer = user == order.creator
+        
+        if order.buyer_marked:
+            buyer_mark = TradeMark.objects.get(Q(order=order)&Q(creator=order.creator))
+        if order.seller_marked:
+            seller_mark = TradeMark.objects.get(Q(order=order)&Q(creator=good.creator))
         try:
             noti0 = Notification.objects.filter(Q(arg0=0)&Q(arg1=order_id)&Q(aim_user=user))
             for i in noti0:
@@ -184,6 +191,10 @@ def paying_views(request, order_id):
 
         tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
         
+        try:
+            fb = Feedback.objects.get(order=order)
+        except:
+            pass
         return render(request, 'paying.html', locals())
     return redirect('/')
 
@@ -199,7 +210,8 @@ def add_good_views(request,isfile):
         rpay_way = request.POST.get('pay_way')
         rpay_pic = request.POST.get('pay_pic')
         obj = request.FILES.get('good_pic')
-        print(obj)
+        if not obj :
+            return render(request,'new_good.html',locals())
         file_path = os.path.join('static','upload','alipay',obj.name)
         f = open(file_path, 'wb')
         for chunk in obj.chunks():
@@ -363,14 +375,23 @@ def market_ws_views(request, order_id, uid):
             is_buyer = user == order.creator
             tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
 
+            if order.buyer_marked:
+                buyer_mark = TradeMark.objects.get(Q(order=order)&Q(creator=order.creator))
+            if order.seller_marked:
+                seller_mark = TradeMark.objects.get(Q(order=order)&Q(creator=good.creator))
+            
             readt = TradeMessage.objects.filter(Q(order=order)&Q(receiver=user))
             for t in readt:
                 t.have_read = True
                 t.save()
-            
+            try:
+                fb = Feedback.objects.get(order=order)
+            except:
+                pass
             html = render(request, 'paying.html', locals()).content
             bs = BeautifulSoup(html, "html.parser")
             noti_div = bs.find('div', id='paycontent').find('div', id='fresh_area')
+
 
             request.websocket.send(noti_div.encode('utf-8'))
 
@@ -430,3 +451,125 @@ def comment_views(request,good_id):
             status = order.status
             isfile = good.isfile
         return render(request, 'ordering.html', locals())
+@login_required
+def trade_mark_views(request, order_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id=order_id)
+        good = order.good
+        buyer = order.creator
+        seller = good.creator
+
+        mark_type = request.POST.get('mark', '')
+        mark_content = request.POST.get('mark-content', '')
+
+        if order.status != 2:
+            messages.error(request, '订单未完成,无法评价')
+            return render(request, 'paying.html', locals())
+
+        if mark_type == 'option1':
+            #print('好评')
+            try:
+                mark = TradeMark.objects.get(Q(order=order)&Q(creator=user))
+                mark.mark_type = 0
+                mark.content = mark_content
+            except: 
+                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=0)
+        elif mark_type == 'option2':
+            #print('差评')
+            try:
+                mark = TradeMark.objects.get(Q(order=order)&Q(creator=user))
+                mark.mark_type = 1
+                mark.content = mark_content
+            except:
+                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=1)
+        mark.save()
+        if user == buyer:
+            order.buyer_marked = True
+        elif user == seller:
+            order.seller_marked = True
+        order.save()
+
+        return redirect(reverse('paying', args=(order.id,)))
+
+@login_required
+def feedback_views(request, feedback_id):
+    if request.method == 'GET':
+        user = User.objects.get(username=request.session['username'])
+        feedback = Feedback.objects.get(id=feedback_id)
+        order = feedback.order
+        good = order.good
+        buyer = order.creator
+        seller = good.creator
+        is_buyer = user == buyer
+        is_creator = user == feedback.creator
+
+        buyer_evis = Evidence.objects.filter(feedback=feedback).filter(creator=buyer)
+        seller_evis = Evidence.objects.filter(feedback=feedback).filter(creator=seller)
+
+        tmessages = TradeMessage.objects.filter(order=order).order_by('create_time')
+        return render(request, 'feedback.html', locals())
+
+
+@login_required
+def add_feedback_views(request, order_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id=order_id)
+
+        fb_type = request.POST.get('feedback-type', '')
+        fb_info = request.POST.get('feedback-info', '')
+
+        fb = Feedback(creator=user, order=order, fb_type=fb_type, info=fb_info, is_ongoing=True)
+        fb.save()
+        order.status = 3
+        order.save()
+
+        return redirect(reverse('feedback', args=(fb.id,)))
+
+@login_required
+def cancel_fb_views(request, feedback_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        feedback = Feedback.objects.get(id=feedback_id)
+        order = feedback.order
+        is_buyer = user == order.creator
+        is_seller = user == order.good.creator
+
+        if user != feedback.creator:
+            messages.error(request, '没有权限')
+            return redirect(reverse('feedback', args=(feedback_id,)))
+
+        elif is_buyer:
+            feedback.is_ongoing = False
+            feedback.save()
+            order.status = 1
+            order.save()
+        elif is_seller:
+            feedback.is_ongoing = False
+            feedback.save()
+            order.status = 2
+            order.save()
+
+        return redirect(reverse('paying', args=(order.id,)))    
+    
+@login_required
+def add_evi_views(request, feedback_id):
+    if request.method == 'POST':
+        user = User.objects.get(username=request.session['username'])
+        feedback = Feedback.objects.get(id=feedback_id)
+        evi_pic = request.FILES.get('evi_pic')
+        file_path = os.path.join('static','upload','evident',evi_pic.name)
+        f = open(file_path, 'wb')
+        for chunk in evi_pic.chunks():
+            f.write(chunk)
+        f.close()
+        evi = Evidence(creator=user, feedback=feedback, content=file_path)
+        evi.save()
+        return redirect(reverse('feedback', args=(feedback.id,)))
+
+def del_good_views(request,good_id):
+    if request.method=='GET':
+        Good.objects.filter(id=good_id).delete()
+        return redirect(reverse('goodlist',args=()))
+    

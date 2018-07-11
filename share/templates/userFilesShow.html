@@ -7,23 +7,25 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/upload.css' %}">
+    <link rel="stylesheet" href="{% static 'css/share_index.css' %}">
+    <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
+    <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
 {% endblock %}
 
 {% block navbar %}
-    <li ><a href="{% url 'index' %}">热门</a></li>
-    <li><a href="{% url 'market_index' %}">市场</a></li>
-    <li><a href="#">讨论</a></li>
-    <li class="selected"><a href="{% url 'share_index' %}">网盘</a></li>
+    <li ><a href="{% url 'index' %}">主页</a></li>
+    <li><a href="{% url 'market_index' %}">商城</a></li>
+    <li><a href="/chat">社区</a></li>
+    <li class="selected"><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
 {% block side %}
-
-
+<a class='btn btn-info sidebtn' href="{%url 'share_index'%}">文件列表</a>
 {% endblock %}
 
 {% block body %}
     <!-- user　　listfile -->
-
-    <h2>{{user.username}}所共享的文件</h2>
+<div class="buju">
+    <h2>我上传的文件</h2>
     
     <table class="table table-hover" border=1>
         <th>文件类别</th>
@@ -33,6 +35,7 @@
         <th>上传时间</th>
         <th>操作</th>
         <th>评价</th>
+        <th>文件状态</th>
         {% for file in listfile%}
             <tr>
                 <!-- 只有college的参数是name -->
@@ -55,24 +58,69 @@
                     <a href="{%url 'del_files' file.id%}">删除</a>
                 </td>
                 <td>
-                    <script language="JavaScript" src="../static/js/admire.js"></script>
-
-                    <span id="goodSpan" onclick="sendGood()">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg'/> 
-                    </span>
-                    <span id="good" style=display:none></span>
-                    [<span id="goodnum"></span>]
+                    <img src="../static/img/like_bef.png" style="width: 25px; height: 25px;" id='goodimg{{x.id}}'/>  
+                    [<span>{{file.file_beadmired}}</span>]
                         |
-                    <span id="badSpan" onclick="sendBad()">
-                        <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg'/> 
-                    </span>
-                    <span id="bad" style=display:none></span>
-                    [<span id="badnum"></span>]
+                    <img src="../static/img/like_bef.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/> 
+                    [<span>{{file.file_benotadmired}}</span>]
 
                 </td>
-
+                <td>
+                    {% if file.file_status == 0 %}
+                    私有文档
+                            
+                        {% elif file.file_status == 1 %}免费共享文档
+                        {% else %}
+                            付费共享文档
+                        {% endif %}
+                </td>
             </tr>
         {% endfor %}
-    
     </table>
+</div>
+<div class="pageJeep">
+    <div class="embed">
+       <nav aria-label="...">
+    <ul class="pagination">
+    {% if page_now == 1 %}
+    <li class="disabled">
+      <span>
+      <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    {%else%}
+    <li >
+      <span>
+      <span aria-hidden="true"><a href="{%url 'show_user' userid %}?page={{pre_page}}">&laquo;</a></span>
+      </span>
+    </li>
+    {%endif%}
+    {% for i in ranges %}
+    {% if i == page_now %}
+    <li class="active">
+      <span><a href="{%url 'show_user' userid %}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% else %}
+        <li>
+      <span><a href="{%url 'show_user' userid %}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% endif %}
+    {%endfor%}
+    {% if page_now == page_sum %}
+    <li class="disabled">
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%else%}
+    <li>
+      <a href="{%url 'show_user' userid %}?page={{next_page }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+    </div>
+    </div>
 {% endblock %}
