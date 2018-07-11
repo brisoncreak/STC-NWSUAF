@@ -215,6 +215,7 @@ def admire_badnum_views(request):
         admireType = request.POST.get('admireType')
         isAdd = request.POST.get('isAdd')
     # print(uid)  none
+    print(isAdd)
     # 文件
     if admireType == 'file':  
         File.objects.filter(id=bad_id).update(file_benotadmired = bad_content)
@@ -222,6 +223,7 @@ def admire_badnum_views(request):
             Admirelog.objects.create(uid_id=uid,fid_id=bad_id,isGood=False,isFile=True)#,fid_id=-1
         else:
             Admirelog.objects.get(isGood=False,uid_id=uid,fid_id=bad_id).delete()#,fid_id=-1
+        return HttpResponseRedirect('/share') 
     # 文章
     else:
         Article.objects.filter(id=bad_id).update(benotadmired_num=bad_content) 
@@ -229,9 +231,7 @@ def admire_badnum_views(request):
             Admirelog.objects.create(uid_id=uid,aid_id=bad_id,isGood=False,isFile=False)#,fid_id=-1
         else:
             Admirelog.objects.get(isGood=False,uid_id=uid,aid_id=bad_id).delete()#,fid_id=-1
-
- 
-
+        return HttpResponse("aa")
 # uid fid aid isGood isFile create_time
 # def check_name(request):
 #     username = request.GET.get("username")

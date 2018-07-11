@@ -3,7 +3,7 @@
 
 {% load static %}
 
-{% block title %}市场 - {% endblock %}
+{% block title %}商城 - {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/share_index.css'%}"/>
@@ -15,7 +15,7 @@
 
 {% block navbar %}
     <li><a href="{% url 'index' %}">主页</a></li>
-    <li><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="{% url 'market_index' %}">商城</a></li>
     <li><a href="{% url 'chat_index' %}">社区</a></li>
     <li class="selected"><a href="{% url 'share_index' %}">资源共享</a></li>
 {% endblock %}
@@ -57,10 +57,10 @@
                 <td>{{x.create_time}}</td>
                 <td>
                     {% if x.file_status != 2 %}
-                        <a href="{%url 'd_files' x.id%}" id="down">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+                        <a href="{%url 'd_files' x.id%}" id="down">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px;"></a>
                        <!--  <input id="down" name="down" type="button" value="下载" onclick="window.location.href='/download_file/{{x.id}}'"> -->
                     {% else %}
-                        <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
+                        <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt="></a>
                     {% endif %}
                 </td>
                 <td>

@@ -144,7 +144,7 @@ def upload_file2(request,collegename):
         messages.error(request,'请登录')
         return HttpResponseRedirect('/login')
 
-@login_required	
+@login_required
 #download files
 def download_files(request,fileid):  
     file=File.objects.get(id=fileid)
@@ -166,7 +166,7 @@ def delete_files(request,fileid):
     if os.path.isfile(file_path):
         os.remove(file_path)
     return HttpResponseRedirect('/share')
-
+@login_required
 #show files
 def index_views(request):
     sharefileList = File.objects.all().exclude(file_status=0)
