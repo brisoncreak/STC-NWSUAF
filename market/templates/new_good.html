@@ -2,15 +2,16 @@
 {%block body%}
     <div class="add_good">
     <h2 class="title">添加商品</h2>
-  <form role="form" action="{%url 'addgood'%}" method="POST" enctype="multipart/form-data">
+  <form role="form" action="{%url 'addgood' file%}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
     <div class="form-group" style="width: 20%">
         <label for="name">商品名称</label>
-        <input type="text" class="form-control" name="good_name" placeholder="请输入名称">
+        <input type="text" required oninvalid="setCustomValidity('请输入商品姓名');"oninput="setCustomValidity('');" class="form-control" name="good_name" value="{{filegood.file_name}}" >
     </div>
     <div class="form-group" style ="width: 20%">
         <label for="name">价格</label>
-        <input type="text" class="form-control" name="price" placeholder="请输入商品价格">
+        <input type="numbe" onchange="if(/\D/.test(this.value)){alert('请输入正确的价格');this.value='';}"
+         required="requi  red" class="form-control" name="price" required="required" placeholder="请输入商品价格">
     </div>
     <div class="form-group dropdown" style="width: 20%">
         <label for="name">选择列表</label>
@@ -20,7 +21,7 @@
         <option value="2">当面交易</option>
         </select>
     </div>
-       <div class="form-group">
+    <div class="form-group">
         <span>二维码</span><br>
         <input type="file" maxlength="20" name="pay_pic" />
     </div>
@@ -29,12 +30,12 @@
 
      <div class="form-group">
          <div class="indiv">
-             <span>商品图片</span><br><input type="file" name="good_pic" maxlength="20" value="/home/tarena/MyProject/fruitday/static/upload/goods/1-270x270-32-DBR4THAT_1nRC1Mv.jpg" />
+             <span>商品图片</span><br><input type="file" name="good_pic" maxlength="20"  　required oninvalid="setCustomValidity('请上传商品图片');" oninput="setCustomValidity('');"/>
         </div> 
     </div>
     <div class="form-group">
         <label for="name">商品信息</label>
-        <textarea  style="resize:none;" class="form-control" name="good_inf" placeholder="请输入商品信息"></textarea>
+        <textarea  required oninvalid="setCustomValidity('请对商品进行描述');" oninput="setCustomValidity('');"style="resize:none;" class="form-control" name="good_inf" placeholder="请输入商品信息"></textarea>
     </div>
     <div class="form-group">
     <button type="submit" 　type="margin:auto" class="btn btn-default">提交</button>
@@ -42,11 +43,18 @@
 </form>
 </div>
 <script type="text/javascript">
-    function pay_pic_open(){
-        document.getElementById("pay_pic").click();
-    }
-    function good_pic_open(){
-        document.getElementById("good_pic").click();
-    }
+    
 </script>
 {%endblock%}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+{% endblock %}

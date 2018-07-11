@@ -45,11 +45,11 @@
 
 {% block side %}
 <a class='btn btn-default sidebtn active' href="{% url 'goods_index' %}">校园二手</a>
-<a class='btn btn-default sidebtn' href="{% url 'docs_index' %}">付费文档</a>
+<a class='btn btn-default sidebtn' href="{% url 'docs_index' %}?page=1 ">付费文档</a>
 
 <br>
 <br>
 <br>
 
-<a class='btn btn-info sidebtn' href="{% url 'addgood' %}">添加新商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">发布商品</a>
 {% endblock %}

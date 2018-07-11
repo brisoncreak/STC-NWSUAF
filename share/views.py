@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,reverse
 from django.http import HttpResponse
 from django.http import FileResponse
 from django.http import HttpResponseRedirect
@@ -72,8 +72,9 @@ def upload_file(request):
                     messages.success(request,'上传成功')
                     return HttpResponseRedirect('/share')
                 elif status==2:
-                    messages.success(request,'上传成功')
-                    return HttpResponseRedirect('/add_good/1')
+                    messages.success(request,'请完善商品信息')
+                    file = File.objects.get(file_name = filename)
+                    return redirect('/market/add_good/'+str(file.id))
             messages.error(request,'上传失败')
             return HttpResponseRedirect('/upload_file')
         messages.error(request,'请登录')
