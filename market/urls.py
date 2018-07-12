@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^ws/(\d+)/(\d+)$', market_ws_views),
     url(r'^cancel_order/(\d+)$', cancel_order_views,name='cancel'),
     url(r'^comment/(\d+)$', comment_views,name='comment'),
+    url(r'^comment_order/(\d+)$', comment_order_views, name='comment_order'),
     url(r'^trade_mark/(\d+)$', trade_mark_views, name='trade_mark'),
     url(r'^add_feedback/(\d+)$', add_feedback_views, name='add_feedback'),
     url(r'^feedback/(\d+)$', feedback_views, name='feedback'),

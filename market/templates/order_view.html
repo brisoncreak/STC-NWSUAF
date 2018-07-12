@@ -93,7 +93,7 @@
                         {%if orderstate == "1"%}
                         <a class="btn btn-default sidebtn" href="{%url 'paying' i.id%}">详情</a>
                         {%else%}
-                        <a  class="btn btn-default sidebtn"href="{%url 'ordering' i.good.id%}">详情</a>
+                        <a  class="btn btn-default sidebtn" href="{%url 'comment_order' i.id%}">详情</a>
                         {%endif%}</td>
                     </tr>
             </table>
@@ -147,14 +147,16 @@
     </div>
 {%endblock%}
 {% block side %}
+<div class="owner">
 <a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
 <a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+</div>
+<div class="classify">
 <a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
 <a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
-
+</div>
 <br>
-<br>
-<br>
-
+<div class="add">
 <a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+</div>
 {% endblock %}
