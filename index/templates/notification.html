@@ -67,6 +67,10 @@
 <div class="panel panel-success">
 {%elif noti.arg0 == 6 %}
 <div class="panel panel-success">
+{%elif noti.arg0 == 7 %}
+<div class="panel panel-success">
+{%elif noti.arg0 == 8 %}
+<div class="panel panel-success">
 {% else %}
 <div class="panel panel-default">
 {%endif%}
@@ -98,6 +102,10 @@
     用户<a>{{noti.arg4.username}}</a>踩了你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
     {%elif noti.arg0 == 6 %}
     用户<a>{{noti.arg4.username}}</a>赞你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
+    {%elif noti.arg0 == 7 %}
+    用户<a>{{noti.arg4.username}}</a>踩了你的文章<a class="btn btn-default" href="{%url 'r_a' noti.arg1%}">点此查看</a>
+    {%elif noti.arg0 == 8 %}
+    用户<a>{{noti.arg4.username}}</a>赞你的文章<a class="btn btn-default" href="{%url 'r_a' noti.arg1%}">点此查看</a>
     {%else%}
     {{noti.content}}
     {%endif%}
