@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}{{u.username}}的主页 - {% endblock %}
+{% block title %}{{user.username}}的主页 - {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/r_m.css'%}"/>
@@ -26,7 +26,7 @@
                     <img src="/static/img/my.png" alt="">
                 </div>
                 <div id="r" class="t">
-                    <p class="sub">&nbsp;&nbsp;&nbsp;{{u.username}}的文章&nbsp;&nbsp;&nbsp;</p>
+                    <p class="sub">&nbsp;&nbsp;&nbsp;{{user.username}}的文章&nbsp;&nbsp;&nbsp;</p>
                     <hr>
                 </div> 
             </div>

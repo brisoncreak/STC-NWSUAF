@@ -85,7 +85,7 @@
             {%endfor%}   
         </div>
         </div>
-        <div class="pageJeep">
+       <div class="pageJeep">
             <div class="embed">
                 <nav aria-label="...">
                 <ul class="pagination">
@@ -98,18 +98,18 @@
                 {%else%}
                 <li >
                   <span>
-                  <span aria-hidden="true"><a href="{%url 'r_m'%}?page={{pre_page}}">&laquo;</a></span>
+                  <span aria-hidden="true"><a href="{%url 'r_s' id%}?page={{pre_page}}">&laquo;</a></span>
                   </span>
                 </li>
                 {%endif%}
                 {% for i in ranges %}
                 {% if i == page_now %}
                 <li class="active">
-                  <span><a href="{%url 'r_m'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+                  <span><a href="{%url 'r_s' id%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
                 </li>
                 {% else %}
                     <li>
-                  <span><a href="{%url 'r_m'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+                  <span><a href="{%url 'r_s' id%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
                 </li>
                 {% endif %}
                 {%endfor%}
@@ -121,7 +121,7 @@
                 </li>
                 {%else%}
                 <li>
-                  <a href="{%url 'r_m'%}?page={{next_page }}" aria-label="Next">
+                  <a href="{%url 'r_s' id%}?page={{next_page }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                   </a>
                 </li>

@@ -20,7 +20,6 @@
             isAdd1 = 1
         }
         else if(name1 != "like_aft.png" && name=="like_aft.png"){
-            document.getElementById("goodimg"+id).src="../static/img/like_bef.png"
             isAdd1 = 0
         }
         //取消点赞
@@ -53,8 +52,8 @@
             isAdd2 = 1
         }
         else if(name != "like_aft.png" && name1=="like_aft.png"){
-            document.getElementById("badimg"+id).src="../static/img/like_bef.png"
-            isAdd1 = 0
+
+            isAdd2 = 0
         }
         //取消踩
         else{

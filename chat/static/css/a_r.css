@@ -9,3 +9,7 @@
     width: 80px;
     height: 80px;
 }
+
+#div2{
+    z-index: 0 !important;
+}
