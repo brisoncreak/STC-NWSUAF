@@ -27,7 +27,7 @@ def docs_views(request):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 4
+        per_page =24
         page_sum = len(goods)//per_page+1
         if page_sum > 6:
             page_sum = len(goods)//per_page
@@ -85,8 +85,22 @@ def good_detail_views(request,good_id):
         if username:
             user = User.objects.get(username=username)
         good = Good.objects.get(id=good_id)
+        goods = Good.objects.filter(isfile=True).order_by('sell_times')
+        print(goods)
+        goods = goods[1:6]
+        remark_date = GoodRemark.objects.filter(good=good.id)
         if good.isfile == True:
             remark = GoodRemark.objects.filter(good = good.id).order_by('-create_time')
+            if remark_date:
+                remark_date = GoodRemark.objects.filter(good=good.id)
+                for i in remark_date:
+                    g_num = 0
+                    b_num = 0
+                    if i.remark_type == 0:
+                        g_num += 1
+                    else:
+                        b_num += 1
+                    date = (g_num/(g_num+b_num))*100
             comment = []
             for i in remark:
                 x = 1
@@ -132,7 +146,10 @@ def ordering_views(request, good_id):
         order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
         if order:
             order = Order.objects.get(id = order)
-            print(order.status)
+            remark = GoodRemark.objects.get(creator = user.id,good = good)
+            print(remark.create_time)
+            if remark:
+                comment_status = 1 
             status = order.status
             isfile = good.isfile
         return render(request, 'ordering.html', locals())
@@ -234,27 +251,26 @@ def add_good_views(request,file):
         rprice = request.POST.get('price')
         rpay_way = request.POST.get('pay_way')
         rpay_pic = request.FILES.get('pay_pic')
-        obj = request.FILES.get('good_pic')
-        if not obj :
-            if file!='0':
-                filegood = File.objects.get(id = file)
-            messages.warning(request, '请上传商品图片')
-            return render(request,'new_good.html',locals())
-        file_path = os.path.join('static','upload','alipay',obj.name)
-        f = open(file_path, 'wb')
-        for chunk in obj.chunks():
-            f.write(chunk)
-        f.close()
+        if file == '0':
+            obj = request.FILES.get('good_pic')
+            if not obj:
+                messages.warning(request, '请上传商品图片')
+                return render(request,'new_good.html',locals())
         rinf = request.POST.get('good_inf')
         username = User.objects.get(username=request.session['username'])
         if file == '0':
             isfile = 0
+            file_path = os.path.join('static','upload','alipay',obj.name)
+            f = open(file_path, 'wb')
+            for chunk in obj.chunks():
+                f.write(chunk)
+            f.close()
             new_good = Good(name=rname,creator = username,price = rprice,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0,isfile = isfile)
         else :
             isfile = 1
             filegood = File.objects.get(id = file)
             print(1)
-            new_good = Good(name=rname,creator = username,price = rprice,file=filegood,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0,isfile = isfile)
+            new_good = Good(name=rname,creator = username,price = rprice,file=filegood,pay_way = rpay_way,pay_pic = rpay_pic,info = rinf,sell_times = 0,isfile = isfile)
         if rpay_pic:
             file_path1 = os.path.join('static','upload','alipay',obj.name)
             f = open(file_path1, 'wb')
@@ -462,7 +478,7 @@ def good_list_views(request):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 4
+        per_page = 8
         page_sum = len(goods)//per_page+1
         if page_sum > 6:
             page_sum = len(goods)//per_page
@@ -498,7 +514,7 @@ def comment_views(request,good_id):
         user = User.objects.get(username=username)
         good = Good.objects.get(id=good_id) 
         contents = request.POST.get('content')
-        goodremark = GoodRemark.objects.get(creator = user.id,good = good)
+        remark = GoodRemark.objects.filter(creator = user.id,good = good)
         remark_type = request.POST.get("remark")
         if not goodremark:
             remark = GoodRemark(creator = user,good = good,content=contents,remark_type=remark_type)
@@ -535,12 +551,13 @@ def trade_mark_views(request, order_id):
                 mark.content = mark_content
             except: 
                 mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=0)
+
         elif mark_type == 'option2':
             #print('差评')
             try:
                 mark = TradeMark.objects.get(Q(order=order)&Q(creator=user))
                 mark.mark_type = 1
-                mark.content = mark_content
+                mark.content = mark_content          
             except:
                 mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=1)
         mark.save()

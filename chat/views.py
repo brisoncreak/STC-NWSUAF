@@ -7,17 +7,46 @@ from django.db.models import Q
 from django.contrib import messages
 
 from STC_NWSUAF.tools import login_required
-
+from index.models import User, Notification
 
 # 游客访问
 def index_views(request):
+    
     if request.method == 'GET':
+        # 获取所有的学院类型已经其下的所有学院　级联下拉框###########################
+        collegetypes = Collegetype.objects.all()
+        #1
+        wenketype = Collegetype.objects.get(title='文科')
+        wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
+        wenkes = []
+        for wenke in wenkecolleges:
+            wenkes.append(wenke.title)
+        #2
+        liketype = Collegetype.objects.get(title='理科')
+        likecolleges = Colleges.objects.filter(classify_id=liketype.id)
+        likes = []
+        for like in likecolleges:
+            likes.append(like.title)
+        #3
+        gongketype = Collegetype.objects.get(title='工科')
+        gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
+        gongkes = []
+        for gongke in gongkecolleges:
+            gongkes.append(gongke.title)
+        #4
+        nongketype = Collegetype.objects.get(title='农科')
+        nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)   #得到了querySet集合
+        # print(nongkecolleges)
+        #转化为列表
+        nongkes = []
+        for nongke in nongkecolleges:
+            nongkes.append(nongke.title)
         listArticle=Article.objects.all().order_by("-id")
         page_now = request.GET.get('page')
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 5
+        per_page = 4
         page_sum = len(listArticle)//per_page+1
         if page_sum > 6:
             page_sum = len(listArticle)//per_page
@@ -39,12 +68,43 @@ def index_views(request):
         print(page_sum)
 
         return render(request,'query_article.html',locals())
-
+    return HttpResponseRedirect('/chat')
 
 #　登录用户访问
 @login_required
 def query_article_views(request):
-    
+
+    # 获取所有的学院类型已经其下的所有学院　级联下拉框###########################
+    collegetypes = Collegetype.objects.all()
+    #1
+    wenketype = Collegetype.objects.get(title='文科')
+    wenkecolleges = Colleges.objects.filter(classify_id=wenketype.id)
+    wenkes = []
+    for wenke in wenkecolleges:
+        wenkes.append(wenke.title)
+    #2
+    liketype = Collegetype.objects.get(title='理科')
+    likecolleges = Colleges.objects.filter(classify_id=liketype.id)
+    likes = []
+    for like in likecolleges:
+        likes.append(like.title)
+    #3
+    gongketype = Collegetype.objects.get(title='工科')
+    gongkecolleges = Colleges.objects.filter(classify_id=gongketype.id)
+    gongkes = []
+    for gongke in gongkecolleges:
+        gongkes.append(gongke.title)
+    #4
+    nongketype = Collegetype.objects.get(title='农科')
+    nongkecolleges = Colleges.objects.filter(classify_id=nongketype.id)   #得到了querySet集合
+    # print(nongkecolleges)
+    #转化为列表
+    nongkes = []
+    for nongke in nongkecolleges:
+        nongkes.append(nongke.title)
+
+    login_uname=request.session.get('username')
+    user=User.objects.get(username=login_uname)
     if request.session.get('id'):
         uid=request.session.get('id')
     listArticle=Article.objects.all().order_by("-id")
@@ -52,7 +112,7 @@ def query_article_views(request):
     if not page_now:
         page_now = 1
     page_now = int(page_now)
-    per_page = 5
+    per_page = 4
     page_sum = len(listArticle)//per_page+1
     if page_sum > 6:
         page_sum = len(listArticle)//per_page
@@ -77,18 +137,20 @@ def query_article_views(request):
 
 def read_my_views(request):
     if request.session.get('username'):
-        uname=request.session.get('username')
-        u=User.objects.get(username=uname)
+        login_uname=request.session.get('username')
+        user=User.objects.get(username=login_uname)
+        # uname=request.session.get('username')
+        # u=User.objects.get(username=uname)
 
-        listArticle=Article.objects.filter(user_id=u.id).order_by("-id")
+        listArticle=Article.objects.filter(user_id=user.id).order_by("-id")
 
         for article in listArticle:
             listReviews=[]
             reviews = Review.objects.filter(article_id=article.id).order_by("-id")
             for review in reviews:
                
-                uname=User.objects.get(id=review.user_id)
-                usercomment=str(uname)+"|"+review.content+"|"+str(review.create_date)
+                login_uname=User.objects.get(id=review.user_id)
+                usercomment=str(login_uname)+"|"+review.content+"|"+str(review.create_date)
    
                 listReviews.append(usercomment)
             Article.objects.filter(id=article.id).update(reviews=listReviews)
@@ -126,12 +188,60 @@ def read_my_views(request):
 def read_sb_views(request,id):
     u=User.objects.get(id=id)
     listArticle=Article.objects.filter(user_id=id).order_by("-id")
+    page_now = request.GET.get('page')
+    if not page_now:
+        page_now = 1
+    page_now = int(page_now)
+    per_page = 3
+    page_sum = len(listArticle)//per_page+1
+    if page_sum > 6:
+        page_sum = len(listArticle)//per_page
+    else:
+            page_sum = len(listArticle)//per_page+1
+    start_page = (page_now-1)*per_page
+    next_page = page_now + 1
+    pre_page = page_now - 1
+    listArticle = listArticle[start_page:start_page+per_page]
+    show_sum = page_sum//6+1 
+    lis = []
+    for i in range(1,show_sum+1):
+        lis.append(i)
+    for i in lis:
+        if page_now in range(i*6-5,i*6+1):
+                ranges = range(i*6-5,i*6+1)
+    if page_sum in ranges:
+                ranges = range(i*6-5,page_sum+1)
+    print(page_sum)
+    
     return render(request,'read_sb.html',locals())
 
 def read_article_views(request,id):
 
     a=Article.objects.get(id=id)
     listReview=Review.objects.filter(article_id=a.id).order_by("-id")
+    if request.session.get('username'):
+        login_uname=request.session.get('username')
+        user=User.objects.get(username=login_uname)
+        login_uid=user.id
+    try:
+        noti0 = Notification.objects.filter(Q(arg0=5)&Q(arg1=id)&Q(aim_user=user))
+        for i in noti0:
+            i.have_read = True
+            i.save()
+    except:
+        pass
+    #用于使显示打赞和数据库中的赞表同步
+    # 获取了对应登录用户　　对文件好评的相应文件列表
+    listarticle_admireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 1).filter(isFile = 0).values('aid_id')
+    listarticle_admire = []
+    for i in listarticle_admireQ:
+        listarticle_admire.append(i['aid_id'])
+    # 获取了对应登录用户　　对文件差评的相应文件列表
+    listarticle_notadmireQ = Admirelog.objects.filter(uid_id=login_uid).filter(isGood = 0).filter(isFile = 0).values('aid_id')
+    listarticle_notadmire = []
+    for j in listarticle_notadmireQ:
+        listarticle_notadmire.append(j['aid_id'])
+
     for review in listReview:
         listReplys=[]
         replys=Reply.objects.filter(review_id=review.id).order_by("-id")
@@ -148,7 +258,8 @@ def read_article_views(request,id):
 def del_article_views(request,id):
     Article.objects.get(id=id).delete()
     messages.success(request,'文章删除成功！')
-    return HttpResponseRedirect('/read_my')                                                                    
+    return HttpResponseRedirect('/read_my')   
+                                                                  
 
 
 def del_review_views(request,id,uid,aid):
@@ -195,6 +306,8 @@ def add_article_views(request):
 
 
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        user=User.objects.get(username=login_uname)
         return render(request,'add_article.html',locals())
     else:
         atopic=request.POST.get('topic')
@@ -204,9 +317,6 @@ def add_article_views(request):
         acollegetype_id = Collegetype.objects.get(title=acollegetype).id
         acollege = request.POST.get('acollege')
         acollege_id = Colleges.objects.get(title=acollege).id
-
-
-        # acollegetype_id=request.POST.get('collegetype_id')
            
         ais_reviewed=request.POST.get('is_reviewed')
         if ais_reviewed=="on":
@@ -215,10 +325,10 @@ def add_article_views(request):
             ais_reviewed=0
 
         if request.session.get('username'):
-            uname=request.session.get('username')
-            u=User.objects.get(username=uname)
+            login_uname=request.session.get('username')
+            user=User.objects.get(username=login_uname)
          
-            Article.objects.create(topic=atopic,lable=alable,content=acontent,is_reviewed=ais_reviewed,reviewed_num=0,skim_num=0,like_num=0,collegetype_id=acollegetype_id,college_id=acollege_id,user_id=u.id)            
+            Article.objects.create(topic=atopic,lable=alable,content=acontent,is_reviewed=ais_reviewed,reviewed_num=0,skim_num=0,like_num=0,collegetype_id=acollegetype_id,college_id=acollege_id,user_id=user.id)            
             messages.success(request,'文章发布成功！')
             return HttpResponseRedirect('/chat/')
         else:
@@ -230,18 +340,21 @@ def add_article_views(request):
 @login_required
 def add_review_views(request,aid):
     if request.session.get('username'):
-        uname=request.session.get('username')
-        u=User.objects.get(username=uname)
-        a=Article.objects.get(id=aid) 
+        login_uname=request.session.get('username')
+        user=User.objects.get(username=login_uname)
 
+        a=Article.objects.get(id=aid) 
+        user1=User.objects.get(id=a.user_id)
         if request.method=='POST':      
             # 判断文章是否可被评论 
             if (a.is_reviewed=="1"):
                 rcontent=request.POST.get('content')
-                Review.objects.create(content=rcontent,article_id=aid,user_id=u.id)      
+                Review.objects.create(content=rcontent,article_id=aid,user_id=user.id)      
                 a.reviewed_num=a.reviewed_num+1
                 a.save()
                 messages.success(request,'评论发布成功！')
+                n = Notification(aim_user=user1, arg0=5, arg1=aid,arg4=user)
+                n.save()
                 return HttpResponseRedirect('/read_article/'+str(a.id))
             else:
                 messages.error(request,'文章不可被评论!')
@@ -256,14 +369,14 @@ def add_review_views(request,aid):
 @login_required
 def add_reply_views(request,rid):
     if request.session.get('username'):
-        uname=request.session.get('username')
-        u=User.objects.get(username=uname)
+        login_uname=request.session.get('username')
+        user=User.objects.get(username=login_uname)
         r=Review.objects.get(id=rid) 
         if request.method=='GET':
-            return render(request,'add_reply.html',locals())
+            return
         else:
             rcontent=request.POST.get('content')
-            Reply.objects.create(content=rcontent,review_id=rid,user_id=u.id)            
+            Reply.objects.create(content=rcontent,review_id=rid,user_id=user.id)            
             messages.success(request,'回复评论成功！')
 
             return HttpResponseRedirect('/read_article/'+str(r.article_id))

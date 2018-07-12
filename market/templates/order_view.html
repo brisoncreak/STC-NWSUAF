@@ -80,24 +80,24 @@
         </div>
         {%endblock%}
         <div class="order_table" >
+            {%for i in order_list%}
             <table class="table table-striped" style="border-top:20px;">
-                    {%for i in order_list%}
                     <tr>
-                        <td style="border:0px;"><img class="img-circle" src="/{{i.good.image}}" style="width: 100px;height: 100px;"></td>
-                        <td style="border:0px;">
-                        {{i.good.name}}
+                        <td style="border:0px;"><img class="img-circle" src="/{{i.good.image}}" style="width: 80px;height: 80px;"></td>
+                        <td style="border:0px;width:200px; ">
+                        <font size="4">{{i.good.name}}</font>
                         </td>
-                        <td style="border:0px;">{{i.create_time}}</td>
-                        <td style="border:0px;">{{i.status}}</td>
-                        <td style="border:0px;">
+                        <td style="border:0px;width:300px;">{{i.status}}</td>
+                        <td style="border:0px;width:150px;">{{i.create_time}}</td>
+                         <td style="border:0px;">
                         {%if orderstate == "1"%}
                         <a class="btn btn-default sidebtn" href="{%url 'paying' i.id%}">详情</a>
                         {%else%}
                         <a  class="btn btn-default sidebtn"href="{%url 'ordering' i.good.id%}">详情</a>
                         {%endif%}</td>
                     </tr>
-                    {%endfor%}
             </table>
+            {%endfor%}
         </div>
        <div class="pageJeep">
     <div class="embed">

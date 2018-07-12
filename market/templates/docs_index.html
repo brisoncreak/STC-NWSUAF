@@ -1,31 +1,17 @@
 {% extends 'market_index.html'%}
 {%block body%}
+     <div class="goods">
     <h2 class="title">电子文档</h2>
-    <div class="docs">
-    <table class="table table-striped">
-    <thead>
-    <tr>
-        <th>商品名称</th>
-        <th>价格</th>
-        <th>售出次数</th>
-        <th>好评率</th>
-    </tr>
-    </thead>
-     {%for good in goods%}
-    <tbody>
-    <tr>
-        <div class="doc">
-        <td><a href="{%url 'good_detail' good.id %}">{{good.name}}</a></td>
-        <td>{{good.price}}</td>
-        <td>{{good.sell_times}}</td>
-        <td>好评率</td>
-        </div>
-    </tr>
-    </tbody>
-    {%endfor%}
-    </table>
+    {% for good in goods %}
+    <a href="{% url 'good_detail' good.id %}">
+    <div class = "goodlist" align="center">
+        <img src="/static/文档.jpg" style="width: 200px;height: 230px;">
+        {{good.name}}
     </div>
-<div class="pageJeep">
+    </a>
+    {%endfor%}
+    </div>
+  <div class="pageJeep">
     <div class="embed">
        <nav aria-label="...">
     <ul class="pagination">

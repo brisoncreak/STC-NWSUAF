@@ -4,3 +4,4 @@ span{
 }
 
 table td {vertical-align: middle !important;}
+a:hover {text-transform:uppercase;font-size: 20px;}

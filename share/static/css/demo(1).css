@@ -5,6 +5,8 @@ body{
     margin:0;
     padding:0;
 }
+a:hover {text-transform:uppercase;font-size: 20px;}
+
 .text-content{
     min-width:1180px;
     border-bottom: 1px solid #e7e7e7;

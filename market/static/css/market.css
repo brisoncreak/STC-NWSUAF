@@ -57,15 +57,13 @@
     position: relative;
     margin: auto;
     overflow: hidden;
-
 }
 .inf{
     float:right;
     width:50%;
     min-height:350px; 
     margin-left:20px;
-    margin-right:8px;
-    margin-bottom: 10px; 
+    margin-right:8px; 
 }
 .desc{
     word-wrap:break-word;
@@ -146,8 +144,11 @@ a {
     width: 100%;
     float: left;
     margin-top: 30px;
+    min-height: 800px;
 }
 .good_tr{
+    width: 100%;
+    margin-bottom: 5px;
     background-color:#C0C0C0;
 }
 .comment{
@@ -171,4 +172,27 @@ good_list{
     width: 70%;
     margin:auto;
     min-height: 1500px;
+}
+.recommend{
+    width:70%;
+    margin:auto;
+    min-height: ;
+}
+.owner{
+    background-color: #F0F0F0;
+    margin-bottom: 30px;
+    min-height: 100px;
+    border-top-right-radius:6px ;
+    border-top-left-radius:6px; 
+    border-bottom-right-radius:6px ;
+    border-bottom-left-radius:6px; 
+}
+.classify{
+    background-color: #F0F0F0;
+    margin-bottom: 30px;
+    min-height: 100px;
+}
+.add{
+    background-color: #F0F0F0;
+    min-height: 100px;
 }

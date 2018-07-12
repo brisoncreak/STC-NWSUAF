@@ -12,7 +12,7 @@
     <li><a href="{% url 'index' %}">主页</a></li>
     <li class="selected"><a href="{% url 'market_index' %}">商城</a></li>
     <li><a href="{% url 'chat_index' %}">社区</a></li>
-    <li><a href="{% url 'share_index' %}">资源共享</a></li>
+    <li><a href="{% url 'share_index' %}">共享文件</a></li>
 {% endblock %}
 
 
@@ -83,10 +83,10 @@
             {%endif%}
             </div>
             <div style="width:92%;float:left; overflow: hidden; ">
-             {{user.username}}<font size="1">{{goodremark.create_time}}</font>
+             {{user.username}}<font size="1">{{remark.create_time}}</font>
             </div> 
             <div style="width:92%;float:left;height: 44px;">
-            {{goodremark.content}}
+            {{remark.content}}
             </div>
             <a href="{% url　'goods_index'%}" class="btn btn-default">返回商品主页</a>
 {%elif status == 2 and isfile == 0%}
