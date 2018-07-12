@@ -1,7 +1,7 @@
 from django.db import models
 from index.models import *
 from chat.models import Article
-from system.storage import ImageStorage
+
 # Create your models here.
 class File(models.Model):
   

@@ -2,8 +2,17 @@
 
 {% load static %}
 
+{% block title %}市场 - {% endblock %}
 {% block head %}
+    <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+{% endblock %}
+
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="#">讨论</a></li>
+    <li><a href="#">网盘</a></li>
 {% endblock %}
 {%block body%}
 <h2 class="title">我的订单</h2>
@@ -30,7 +39,7 @@
         <div class="orderli">
         {%endif%}
         <div class="order-style">
-            <li >已完成</li>
+            <li >待确认</li>
         </div>
         </div>
         </a>
@@ -41,12 +50,23 @@
         <div class="orderli">
         {%endif%}
         <div class="order-style">    
+            <li>已完成</li>
+        </div>
+        </div>
+        </a>
+          <a class="ordera" href="{%url 'ordershow' 3%}">
+         {%if orderstate == "3"%}
+        <div class="order_selected">
+        {%else%}
+        <div class="orderli">
+        {%endif%}
+        <div class="order-style">    
             <li>投诉中</li>
         </div>
         </div>
         </a>
-        <a class="ordera" href="{%url 'ordershow' 3%}">
-        {%if orderstate == "3"%}
+        <a class="ordera" href="{%url 'ordershow' 4%}">
+        {%if orderstate == "4"%}
         <div class="order_selected">
         {%else%}
         <div class="orderli">
@@ -63,33 +83,71 @@
             <table class="table table-striped" style="border-top:20px;">
                     {%for i in order_list%}
                     <tr>
-                        <td style="border:0px;"><img src="/{{i.good.image}}" style="width: 100px;height: 100px;"></td>
-                        <td style="border:0px;"><a href="{%url 'orderdetail' 1%}">{{i.good.name}}</a></td>
+                        <td style="border:0px;"><img class="img-circle" src="/{{i.good.image}}" style="width: 100px;height: 100px;"></td>
+                        <td style="border:0px;"><a href="{%url 'ordering' i.good.id%}">{{i.good.name}}</a></td>
                         <td style="border:0px;">{{i.create_time}}</td>
-                        <td style="border:0px;">等待支付</td>
+                        <td style="border:0px;">{{i.status}}</td>
                         <td style="border:0px;">{{i}}comment</td>
                     </tr>
                     {%endfor%}
             </table>
         </div>
-        <div class="embed">
-        <nav aria-label="Page navigation">
-         <ul class="pagination">
-         <li>
-         <a href="#" aria-label="Previous">
-         <span aria-hidden="true">&laquo;</span>
-         </a>
-         </li>
-         {% for i in '123456'%}
-         <li><a href="#">{{i}}</a></li>
-          {%endfor%}
-         <li>
-         <a href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-         </a>
-         </li>
-         </ul>
-         </nav>
-         </div>
+       <div class="pageJeep">
+    <div class="embed">
+       <nav aria-label="...">
+    <ul class="pagination">
+    {% if page_now == 1 %}
+    <li class="disabled">
+      <span>
+      <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    {%else%}
+    <li >
+      <span>
+      <span aria-hidden="true"><a href="{%url 'ordershow' status%}?page={{pre_page}}">&laquo;</a></span>
+      </span>
+    </li>
+    {%endif%}
+    {% for i in ranges %}
+    {% if i == page_now %}
+    <li class="active">
+      <span><a href="{%url 'ordershow' status%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% else %}
+        <li>
+      <span><a href="{%url 'ordershow' status%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% endif %}
+    {%endfor%}
+    {% if page_now == page_sum %}
+    <li class="disabled">
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%else%}
+    <li>
+      <a href="{%url 'ordershow' status%}?page={{next_page }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+    </div>
+    </div>
     </div>
 {%endblock%}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+{% endblock %}

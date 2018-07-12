@@ -11,10 +11,10 @@
 {% endblock %}
 
 {% block navbar %}
-    <li class="selected"><a href="{% url 'index' %}">主页</a></li>
+    <li><a href="{% url 'index' %}">主页</a></li>
     <li><a href="{% url 'market_index' %}">商城</a></li>
     <li><a href="/chat">社区</a></li>
-    <li><a href="/share">资源共享</a></li>
+    <li><a href="/share">共享文件</a></li>
 {% endblock %}
 
 
@@ -181,10 +181,7 @@
                  
                  <div class="col-md-5 ftr-grid wow bounceInUp" data-wow-delay="0.3s">
                     <h4>欢迎来信</h4>
-                    <form action="/reset/" method="POST">
-                        <input type="text"  placeholder="Email Address" required="" name='username'>
-                        <input type="submit" value="subscribe">
-                </form>
+                    <img src="/static/img/bbb.jpg" width="150px" height="150px" class="tupian">
                  </div>
                  <div class="col-md-3 ftr-grid wow bounceInLeft" data-wow-delay="0.3s">
                     <ul class="ftr-nav">

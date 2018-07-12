@@ -5,24 +5,30 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
 {% endblock %}
+{% block navbar %}
+    <li><a href="{% url 'index' %}">热门</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">网盘</a></li>
+{% endblock %}
 {%block body%}
-<h2 class="title">我的商品</h2>
-    <div class="order_list">
+<div class="order_list">
+ <h2 class="title">我的商品</h2>
     {%block order%}
         {%endblock%}
         <div class="order_table" >
             <table class="table table-striped" style="border-top:20px;">
                     {%for i in goods%}
                     <tr>
-                        <td style="border:0px;"><img src="/{{i.image}}" style="width: 100px;height: 100px;"></td>
-                        <td style="border:0px;"><a href="{%url 'good_detail' i.id%}">{{i.name}}</a></td>
+                        <td style="border:0px; width: 200px;"><img class="img-circle" src="/{{i.image}}" style="width: 100px;height: 100px;"></td>
+                        <td style="border:10px;width: 200px;" style="float: left;"><a href="{%url 'good_detail' i.id%}">{{i.name}}</a></td>
                         <td style="border:0px;">{{i.create_time}}</td>
-                        <td style="border:0px;">{{i}}comment</td>
+                        <td style="border:0px;"><a class="btn btn-default sidebtn" href="{%url 'del_good' i.id%}" onclick="return　del()">删除</a></td>
                     </tr>
                     {%endfor%}
             </table>
         </div>
-        <div class="pageJeep">
+    <div class="pageJeep">
     <div class="embed">
        <nav aria-label="...">
     <ul class="pagination">
@@ -67,4 +73,30 @@
 </nav>
     </div>
     </div>
+</div>
+<script type="text/javascript">
+    function del(){
+      var r=confirm("确定要删除这件商品吗？");
+      if (r==true)
+      {
+        return true
+      }
+      else
+      {
+        return false
+      }
+    } 
+</script>
 {%endblock%}
+{% block side %}
+<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
+<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
+<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
+
+<br>
+<br>
+<br>
+
+<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+{% endblock %}

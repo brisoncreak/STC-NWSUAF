@@ -26,8 +26,13 @@
     width:75%; 
 }
 
-#side{
-    width:25%;
+.side{
+    float:right;
+    width:300px;
+    min-height:800px;
+    border:0px solid;
+    background-color: white;
+    margin-right: 10px;
 }
 
 #OnePerson{
@@ -83,9 +88,9 @@ a:active {font-family:color:#11FF11;}*/
 }
 
 
-#side{
+/*#side{
     float: left;
-}
+}*/
 
 
 #demo{

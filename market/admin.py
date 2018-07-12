@@ -96,29 +96,7 @@ class EvidenceAdmin(admin.ModelAdmin):
     #        'classes':('collapse',)
     #    }),
     #)
-class TradMessageAdmin(admin.ModelAdmin):
-    list_display = ['content', 'create_time', 'sender', 'receiver', 'order']
-    #添加链接
-    list_display_links = ['create_time']
-    #添加可编辑字段
-    #list_editable = ['address', 'city']
-    #添加搜索框
-    search_fields = ['create_time']
-    #date_hierarchy = DateField
-    #右面添加过滤器
-    list_filter = ['order']
-    #详细页面顺序
-    #fields = ('email', 'name', 'age')
-    #详细页面 属性分组
-    #fieldsets = (
-    #    ('基本设置',{
-    #       'fields':('country', 'website')
-    #    }),
-    #    ('高级设置',{
-    #        'fields':('name', 'address','city'),
-    #        'classes':('collapse',)
-    #    }),
-    #)
+
 class TradeMarkAdmin(admin.ModelAdmin):
     list_display = ['id', 'creator', 'order', 'mark_type', 'create_time',]
     #添加链接
@@ -142,10 +120,14 @@ class TradeMarkAdmin(admin.ModelAdmin):
     #        'classes':('collapse',)
     #    }),
     #)
+class GoodRemarkAdmin(admin.ModelAdmin):
+    list_display = ['content', 'create_time']
+    #添加链接
+    list_display_links = ['create_time']
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Good, GoodAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(Evidence, EvidenceAdmin)
-admin.site.register(TradeMessage, TradMessageAdmin)
 admin.site.register(TradeMark, TradeMarkAdmin)
+admin.site.register(GoodRemark, GoodRemarkAdmin)

@@ -1,4 +1,6 @@
 window.onload=function(){
+    
+    $("#messages").slideDown();
     //轮询方式
     //setInterval(myFunction, 1000);
 
@@ -34,4 +36,9 @@ window.onload=function(){
 function myFunction()
 {
     $("#refresh-nav").load("/ #header-bottom-right");
+}
+
+function close_message()
+{
+    $("#messages").slideUp();
 }

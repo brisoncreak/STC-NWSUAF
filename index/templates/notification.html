@@ -12,7 +12,7 @@
     <li class="selected"><a href="{% url 'index' %}">主页</a></li>
     <li><a href="{% url 'market_index' %}">商城</a></li>
     <li><a href="/chat">社区</a></li>
-    <li><a href="/share">资源共享</a></li>
+    <li><a href="/share">共享文章</a></li>
 {% endblock %}
 
 
@@ -63,8 +63,19 @@
 <div class="panel panel-danger">
 {%elif noti.arg0 == 3 %}
 <div class="panel panel-danger">
+{%elif noti.arg0 == 4 %}
+<div class="panel panel-success">
 {%elif noti.arg0 == 5 %}
 <div class="panel panel-success">
+{%elif noti.arg0 == 6 %}
+<div class="panel panel-success">
+{%elif noti.arg0 == 7 %}
+<div class="panel panel-success">
+{%elif noti.arg0 == 8 %}
+<div class="panel panel-success">
+{% else %}
+<div class="panel panel-default">
+
 {%endif%}
   <div class="panel-heading">{{noti.create_time|date:"Y-m-d H:i:s"}}
   {%if not noti.have_read %}
@@ -78,14 +89,33 @@
     
     你收到来自{%if noti.arg3 == 0%}买家{%else%}卖家{%endif%}<a>{{noti.arg4.username}}</a>的聊天信息<span class="badge">{{noti.arg2}}</span>
     <a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+
     {%elif noti.arg0 == 1 %}
+
     你收到来自买家<a>{{noti.arg4.username}}</a>的商品订单<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+
     {%elif noti.arg0 == 2 %}
+
     买家<a>{{noti.arg4.username}}</a>已付款<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+
     {%elif noti.arg0 == 3 %}
+
     卖家<a>{{noti.arg4.username}}</a>已确认收款<a class="btn btn-default" href="{%url 'paying' noti.arg1 %}">点此查看</a>
+    
+    {%elif noti.arg0 == 4 %}
+    用户<a>{{noti.arg4.username}}</a>踩了你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
+    
     {%elif noti.arg0 == 5 %}
     用户<a>{{noti.arg4.username}}</a>评论了你的文章<a class="btn btn-default" href="{%url 'r_a' noti.arg1 %}">点此查看</a>
+
+    {%elif noti.arg0 == 6 %}
+    用户<a>{{noti.arg4.username}}</a>赞你的文件<a class="btn btn-default" href="{%url 'share_index'%}">点此查看</a>
+    {%elif noti.arg0 == 7 %}
+    用户<a>{{noti.arg4.username}}</a>踩了你的文章<a class="btn btn-default" href="{%url 'r_a' noti.arg1%}">点此查看</a>
+    {%elif noti.arg0 == 8 %}
+    用户<a>{{noti.arg4.username}}</a>赞你的文章<a class="btn btn-default" href="{%url 'r_a' noti.arg1%}">点此查看</a>
+    {%else%}
+    {{noti.content}}
     {%endif%}
 
   </div>

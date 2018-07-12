@@ -109,18 +109,6 @@ li.selected a {
 
 }
 
-.header-bottom-right{
-    float:right;
-    position: absolute;
-    bottom:0;
-    right:0;
-    background-color: #ececec;
-    border-top-left-radius: 7px;
-    font-size: 22px;
-    padding: 2px 2px 1px 5px;
-    color:gray;
-}
-
 .side{
     color: black;
     margin-top:5px;
@@ -171,7 +159,7 @@ li.selected a {
 }
 /**/
 .spacer{
-    margin:25px 400px 0px 0px;
+    margin:25px 0px 0px 0px;
     float:right;
     width: 300px;
 }

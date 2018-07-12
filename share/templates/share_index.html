@@ -3,7 +3,7 @@
 
 {% load static %}
 
-{% block title %}市场 - {% endblock %}
+{% block title %}商城 - {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/share_index.css'%}"/>
@@ -14,10 +14,10 @@
 {% endblock %}
 
 {% block navbar %}
-    <li><a href="{% url 'index' %}">主页</a></li>
-    <li><a href="{% url 'market_index' %}">市场</a></li>
-    <li><a href="{% url 'chat_index' %}">社区</a></li>
-    <li class="selected"><a href="{% url 'share_index' %}">资源共享</a></li>
+<li><a href="{% url 'index' %}">主页</a></li>
+<li><a href="{% url 'market_index' %}">商城</a></li>
+<li><a href="/chat">社区</a></li>
+<li class="active"><a href="/share">共享文件 <span class="sr-only">(current)</span></a></li>
 {% endblock %}
 
 
@@ -56,12 +56,12 @@
                 <td>{{x.file_bedown}}</td>
                 <td>{{x.create_time}}</td>
                 <td>
-                    {% if x.file_status != 2 %}
-                        <a href="{%url 'd_files' x.id%}" id="down">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px; alt=""></a>
+<!--                     {% if x.file_status != 2 %} -->
+                        <a href="{%url 'd_files' x.id%}" id="down">下载<img src="../static/img/unlockfree.png" style="width: 20px; height: 20px;"></a>
                        <!--  <input id="down" name="down" type="button" value="下载" onclick="window.location.href='/download_file/{{x.id}}'"> -->
-                    {% else %}
-                        <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt=""></a>
-                    {% endif %}
+                    <!-- {% else %}
+                        <a href="#">购买<img src="../static/img/unlockpay.png" style="width: 20px; height: 20px; alt="></a>
+                    {% endif %} -->
                 </td>
                 <td>
 
@@ -75,7 +75,7 @@
                     </span>
                     [<span id="goodnum{{x.id}}">{{x.file_beadmired}}</span>]
         <!-- 差评端 -->
-                        |
+                        &nbsp;&nbsp;&nbsp;
                     <span id="badSpan" onclick="sendBad({{x.id}},'file',{{login_uid}})">
                         {% if x.id in listfile_notadmire %}
                             <img src="../static/img/like_aft.png" style="width: 25px; height: 25px; transform: rotate(180deg);" id='badimg{{x.id}}'/>  
@@ -143,12 +143,12 @@
 
 {% block side-search %}
     <div class="spacer">
-        <form action="#" id="search">
+        <form action="/search/" id="search" method="POST">
         {% csrf_token %}
             <div class="input-group">
-            <input type="text" class="form-control" placeholder="搜索">
+            <input type="text" class="form-control" placeholder="搜索" name="search">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                    <input class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                 </span>
             </div>
         </form>
@@ -207,8 +207,8 @@
         {% for collegetype in collegetypes%}
             <option value="{{collegetype.title}}">{{collegetype.title}}</option>
         {% endfor %}
-    </select><br>
-    请&nbsp;&nbsp;选 &nbsp;&nbsp;择&nbsp;&nbsp;学&nbsp;&nbsp;院 ： 
+    </select><br><br>
+    请&nbsp;选 &nbsp;择&nbsp;学&nbsp;院 ： 
     <select id="s_2" style="width:100px" name="selcollege">
     </select>
     <br><input type="submit" class='btn btn-info sidebtn' value="查询">
