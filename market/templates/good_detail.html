@@ -5,8 +5,8 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+    <link rel="stylesheet" href="/merchant/css/magnific-popup.css"/>
 {% endblock %}
-
 {% block navbar %}
     <li><a href="{% url 'index' %}">主页</a></li>
     <li class="selected"><a href="{% url 'market_index' %}">商城</a></li>
@@ -16,14 +16,22 @@
 {% block body %}
     <div class="good_inf">
     <h2 class="title">{{good.name}}</h2>
+    {%if good.isfile == False%}
     <div class="col-xs-6 col-md-4" >
-      <img src="/{{good.image}}"  class="img-circle" style="width: 190px;height: 190px;">
+    <a  href='javascript:void(0);' onclick='picBig();'><img src="/{{good.image}}"  style="width: 190px;height: 190px;">
+    </a>
     </div>
+    {%else%}
+    <div class="col-xs-6 col-md-4" >
+    <a  href='javascript:void(0);' onclick='picBig();'><img src="/static/文档.jpg"  style="width: 190px;height: 190px;">
+    </a>
+    </div>
+    {%endif%}
     <div class="inf">    
     <table class="table table-striped" style="width:100%;">
     <tbody> 
     <tr>
-        <td class="alone_inf" style="border:0px;">money:</td>
+        <td class="alone_inf" style="border:0px;">价格:</td>
         <td class="alone_inf" style="border:0px;">{{good.price}}</td>
     </tr>
     <tr>
@@ -34,6 +42,12 @@
         <td class="alone_inf" style="border:0px;">已售出次数:</td>
         <td class="alone_inf" style="border:0px;">{{good.sell_times}}</td>
     </tr>
+    {%if good.isfile == True%}
+     <tr>
+        <td class="alone_inf" style="border:0px;">好评率:</td>
+        <td class="alone_inf" style="border:0px;">{{date}}%</td>
+    </tr>
+    {%endif%}
     <tr>
         <td class="alone_inf" style="border:0px;">支付方式:</td>
         <td class="alone_inf" style="border:0px;">{{good.pay_way}}</td>
@@ -44,9 +58,13 @@
     </tr>
     </tbody>
     </table>
-    <a href="{% url 'ordering' good.id %}" class="btn btn-default">购买</a>
     </div>
-
+    <a href="{% url 'ordering' good.id %}" class="btn btn-default sidebtn" style="margin-top: 0px;">购买</a>
+    </div>
+    <div id="divCenter" align="center" style="position: absolute; display: none;  width: 100%; height: 30%;   position:fixed;z-index:25;">
+        <img src="/{{good.image}}" style="width:50%;height: 60%"/>
+            <div style="margin-top: 30px;"><a href="javascript:void(0);" onclick="picClose();" class="btn btn-default" >关闭</a>
+             </div>
     </div>
     {%if good.isfile == True%}
     <div class="comment">
@@ -72,17 +90,87 @@
             {%endfor%}
     </div>
     </div>
+    <div class="pageJeep">
+    <div class="embed">
+       <nav aria-label="...">
+    <ul class="pagination">
+    {% if page_now == 1 %}
+    <li class="disabled">
+      <span>
+      <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    {%else%}
+    <li >
+      <span>
+      <span aria-hidden="true"><a href="{%url 'good_detail' good.id%}?page={{pre_page}}">&laquo;</a></span>
+      </span>
+    </li>
     {%endif%}
+    {% for i in ranges %}
+    {% if i == page_now %}
+    <li class="active">
+      <span><a href="{%url 'good_detail' good.id%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% else %}
+        <li>
+      <span><a href="{%url 'good_detail' good.id%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% endif %}
+    {%endfor%}
+    {% if page_now == page_sum %}
+    <li class="disabled">
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%else%}
+    <li>
+      <a href="{%url 'good_detail' good.id%}?page={{next_page }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+    </div>
+    </div>
+    {%else%}
+    <div class="recommend">
+     <h2 class="title" style="width:100%;">热卖商品</h2>
+     {% for good in goods %}
+    <a href="{% url 'good_detail' good.id %}">
+    <div class = "goodlist" align="center">
+        <img src="/{{good.image}}" style="width: 200px;height: 230px;">
+        {{good.name}}
+    </div>
+    </a>
+    {%endfor%}
+    </div>
+    {%endif%}
+    <script>
+            function picBig() {
+                var v = document.getElementById('divCenter');
+                v.style.display = "block";
+              
+            }
+            function picClose() {
+                var v = document.getElementById('divCenter');
+                v.style.display = "none";
+            }
+    </script>
 {% endblock %}
 {% block side %}
+<div class="owner">
 <a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
 <a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+</div>
+<div class="classify">
 <a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
 <a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
-
+</div>
 <br>
-<br>
-<br>
-
+<div class="add">
 <a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+</div>
 {% endblock %}

@@ -1,12 +1,33 @@
-{% extends 'market_index.html'%}
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}市场 - {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+    <link rel="stylesheet" href="/merchant/css/magnific-popup.css"/>
+    <style type="text/css">
+      a:hover {text-transform:uppercase;font-size: 20px;}
+    </style>
+{% endblock %}
+{% block navbar %}
+    <li><a href="{% url 'index' %}">主页</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">商城</a></li>
+    <li><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">共享文件</a></li>
+{% endblock %}
 {% block body %}
+    <div class="goods">
     <h2 class="title">二手商品</h2>
     {% for good in goods %}
+    <a href="{% url 'good_detail' good.id %}">
     <div class = "goodlist" align="center">
-        <a href="{% url 'good_detail' good.id %}"><img src="/{{good.image}}" style="width: 200px;height: 230px;"></a>
-        <a href="{% url 'good_detail' good.id %}" >{{good.name}}</a>
+        <img src="/{{good.image}}" style="width: 200px;height: 230px;">
+        {{good.name}}
     </div>
+    </a>
     {%endfor%}
+    </div>
     <div class="pageJeep">
     <div class="embed">
        <nav aria-label="...">
@@ -30,7 +51,7 @@
       <span><a href="{%url 'goods_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
     </li>
     {% else %}
-        <li>
+      <li>
       <span><a href="{%url 'goods_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
     </li>
     {% endif %}
@@ -51,17 +72,18 @@
   </ul>
 </nav>
     </div>
-
 {% endblock %}
 {% block side %}
+<div class="owner">
 <a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
 <a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
-<a class='btn btn-default sidebtn active' href="{% url 'goods_index' %}">校园二手</a>
+</div>
+<div class="classify">
+<a class='btn btn-default sidebtn active ' href="{% url 'goods_index' %}">校园二手</a>
 <a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
-
+</div>
 <br>
-<br>
-<br>
-
+<div class="add">
 <a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+</div>
 {% endblock %}

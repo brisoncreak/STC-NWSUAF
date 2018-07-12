@@ -1,4 +1,5 @@
 body{
+    background-color: #f0f0f0;
 }
 .glyphicon {font-family: 'Glyphicons Halflings' !important;}
 .logo{
@@ -8,6 +9,7 @@ img.top1{
     vertical-align: top;
 
 }
+a:hover {text-transform:uppercase;font-size: 20px;}
 .c1_img{
     vertical-align: center;
     text-align:center; 
@@ -18,12 +20,12 @@ img.top1{
     width:300px;
     min-height:800px;
     border:0px solid;
-    background-color: white;
+    background-color: rgba(255,255,255,0);
     margin-right: 10px;
 }
 .content{
     margin:5px 5px;
-    background-color: #fff;
+    background-color: rgba(255,255,255,0);
     width :auto;
     margin:0 auto;
     overflow:hidden;
@@ -50,7 +52,12 @@ img.top1{
 .brand-name a{
     text-decoration:none;
     color:black;
-}/*
+}
+.navbar
+{
+    margin-bottom: 0px !important;
+}
+/*
 .navbar
 {
     border-bottom:1px solid #7c9db9;

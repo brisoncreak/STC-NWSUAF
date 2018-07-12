@@ -41,6 +41,9 @@ def index_views(request):
         nongkes = []
         for nongke in nongkecolleges:
             nongkes.append(nongke.title)
+        login_uname=request.session.get('username')
+        if login_uname:
+            user=User.objects.get(username=login_uname)
         listArticle=Article.objects.all().order_by("-id")
         page_now = request.GET.get('page')
         if not page_now:
@@ -102,9 +105,10 @@ def query_article_views(request):
     nongkes = []
     for nongke in nongkecolleges:
         nongkes.append(nongke.title)
-
     login_uname=request.session.get('username')
-    user=User.objects.get(username=login_uname)
+    if login_uname:
+        user=User.objects.get(username=login_uname)
+    
     if request.session.get('id'):
         uid=request.session.get('id')
     listArticle=Article.objects.all().order_by("-id")
@@ -226,6 +230,14 @@ def read_article_views(request,id):
     try:
         noti0 = Notification.objects.filter(Q(arg0=5)&Q(arg1=id)&Q(aim_user=user))
         for i in noti0:
+            i.have_read = True
+            i.save()
+        noti1 = Notification.objects.filter(Q(arg0=7)&Q(arg1=id)&Q(aim_user=user))
+        for i in noti1:
+            i.have_read = True
+            i.save()
+        noti2 = Notification.objects.filter(Q(arg0=8)&Q(arg1=id)&Q(aim_user=user))
+        for i in noti2:
             i.have_read = True
             i.save()
     except:
