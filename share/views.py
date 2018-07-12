@@ -170,7 +170,7 @@ def delete_files(request,fileid):
         os.remove(file_path)
     return HttpResponseRedirect('/share')
 
-
+@login_required
 #show files
 def index_views(request):
     sharefileList = File.objects.all().filter(file_status=1).order_by('-id')
@@ -237,7 +237,7 @@ def index_views(request):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 14
+        per_page = 16
         page_sum = len(sharefileList)//per_page+1
         if page_sum > 6:
             page_sum = len(sharefileList)//per_page
@@ -274,7 +274,7 @@ def show_college(request,collegetitle):
     if not page_now:
         page_now = 1
     page_now = int(page_now)
-    per_page = 14
+    per_page = 16
     page_sum = len(files)//per_page+1
     if page_sum > 6:
         page_sum = len(files)//per_page
@@ -314,7 +314,7 @@ def show_user(request,userid):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 14
+        per_page = 16
         page_sum = len(listfile)//per_page+1
         if page_sum > 6:
             page_sum = len(listfile)//per_page
@@ -354,7 +354,7 @@ def show_user(request,userid):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 14
+        per_page = 16
         page_sum = len(listfile)//per_page+1
         if page_sum > 6:
             page_sum = len(listfile)//per_page
