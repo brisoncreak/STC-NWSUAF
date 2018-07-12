@@ -53,11 +53,14 @@ a:hover {
    text-decoration:none;
 }
 
-
+.tupian{
+    margin-left: 100px;
+}
 
 .ftr-grid {
     float: left;
     width: 32%;
+    padding-left: 50px;
 }
 .footer {
     background: #171717;
