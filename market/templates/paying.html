@@ -396,7 +396,7 @@
   {% elif order.status == 1%}
 <a class='btn btn-default sidebtn active' href='#'>等待卖家确认</a>
   {% elif order.status == 2%}
-<a class='btn btn-default sidebtn active' href='#'>交易完成</a>
+<a class='btn btn-default sidebtn active' href="{%url 'goods_index' %}">交易完成</a>
   {% elif order.status == 3%}
 <a class='btn btn-default sidebtn active' href='#'>投诉处理中</a>
   {% else%}
@@ -423,16 +423,4 @@
 
 
 
-{% endblock %}
-{% block side %}
-<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
-<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
-<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
-<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
-
-<br>
-<br>
-<br>
-
-<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
 {% endblock %}

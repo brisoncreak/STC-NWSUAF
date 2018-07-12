@@ -57,7 +57,7 @@ def goods_views(request):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 4
+        per_page = 24
         page_sum = len(goods)//per_page+1
         if page_sum > 6:
             page_sum = len(goods)//per_page
@@ -85,21 +85,42 @@ def good_detail_views(request,good_id):
         if username:
             user = User.objects.get(username=username)
         good = Good.objects.get(id=good_id)
-        print(good.info)
-        remark = GoodRemark.objects.filter(good = good.id).order_by('-create_time')
-        comment = []
-        for i in remark:
-            x = 1
-            user = User.objects.get(username = i.creator)
-            print(user.profile_photo)
-            dic = {
-            'id':user.username,
-            'image':user.profile_photo,
-            'createtime':i.create_time,
-            'comment':i.content
-            }
-            
-            comment.append(dic)
+        if good.isfile == True:
+            remark = GoodRemark.objects.filter(good = good.id).order_by('-create_time')
+            comment = []
+            for i in remark:
+                x = 1
+                user = User.objects.get(username = i.creator)
+                dic = {
+                'id':user.username,
+                'image':user.profile_photo,
+                'createtime':i.create_time,
+                'comment':i.content
+                }
+                comment.append(dic)
+            page_now = request.GET.get('page')
+            if not page_now:
+                page_now = 1
+            page_now = int(page_now)
+            per_page = 4
+            page_sum = len(comment)//per_page+1
+            if page_sum > 6:
+                page_sum = len(comment)//per_page
+            else:
+                page_sum = len(comment)//per_page+1
+            start_page = (page_now-1)*per_page
+            next_page = page_now + 1
+            pre_page = page_now - 1
+            comment = comment[start_page:start_page+per_page]
+            show_sum = page_sum//6+1 
+            lis = []
+            for i in range(1,show_sum+1):
+                lis.append(i)
+            for i in lis:
+                if page_now in range(i*6-5,i*6+1):
+                    ranges = range(i*6-5,i*6+1)
+            if page_sum in ranges:
+                ranges = range(i*6-5,page_sum+1)
         return render(request,'good_detail.html',locals())
 
 #确认购买页面
@@ -212,10 +233,11 @@ def add_good_views(request,file):
         rname = request.POST.get('good_name')
         rprice = request.POST.get('price')
         rpay_way = request.POST.get('pay_way')
-        rpay_pic = request.POST.get('pay_pic')
+        rpay_pic = request.FILES.get('pay_pic')
         obj = request.FILES.get('good_pic')
         if not obj :
-            filegood = File.objects.get(id = file)
+            if file!='0':
+                filegood = File.objects.get(id = file)
             messages.warning(request, '请上传商品图片')
             return render(request,'new_good.html',locals())
         file_path = os.path.join('static','upload','alipay',obj.name)
@@ -223,7 +245,6 @@ def add_good_views(request,file):
         for chunk in obj.chunks():
             f.write(chunk)
         f.close()
-        print(file_path)
         rinf = request.POST.get('good_inf')
         username = User.objects.get(username=request.session['username'])
         if file == '0':
@@ -234,6 +255,13 @@ def add_good_views(request,file):
             filegood = File.objects.get(id = file)
             print(1)
             new_good = Good(name=rname,creator = username,price = rprice,file=filegood,pay_way = rpay_way,pay_pic = rpay_pic,image = file_path,info = rinf,sell_times = 0,isfile = isfile)
+        if rpay_pic:
+            file_path1 = os.path.join('static','upload','alipay',obj.name)
+            f = open(file_path1, 'wb')
+            for chunk in obj.chunks():
+                f.write(chunk)
+            f.close()
+            new_good.pay_pic = file_path1
         new_good.save()
         return redirect(good_list_views)
 @login_required
@@ -453,12 +481,15 @@ def good_list_views(request):
                     ranges = range(i*6-5,i*6+1)
         if page_sum in ranges:
                     ranges = range(i*6-5,page_sum+1)
-        print(page_sum)
         return render(request,'good_list.html',locals())
-
 def cancel_order_views(request,order_id):
     order = Order.objects.get(id = order_id)
     order.status = 4
+    good = order.good
+    good = Good.objects.get(id = good.id)
+    st = good.sell_times - 1
+    good.sell_times = st
+    good.save()
     order.save()
     return redirect(reverse('ordershow', args=(4,)))
 def comment_views(request,good_id):

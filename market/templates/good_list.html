@@ -19,15 +19,17 @@
         <div class="order_table" >
             <table class="table table-striped" style="border-top:20px;">
                     {%for i in goods%}
+                    <div class="good_tr">
                     <tr>
                         <td style="border:0px; width: 200px;"><img class="img-circle" src="/{{i.image}}" style="width: 100px;height: 100px;"></td>
                         <td style="border:10px;width: 200px;" style="float: left;"><a href="{%url 'good_detail' i.id%}">{{i.name}}</a></td>
                         <td style="border:0px;">{{i.create_time}}</td>
                         <td style="border:0px;"><a class="btn btn-default sidebtn" href="{%url 'del_good' i.id%}" onclick="return　del()">删除</a></td>
                     </tr>
+                    </div>
                     {%endfor%}
             </table>
-        </div>
+      </div>
     <div class="pageJeep">
     <div class="embed">
        <nav aria-label="...">

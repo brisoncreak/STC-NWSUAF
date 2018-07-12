@@ -72,6 +72,51 @@
             {%endfor%}
     </div>
     </div>
+    <div class="pageJeep">
+    <div class="embed">
+       <nav aria-label="...">
+    <ul class="pagination">
+    {% if page_now == 1 %}
+    <li class="disabled">
+      <span>
+      <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    {%else%}
+    <li >
+      <span>
+      <span aria-hidden="true"><a href="{%url 'good_detail' good.id%}?page={{pre_page}}">&laquo;</a></span>
+      </span>
+    </li>
+    {%endif%}
+    {% for i in ranges %}
+    {% if i == page_now %}
+    <li class="active">
+      <span><a href="{%url 'good_detail' good.id%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% else %}
+        <li>
+      <span><a href="{%url 'good_detail' good.id%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
+    </li>
+    {% endif %}
+    {%endfor%}
+    {% if page_now == page_sum %}
+    <li class="disabled">
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%else%}
+    <li>
+      <a href="{%url 'good_detail' good.id%}?page={{next_page }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+    </div>
+    </div>
     {%endif%}
 {% endblock %}
 {% block side %}
@@ -85,5 +130,4 @@
 <br>
 
 <a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
-{% endblock %}
 {% endblock %}

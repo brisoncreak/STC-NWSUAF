@@ -1,12 +1,16 @@
 {% extends 'market_index.html'%}
 {% block body %}
+    <div class="goods">
     <h2 class="title">二手商品</h2>
     {% for good in goods %}
+    <a href="{% url 'good_detail' good.id %}">
     <div class = "goodlist" align="center">
-        <a href="{% url 'good_detail' good.id %}"><img src="/{{good.image}}" style="width: 200px;height: 230px;"></a>
-        <a href="{% url 'good_detail' good.id %}" >{{good.name}}</a>
+        <img src="/{{good.image}}" style="width: 200px;height: 230px;">
+        {{good.name}}
     </div>
+    </a>
     {%endfor%}
+    </div>
     <div class="pageJeep">
     <div class="embed">
        <nav aria-label="...">
@@ -30,7 +34,7 @@
       <span><a href="{%url 'goods_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
     </li>
     {% else %}
-        <li>
+      <li>
       <span><a href="{%url 'goods_index'%}?page={{i}}">{{i}}</a> <span class="sr-only">(current)</span></span>
     </li>
     {% endif %}
@@ -51,7 +55,6 @@
   </ul>
 </nav>
     </div>
-
 {% endblock %}
 {% block side %}
 <a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>

@@ -90,7 +90,7 @@
             </div>
             <a href="{% url　'goods_index'%}" class="btn btn-default">返回商品主页</a>
 {%elif status == 2 and isfile == 0%}
-  <h2 class="title" style="width:100%;">发表评价</h2>
+<h2 class="title" style="width:100%;">发表评价</h2>
 <form action="{% url 'comment' good.id %}" method="POST" enctype="multipart/form-data"> 
 {% csrf_token %}
 <div class="panel panel-default"  style="
@@ -144,17 +144,6 @@
 <br>
 <br>
 
-<a class='btn btn-warning sidebtn'>返回</a>
+<a class='btn btn-warning sidebtn' href="{%url 'good_detail' good.id%}">返回</a>
 {% endblock %}
-{% block side %}
-<a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
-<a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
-<a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
-<a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
 
-<br>
-<br>
-<br>
-
-<a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
-{% endblock %}
