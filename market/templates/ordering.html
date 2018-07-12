@@ -83,14 +83,14 @@
             {%endif%}
             </div>
             <div style="width:92%;float:left; overflow: hidden; ">
-             {{user.username}}<font size="1">{{goodremark.create_time}}</font>
+             {{user.username}}<font size="1">{{remark.create_time}}</font>
             </div> 
             <div style="width:92%;float:left;height: 44px;">
-            {{goodremark.content}}
+            {{remark.content}}
             </div>
             <a href="{% url　'goods_index'%}" class="btn btn-default">返回商品主页</a>
 {%elif status == 2 and isfile == 0%}
-  <h2 class="title" style="width:100%;">发表评价</h2>
+<h2 class="title" style="width:100%;">发表评价</h2>
 <form action="{% url 'comment' good.id %}" method="POST" enctype="multipart/form-data"> 
 {% csrf_token %}
 <div class="panel panel-default"  style="
@@ -144,5 +144,6 @@
 <br>
 <br>
 
-<a class='btn btn-warning sidebtn'>返回</a>
+<a class='btn btn-warning sidebtn' href="{%url 'good_detail' good.id%}">返回</a>
 {% endblock %}
+
