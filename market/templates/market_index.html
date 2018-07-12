@@ -1,14 +1,12 @@
-{% extends 'base.html' %}
-
+{% extends 'base.html'%}
 {% load static %}
 
 {% block title %}市场 - {% endblock %}
-
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+    <link rel="stylesheet" href="/merchant/css/magnific-popup.css"/>
 {% endblock %}
-
 {% block navbar %}
     <li><a href="{% url 'index' %}">主页</a></li>
     <li class="selected"><a href="{% url 'market_index' %}">商城</a></li>

@@ -1,15 +1,17 @@
-{% extends 'base.html' %}
-
+{% extends 'base.html'%}
 {% load static %}
 
+{% block title %}市场 - {% endblock %}
 {% block head %}
+    <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
     <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+    <link rel="stylesheet" href="/merchant/css/magnific-popup.css"/>
 {% endblock %}
 {% block navbar %}
-    <li><a href="{% url 'index' %}">热门</a></li>
-    <li class="selected"><a href="{% url 'market_index' %}">市场</a></li>
+    <li><a href="{% url 'index' %}">主页</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">商城</a></li>
     <li><a href="{% url 'chat_index' %}">社区</a></li>
-    <li><a href="{% url 'share_index' %}">网盘</a></li>
+    <li><a href="{% url 'share_index' %}">共享文件</a></li>
 {% endblock %}
 {%block body%}
 <div class="order_list">
@@ -17,17 +19,27 @@
     {%block order%}
         {%endblock%}
         <div class="order_table" >
-            <table class="table table-striped" style="border-top:20px;">
-                    {%for i in goods%}
-                    <tr>
-                        <td style="border:0px; width: 200px;"><img class="img-circle" src="/{{i.image}}" style="width: 100px;height: 100px;"></td>
-                        <td style="border:10px;width: 200px;" style="float: left;"><a href="{%url 'good_detail' i.id%}">{{i.name}}</a></td>
-                        <td style="border:0px;">{{i.create_time}}</td>
-                        <td style="border:0px;"><a class="btn btn-default sidebtn" href="{%url 'del_good' i.id%}" onclick="return　del()">删除</a></td>
+        {%for i in goods%}
+            <table class="table table-striped" style="border-top:20px;" >
+                    <div class="good_tr">
+                    <tr >
+                        <td style="border:0px; width: 200px;">
+                        {%if i.isfile == False%}
+                        <img  src="/{{i.image}}" style="width: 80px;height: 80px;">
+                        {%else%}
+                        <img  src="/static/文档.jpg" style="width: 80px;height: 80px;">
+                        {%endif%}
+                        </td>
+                        <td style="border:10px;width: 200px;" style="float: left;"><font size="4">{{i.name}}</font></td>
+                        <td style="border:0px; width:200px;">{{i.price}}¥</td>
+                        <td style="border:0px; width:150px;">{{i.create_time}}</td>
+                        <td style="border:0px;float:right;　"><a href="{%url 'good_detail' i.id%}" class="btn btn-default sidebtn">详情</a>
+                        <a class="btn btn-default sidebtn" href="{%url 'del_good' i.id%}" onclick="return　del()">删除</a></td>
                     </tr>
-                    {%endfor%}
+                    </div>
             </table>
-        </div>
+            {%endfor%}
+      </div>
     <div class="pageJeep">
     <div class="embed">
        <nav aria-label="...">
@@ -89,14 +101,16 @@
 </script>
 {%endblock%}
 {% block side %}
+<div class="owner">
 <a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
 <a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+</div>
+<div class="classify">
 <a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
 <a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
-
+</div>
 <br>
-<br>
-<br>
-
+<div class="add">
 <a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+</div>
 {% endblock %}
