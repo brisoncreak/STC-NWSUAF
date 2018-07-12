@@ -108,15 +108,12 @@ li.selected a {
     padding: 3px 10px 4px 10px;
 
 }
-
+a:hover {text-transform:uppercase;font-size: 20px;}
 .side{
     color: black;
     margin-top:5px;
 }
-.container{
-    width:100%;
-    background-color: rgba(0,0,0,0.1);
-}
+
 .content {
     margin: 5px 10px 0px 5px;
     background-color: #fff;

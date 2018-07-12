@@ -1,3 +1,4 @@
+
 .home-banner {
     min-height: 733px;
     background-size: cover;
@@ -63,7 +64,7 @@ a:hover {
     padding-left: 50px;
 }
 .footer {
-    background: #171717;
+    background: #ec6644;
     height: 250px;
     padding: 2em 0em;
 }

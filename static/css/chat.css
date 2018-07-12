@@ -8,7 +8,7 @@
     padding: 0 20px;
 }
 
-.top1{
+.top11{
     float: left;
     width:50%;
     height: 100px;
@@ -21,23 +21,14 @@
 }
 
 #Person{
-    clear:both;
-    margin-left:200px;
-    width:75%; 
+    margin-left:150px;
+    width:85%; 
 }
 
-.side{
-    float:right;
-    width:300px;
-    min-height:800px;
-    border:0px solid;
-    background-color: white;
-    margin-right: 10px;
-}
 
 #OnePerson{
     clear:both;
-    width: 800px;
+    width: 80%;
     height: 115px;
     
 }
@@ -79,23 +70,15 @@ a:active {font-family:color:#11FF11;}*/
 }
 #r:hover {font-size: 21px;} 
 
-#content{
-    float: left;
-    width: 80%; 
-
+#content{ 
     background:url(/static/img/cbg.png) no-repeat;
     background-size: 100% 100%;
 }
 
 
-/*#side{
-    float: left;
-}*/
-
-
 #demo{
     margin-top: 7px;
-    width: 800px;
+    width: 100%;
     height: 70px;
     background-color: #f5f5f5;
     border-bottom-right-radius: 30px;
