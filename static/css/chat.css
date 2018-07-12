@@ -70,8 +70,8 @@ a:active {font-family:color:#11FF11;}*/
 }
 #r:hover {font-size: 21px;} 
 
-#content{ 
-    background:url(/static/img/cbg.png) no-repeat;
+.beijing{
+    background:url(/static/img/c8.jpg) no-repeat;
     background-size: 100% 100%;
 }
 

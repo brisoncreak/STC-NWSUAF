@@ -424,19 +424,7 @@ function checkLoginPassword(str){
 
 <!--搜索框不放在基类 各个子应用分别实现搜索 -->
 
-    {% block side-search %}
-    <div class="spacer">
-        <form action="#" id="mysearch">
-            <div class="input-group">
-            <input type="text" class="form-control" placeholder="搜索">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                </span>
-            </div>
-        </form>
-    </div> 
-
-    {% endblock %}
+    
   
     <div class="spacer">
     {% if request.session.username %}

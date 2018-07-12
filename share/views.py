@@ -6,12 +6,15 @@ from .models import *
 from index.models import *
 from chat.models import *
 from index.templates import *
+from django.utils.http import urlquote
 import os
+from django.utils.encoding import escape_uri_path
 from django.db.models import F,Q
 from django.contrib import messages
 from STC_NWSUAF.tools import login_required
 from urllib.parse import unquote
 from index.models import Notification
+from django.http import StreamingHttpResponse
 # Create your views here.
 
 @login_required
@@ -152,12 +155,15 @@ def upload_file2(request,collegename):
 def download_files(request,fileid):  
     file=File.objects.get(id=fileid)
     file_name = file.file_name
+    print(fileid)
+    print(file_name)
     File.objects.filter(id=fileid).update(file_bedown=F('file_bedown')+1) #更改被下载次数
     file_path = os.path.join('share','upload',file_name) 
     file=open(file_path,'rb')  
-    response =FileResponse(file)  
+    response = StreamingHttpResponse(file)  
     response['Content-Type']='application/octet-stream'  
-    response['Content-Disposition']='attachment;filename='+file_name  
+    response['Content-Disposition'] = "attachment; filename*=utf-8''{}".format(escape_uri_path(file_name))
+    # response['Content-Disposition'] ='attachment;filename="%s"' % (urlquote(file_name))
     return response
 @login_required
 #delete files
@@ -309,7 +315,7 @@ def show_user(request,userid):
     user1 = User.objects.get(id=userid)
     #看自己的文件　　就不需要得到赞表
     if int(userid) == login_uid:
-        listfile = File.objects.filter(user_id=userid).filter(file_status=1).order_by('-id')
+        listfile = File.objects.filter(user_id=userid).exclude(file_status=2).order_by('-id')
         page_now = request.GET.get('page')
         if not page_now:
             page_now = 1
@@ -337,7 +343,7 @@ def show_user(request,userid):
         return render(request,'userFilesShow.html',locals())
     #看其他人的文件　　需要得到赞表
     else:
-        listfile = File.objects.filter(user_id=userid).exclude(file_status=0).order_by("-id")
+        listfile = File.objects.filter(user_id=userid).filter(file_status=1).order_by("-id")
 
 
         # 获取了对应登录用户　　对文件好评的相应文件列表
