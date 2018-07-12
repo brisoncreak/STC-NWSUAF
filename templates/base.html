@@ -105,8 +105,7 @@ function checkLoginPassword(str){
 
 </head>
 {% block bodyonload %}<body>{% endblock %}
-<div style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;position:relative;filter: alpha(opacity=100);">
-  <!-- <img src="static/img/banner.jpg" style="position:absolute;margin: 0px;padding: 0px;border:none;max-height: none;max-width: none;top: 0px;z-index: -999999" > -->
+
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -144,7 +143,7 @@ function checkLoginPassword(str){
         
       {% else %}
 
-        <li><a href="{% url 'notify' %}"><div id="header-bottom-right">
+        <li><a href="#"><div id="header-bottom-right">
       <div id="rec">消息<span class="badge">{{lang}}</span></div>
       </div></a></li>
         <li class="dropdown">
@@ -161,9 +160,9 @@ function checkLoginPassword(str){
 
 
       {% endif %}</ul>
-      <form class="navbar-form navbar-right" style="margin-right: 50px;">
+      <form class="navbar-form navbar-right" style="margin-right: 50px;" action="{%url 'search_index'%}?" method="GET">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="">
+          <input type="text" name="kw" class="form-control" placeholder="">
         </div>
         <button type="submit" class="btn btn-default">搜索</button>
       </form>
@@ -443,74 +442,21 @@ function checkLoginPassword(str){
     {% if request.session.username %}
 <div class="img_wd">
    <div class="c1_img"><a href="#" data-toggle="modal" data-target="#myModal3"><img class="top1" src="/{{user.profile_photo}}" width="50px" height="50px" /></a><br>
-   <span ><font size="5">&nbsp;&nbsp;{{request.session.username}}</font></span></div>
+   <span ><font size="5">{{request.session.username}}</font></span></div>
 
 </div>
 
    <!--  <img src="/{{user.profile_photo}}" width="50px" height="50px" />
     <br>{{request.session.username}}<br> -->
-    <div class="container1">
-    <div class="row clearfix">
-        <div class="col-md-4 column">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            好评度
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{user.degree_good}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-4 column">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            好评数
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{user.good_mark}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-4 column">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            差评数
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{user.bad_mark}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    <table class="table">
+        <tbody>
+        <tr><th>交易次数</th><th>好评度</th><th>评价数</th></tr>
+        <tr><td>{{user.degree_good}}</td><td>{{user.degree_good}}</td><td>{{user.degree_good}}</td></tr>
+        </tbody>
+    </table>
 
 
-    <br>
-    <span style="text-align: center;display: block;"><a class='btn btn-info sidebtn' href="{% url 'logout'%}">logout</a></span>
+    
     {% else %}
     
         <form action="{% url 'login' %}" method="POST" class="login-form-side">

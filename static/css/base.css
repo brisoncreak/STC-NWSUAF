@@ -9,10 +9,8 @@ img.top1{
 
 }
 .c1_img{
-    width: 300px;
-    position: relative;
-    left:40%;
-    top:50%;
+    vertical-align: center;
+    text-align:center; 
 }
 
 .side{
@@ -507,4 +505,7 @@ body {
 }
 body {
     min-height: 540px;
+}
+.navbar{
+    margin-bottom: 0 !important;
 }

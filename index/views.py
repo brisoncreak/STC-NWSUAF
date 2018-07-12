@@ -320,3 +320,8 @@ def image_view(request):
         return HttpResponseRedirect(request.session['login_from'])
     message.error("修改头像失败")
     return HttpResponseRedirect('/')
+
+def search_index_views(request):
+    keyword = request.GET.get('kw', '')
+    print(123)
+    return render(request, 'search.html', locals())
