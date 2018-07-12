@@ -52,6 +52,7 @@
             isAdd2 = 1
         }
         else if(name != "like_aft.png" && name1=="like_aft.png"){
+
             isAdd2 = 0
         }
         //取消踩

@@ -6,3 +6,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+#div2{
+    z-index: 0 !important;
+}
