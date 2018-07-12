@@ -309,7 +309,7 @@ def show_user(request,userid):
     user1 = User.objects.get(id=userid)
     #看自己的文件　　就不需要得到赞表
     if int(userid) == login_uid:
-        listfile = File.objects.filter(user_id=userid).filter(file_status=1).order_by('-id')
+        listfile = File.objects.filter(user_id=userid).exclude(file_status=2).order_by('-id')
         page_now = request.GET.get('page')
         if not page_now:
             page_now = 1

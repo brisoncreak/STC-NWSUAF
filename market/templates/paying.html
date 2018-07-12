@@ -63,7 +63,7 @@
   <tr class="success">
   <td>订单状态</td>
   {% if good.isfile %}
-  <td>交易完成<a class="btn btn-default" href="{%url 'show_user' user.id%}">点此查看文件</a></td>
+  <td>交易完成</td>
   {%else%}
   <td>交易完成</td>
   {%endif%}
@@ -423,12 +423,6 @@
 
 {% if order.status == 1 %}
 <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#feedback">发起投诉</button>
-
-
-
-{% elif order.status == 2 and order.good.isfile %}
-<a class='btn btn-danger sidebtn'　href="#">查看已购文件</a>
 {% endif%}
-
 {% endblock %}
 

@@ -150,15 +150,6 @@ def ordering_views(request, good_id):
         good = Good.objects.get(id=good_id)
         user = User.objects.get(username=request.session['username'])
         order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
-        if order:
-            order = Order.objects.get(id = order)
-            remark = GoodRemark.objects.filter(creator = user.id,good = good)
-            if remark:
-                remark = GoodRemark.objects.get(creator = user.id,good = good)
-            if remark:
-                comment_status = 1 
-            status = order.status
-            isfile = good.isfile
         return render(request, 'ordering.html', locals())
     else:
         good = Good.objects.get(id=good_id)
@@ -283,9 +274,9 @@ def add_good_views(request,file):
             print(1)
             new_good = Good(name=rname,creator = username,price = rprice,file=filegood,pay_way = rpay_way,pay_pic = rpay_pic,info = rinf,sell_times = 0,isfile = isfile)
         if rpay_pic:
-            file_path1 = os.path.join('static','upload','alipay',obj.name)
+            file_path1 = os.path.join('static','upload','alipay',rpay_pic.name)
             f = open(file_path1, 'wb')
-            for chunk in obj.chunks():
+            for chunk in rpay_pic.chunks():
                 f.write(chunk)
             f.close()
             new_good.pay_pic = file_path1
@@ -380,29 +371,22 @@ def buyer_ok_views(request, order_id):
     if request.method == 'POST': 
         user = User.objects.get(username=request.session['username'])
         order = Order.objects.get(id=order_id)
-
         if user != order.creator:
             messages.error(request, '没有权限')
             return render(request, '/', locals())
         order.buyer_ok = True
         order.status = 1
         order.save()
-
         #消息处理
         good = order.good
         buyer = order.creator
         seller = good.creator
-
         buyer_message = request.POST.get('buyer-ok-message', '')
-        
         if not buyer_message == '':
             message = TradeMessage(sender=user, receiver=seller, order=order, content=buyer_message)
             n = Notification(aim_user=seller, arg0=2, arg1=order_id, arg4=user)
-            
             message.save()
             n.save()
-
-
         return redirect(reverse('paying', args=(order.id,)))
 
 
@@ -448,9 +432,10 @@ def seller_ok_views(request, order_id):
 
 
         #消息处理
+        send_ok = Notification(aim_user=buyer, arg0=20, arg1=order_id, arg4=buyer,content="文件已发放至您的网盘中")
+        send_ok.save()
         n = Notification(aim_user=buyer, arg0=3, arg1=order_id, arg4=user)
         n.save()
-        messages.warning(request, '文件已放入您的网盘中')
         return redirect(reverse('paying', args=(order.id,)))
 
 @require_websocket
@@ -544,7 +529,7 @@ def comment_views(request,good_id):
             order = Order.objects.get(id = order)
             status = order.status
             isfile = good.isfile
-        return render(request, 'ordering.html', locals())
+        return render(request, 'comment_order.html', locals())
 @login_required
 def trade_mark_views(request, order_id):
     if request.method == 'POST':
@@ -688,3 +673,16 @@ def del_good_views(request,good_id):
         Good.objects.filter(id=good_id).delete()
         return redirect(reverse('goodlist',args=()))
     
+def comment_order_views(request,order):
+    if request.method == 'GET':
+        user = User.objects.get(username=request.session['username'])
+        order = Order.objects.get(id = order)
+        remark = GoodRemark.objects.filter(creator = user.id,good = order.good.id)
+        if remark:
+            remark = GoodRemark.objects.get(creator = user.id,good = order.good.id)
+        if remark:
+            comment_status = 1 
+        status = order.status
+        isfile = order.good.isfile
+        good = Good.objects.get(id = order.good.id)
+        return render(request,'order_comment.html',locals())
