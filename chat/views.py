@@ -49,7 +49,7 @@ def index_views(request):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 4
+        per_page = 5
         page_sum = len(listArticle)//per_page+1
         if page_sum > 6:
             page_sum = len(listArticle)//per_page
@@ -116,7 +116,7 @@ def query_article_views(request):
     if not page_now:
         page_now = 1
     page_now = int(page_now)
-    per_page = 4
+    per_page = 5
     page_sum = len(listArticle)//per_page+1
     if page_sum > 6:
         page_sum = len(listArticle)//per_page

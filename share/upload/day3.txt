@@ -1,0 +1,121 @@
+2、模型 - Models
+    1、什么是模型
+        按照数据库中表结构来抽象出来的class
+        在模型中，可以完成对数据的CRUD操作
+        C : Create
+        R : Retrieve
+        U : Update
+        D : Delete
+    2、创建 和 使用模型 - ORM
+        1、什么是ORM
+            ORM ：Object Relational Mapping
+            简称：ORM,O/RM,O/R Mapping
+            中文：对象关系映射
+            三大特征： 
+                1、数据表 到 类(class) 的映射
+                    允许将表自动的生成一个class
+                    也允许将类对应的自动生成一个表
+                2、数据类型的映射
+                    允许将表中的字段自动生成到编程语言中的属性，并能够将表中字段的数据类型 也对应生成到编程语言中对应的数据类型
+                3、关系映射
+                    数据库中的关联关系：
+                        一对一
+                        一对多/多对一
+                        多对多
+                    将表中的关联关系也映射到编程语言的class中，通过创建对象的关系来完成映射的
+        2、ORM的优点
+            1、提高了开发效率，能够自动完成class到table的映射或table到class的映射，可以在程序中省略庞大的数据访问层
+            2、不用SQL编码，也能完成对数据的CRUD操作
+    3、创建 和 配置数据库
+        1、创建数据库
+            create database webdb default charset utf8 collate utf8_general_ci
+        2、Django 中的数据库配置
+            在 settings.py 中配置数据库的信息
+            DATABASES = {
+                'default':{
+                    'ENGINE':'...',
+                    'NAME':'',
+                }
+            }
+            1、ENGINE ：引擎
+                连接到mysql的引擎
+                'django.db.backends.mysql'
+            2、NAME ：要连接到的数据库的名称
+            3、USER ：用户名称，通常为 root
+            4、PASSWORD ：用户密码，123456
+            5、HOST ：连接的主机，通常为 IP地址
+                本机：localhost / 127.0.0.1 / 不写
+            6、PORT ：端口号，3306
+    4、数据库的同步操作
+        1、./manage.py makemigrations
+            作用：将每个应用下的models先映射成数据库的日志文件(中间文件)，并存放在每个应用下的 migrations 的文件夹中
+        2、./manage.py migrate
+            作用：将每个应用下的migrations文件夹中的日志文件同步到数据库中
+    5、编写Models
+        1、注意
+            1、Models中的每个class都成为模型类(Model)或实体类(Entry)
+            2、Models中的每个实体类，必须继承自models.Model 
+        2、创建模型类
+            models.py
+
+    from django.db import models
+
+class Publisher(models.Model):
+name = models.CharField(max_length=30)
+address = models.CharField(max_length=50)
+city = models.CharField(max_length=30)
+country = models.CharField(max_length=30)
+website = models.URLField()
+
+
+
+    6、Django提供的数据字段 和 字段选项  
+        1、数据字段(Field Types)
+            1、BooleanField()
+            2、CharField()
+            3、DateField()
+            4、EmailField()
+            5、FloatField()
+            6、FileField()
+            7、IntegerField()
+            8、ImageField()
+            9、URLField()
+        2、字段选项(Field Options)
+            1、null ：是否允许为空
+                name=models.CharField(max_length=30,null=True)
+            2、default ：为列设置默认值
+                name=models.CharField(max_length=30,default='匿名 ')
+            3、verbose_name ：在后台管理中，该列显示的名称
+                name=models.CharField(max_length=30,verbose_name='用户名称')
+        练习：
+            在 models.py 追加两个 class
+    1、Author - 作者
+        1、name
+        2、age  整数
+        3、email ：允许为空　　email
+    2、Book - 书籍
+      1、title ：书名
+      2、publication_date ： 出版日期  date
+            
+            映射到数据库中
+    7、数据的导入和导出(数据迁移)
+        1、数据库的导入和导出
+            1、数据的导出
+                1、导出所有的表结构以及数据
+                    mysqldump -u root -p 数据库名 > xx.sql
+                2、只导出表结构，不导出数据
+                    mysqldump -u root -p -d 数据库名 > xx.sql
+            2、导入数据
+                mysql -u root -p 数据库名 < xx.sql
+                (数据库必须存在)
+        2、通过数据库自动导出 Models
+            (将table映射成Models)
+            ./manage.py inspectdb > xx.py
+    
+        作业：
+    1、根据 fruitday 中的 login 和 register ，分析天天果园中的 用户表的信息
+    1、创建数据库 FruitDay
+    2、创建模型类 - Models
+            ... ...
+    增加一个字段 : 是否为活动用户
+                
