@@ -5,6 +5,9 @@ body{
     margin:0;
     padding:0;
 }
+.beijing{
+    background: url(/static/img/wen.jpg);
+}
 a:hover {text-transform:uppercase;font-size: 20px;}
 
 .text-content{

@@ -19,7 +19,7 @@ from index.models import Notification
 # Create your views here.
 def index_views(request):
 
-    return render(request, 'index.html')
+    return render(request, 'zhuye.html')
 
 #登录
 def index_login(request):
@@ -190,9 +190,10 @@ def admire_goodnum_views(request):
         isAdd = request.POST.get('isAdd')
         user = User.objects.get(username=request.session['username'])
         
-        user1=User.objects.get(id=file.user_id)
+        
         if admireType == 'file':
             file=File.objects.get(id=good_id)
+            user1=User.objects.get(id=file.user_id)
             File.objects.filter(id=good_id).update(file_beadmired = good_content)
             if isAdd=='1':
                 Admirelog.objects.create(uid_id=uid,fid_id=good_id,isGood=True,isFile=True) #,fid_id=-1
@@ -203,11 +204,12 @@ def admire_goodnum_views(request):
             return HttpResponseRedirect('/share')
         else:
             article=Article.objects.get(id=good_id)
+            user1=User.objects.get(id=article.user_id)
             Article.objects.filter(id=good_id).update(beadmired_num=good_content)
             if isAdd=='1':
+                Admirelog.objects.create(uid_id=uid,aid_id=good_id,isGood=True,isFile=False) #,fid_id=-1
                 n = Notification(aim_user=user1, arg0=8,arg1=good_id, arg4=user)
                 n.save()
-                Admirelog.objects.create(uid_id=uid,aid_id=good_id,isGood=True,isFile=False) #,fid_id=-1
             # isadd = '0'  代表取消点赞　　　所以应该将　isGood为１　的删除
             else:
                 Admirelog.objects.get(isGood = True,uid_id=uid,aid_id=good_id).delete() #,fid_id=-1
@@ -221,11 +223,10 @@ def admire_badnum_views(request):
         admireType = request.POST.get('admireType')
         isAdd = request.POST.get('isAdd')
         user = User.objects.get(username=request.session['username'])
-
-        user1=User.objects.get(id=file.user_id)
         # 文件
         if admireType == 'file': 
             file=File.objects.get(id=bad_id) 
+            user1=User.objects.get(id=file.user_id)
             File.objects.filter(id=bad_id).update(file_benotadmired = bad_content)
             if isAdd=='1':
                 Admirelog.objects.create(uid_id=uid,fid_id=bad_id,isGood=False,isFile=True)#,fid_id=-1
@@ -237,6 +238,7 @@ def admire_badnum_views(request):
         # 文章
         else:
             article=Article.objects.get(id=bad_id)
+            user1=User.objects.get(id=article.user_id)
             Article.objects.filter(id=bad_id).update(benotadmired_num=bad_content) 
             if isAdd=='1':
                 Admirelog.objects.create(uid_id=uid,aid_id=bad_id,isGood=False,isFile=False)#,fid_id=-1

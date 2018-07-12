@@ -18,7 +18,8 @@ from index.models import Notification
 #upload files
 def upload_file(request):
     login_uname=request.session.get('username')
-    user=User.objects.get(username=login_uname)
+    if login_uname:
+        user=User.objects.get(username=login_uname)
     if request.method == 'GET':
         colleges = Colleges.objects.all()
         return render(request,'file.html',locals())
@@ -83,7 +84,8 @@ def upload_file(request):
 #upload files
 def upload_file2(request,collegename):
     login_uname=request.session.get('username')
-    user=User.objects.get(username=login_uname)
+    if login_uname:
+        user=User.objects.get(username=login_uname)
     name = unquote(collegename, 'utf-8')
     #上传文件
     if request.method == 'GET':
@@ -204,7 +206,8 @@ def index_views(request):
     # print(nongkes)
 
     login_uname=request.session.get('username')
-    user=User.objects.get(username=login_uname)
+    if login_uname:
+        user=User.objects.get(username=login_uname)
     login_uid=user.id
     try:
         noti0 = Notification.objects.filter(Q(arg0=4)&Q(aim_user=user))
@@ -263,7 +266,8 @@ def index_views(request):
 #按照学院显示文件
 def show_college(request,collegetitle):
     login_uname=request.session.get('username')
-    user=User.objects.get(username=login_uname)
+    if login_uname:
+        user=User.objects.get(username=login_uname)
     college = Colleges.objects.get(title=collegetitle)
     files = File.objects.filter(file_classify_id=college.id).filter(file_status=1).order_by('-id')
     page_now = request.GET.get('page')
@@ -295,7 +299,8 @@ def show_college(request,collegetitle):
 #按照用户显示文件
 def show_user(request,userid):
     login_uname=request.session.get('username')
-    user=User.objects.get(username=login_uname)
+    if login_uname:
+        user=User.objects.get(username=login_uname)
     login_uid=user.id
 
     # print(login_uid)

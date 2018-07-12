@@ -420,7 +420,7 @@ function checkLoginPassword(str){
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-
+<div class='beijing'>
 <div class="side" style="filter: alpha(opacity=100);float: right; ">
 
 <!--搜索框不放在基类 各个子应用分别实现搜索 -->
@@ -443,7 +443,7 @@ function checkLoginPassword(str){
     {% if request.session.username %}
 <div class="img_wd">
    <div class="c1_img"><a href="#" data-toggle="modal" data-target="#myModal3"><img class="top1" src="/{{user.profile_photo}}" width="50px" height="50px" /></a><br>
-   <span ><font size="5">&nbsp;&nbsp;{{request.session.username}}</font></span></div>
+   <span ><font size="5">{{request.session.username}}</font></span></div>
 
 </div>
 
@@ -552,11 +552,12 @@ function checkLoginPassword(str){
     {% endblock %}
     </div>
     </div>
+
 <div class="content" id="content" style="filter: alpha(opacity=100);">
 {% block body %}
 {% endblock %}
 </div>
-
+</div>
 
 {% block bottom %}
 
