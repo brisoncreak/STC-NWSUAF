@@ -237,6 +237,49 @@
     </div><!-- /.modal -->
 </div>
 
+<div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                 <!--这里显示错误信息-->
+
+                </h4>
+            </div>
+            <div class="panel panel-default">
+ <div class="panel-body">
+ <p>1. 请选择投诉原因并备注您的问题信息，以便后台处理。</p>
+<p>2. 当您遇到交易纠纷，请及时点击“发起投诉”，以便维护您的利益。</p>
+<p>3. 若您已经解决问题，请不要点击“发起投诉”，以免造成交易纠纷以及可能的信用降级。</p>
+
+</div>
+</div>
+            <form action="{% url 'add_feedback' order.id %}" method="POST">
+            {%csrf_token%}
+            <div class="form-group dropdown" style="width: 200px;">
+              <label for="name">投诉原因</label>
+               <select class="form-control" name="feedback-type">
+                {%if is_buyer%}
+                <option value="0">已付款卖家不发货</option>
+                {%else%}
+                <option value="0">未收到钱</option>
+                {%endif%}
+                <option value="1">其他</option>
+              </select>
+            </div>
+            <input type="text" name="feedback-info" class="form-control" placeholder="描述您的问题">
+ 
+            <br>
+            <input type="submit" class="btn btn-danger btn-block" value="发起投诉">
+            </form>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 <div class="modal fade" id="buyer_ok" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -343,49 +386,6 @@
         </form>
     </div> 
 
-<div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                 <!--这里显示错误信息-->
-
-                </h4>
-            </div>
-            <div class="panel panel-default">
- <div class="panel-body">
- <p>1. 请选择投诉原因并备注您的问题信息，以便后台处理。</p>
-<p>2. 当您遇到交易纠纷，请及时点击“发起投诉”，以便维护您的利益。</p>
-<p>3. 若您已经解决问题，请不要点击“发起投诉”，以免造成交易纠纷以及可能的信用降级。</p>
-
-</div>
-</div>
-            <form action="{% url 'add_feedback' order.id %}" method="POST">
-            {%csrf_token%}
-            <div class="form-group dropdown" style="width: 200px;">
-              <label for="name">投诉原因</label>
-               <select class="form-control" name="feedback-type">
-                {%if is_buyer%}
-                <option value="0">已付款卖家不发货</option>
-                {%else%}
-                <option value="0">未收到钱</option>
-                {%endif%}
-                <option value="1">其他</option>
-              </select>
-            </div>
-            <input type="text" name="feedback-info" class="form-control" placeholder="描述您的问题">
- 
-            <br>
-            <input type="submit" class="btn btn-danger btn-block" value="发起投诉">
-            </form>
-            <div class="modal-footer">
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
 
 {%if has_new%}
 <p hidden id="has_new">1</p>
@@ -396,8 +396,10 @@
 {% endblock %}
 
 
- {% block side %}
 
+
+
+{% block side %}
 
 
 {% if order.status == 0 %}
@@ -422,7 +424,7 @@
 {% endif%}
 
 {% if order.status == 1 %}
-<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#feedback">发起投诉</button>
+<button class="btn btn-danger btn-block" data-target="#feedback" data-toggle="modal"  >发起投诉</button>
 {% endif%}
 {% endblock %}
 
