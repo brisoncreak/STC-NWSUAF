@@ -503,7 +503,10 @@ def trade_mark_views(request, order_id):
                 mark.mark_type = 0
                 mark.content = mark_content
             except: 
-                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=0)
+                if user == buyer:
+                    mark = TradeMark(creator=user, aim=seller, order=order, content=mark_content, mark_type=0)
+                else:
+                    mark = TradeMark(creator=user, aim=buyer, order=order, content=mark_content, mark_type=0)
         elif mark_type == 'option2':
             #print('差评')
             try:
@@ -511,13 +514,30 @@ def trade_mark_views(request, order_id):
                 mark.mark_type = 1
                 mark.content = mark_content
             except:
-                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=1)
+                if user == buyer:
+                    mark = TradeMark(creator=user, aim=seller, order=order, content=mark_content, mark_type=1)
+                else:
+                    mark = TradeMark(creator=user, aim=buyer, order=order, content=mark_content, mark_type=1)
         mark.save()
         if user == buyer:
             order.buyer_marked = True
         elif user == seller:
             order.seller_marked = True
         order.save()
+
+
+        seller.good_mark = TradeMark.objects.filter(Q(aim=seller)&Q(mark_type=0)).count()
+        seller.bad_mark = TradeMark.objects.filter(Q(aim=seller)&Q(mark_type=1)).count()
+        seller.save()
+
+        buyer.good_mark = TradeMark.objects.filter(Q(aim=buyer)&Q(mark_type=0)).count()
+        buyer.bad_mark = TradeMark.objects.filter(Q(aim=buyer)&Q(mark_type=1)).count()
+        buyer.save()
+
+        seller.degree_good = seller.good_mark/seller.trade_count
+        seller.save()
+        buyer.degree_good = buyer.good_mark/buyer.trade_count
+        buyer.save()
 
         return redirect(reverse('paying', args=(order.id,)))
 
