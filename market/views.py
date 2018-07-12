@@ -146,8 +146,9 @@ def ordering_views(request, good_id):
         order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)
         if order:
             order = Order.objects.get(id = order)
-            remark = GoodRemark.objects.get(creator = user.id,good = good)
-            print(remark.create_time)
+            remark = GoodRemark.objects.filter(creator = user.id,good = good)
+            if remark:
+                remark = GoodRemark.objects.get(creator = user.id,good = good)
             if remark:
                 comment_status = 1 
             status = order.status
@@ -516,7 +517,7 @@ def comment_views(request,good_id):
         contents = request.POST.get('content')
         remark = GoodRemark.objects.filter(creator = user.id,good = good)
         remark_type = request.POST.get("remark")
-        if not goodremark:
+        if not remark:
             remark = GoodRemark(creator = user,good = good,content=contents,remark_type=remark_type)
             remark.save()
         order = Order.objects.filter(good_id = good_id).filter(creator_id = user.id)

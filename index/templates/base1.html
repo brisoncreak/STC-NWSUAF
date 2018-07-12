@@ -223,9 +223,9 @@ function close_message()
           </ul>
         </li>
       {% endif %}</ul>
-      <form class="navbar-form navbar-right" style="margin-right: 50px;">
+      <form class="navbar-form navbar-right" style="margin-right: 50px;" action="/search/" method="get">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="">
+          <input type="text" name="kw" class="form-control" placeholder="">
         </div>
         <button type="submit" class="btn btn-default">搜索</button>
       </form>

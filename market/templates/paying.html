@@ -62,7 +62,12 @@
   {% elif order.status == 2%}
   <tr class="success">
   <td>订单状态</td>
+  {% if good.isfile %}
+  <td>交易完成<a class="btn btn-default" href="{%url 'show_user' user.id%}">点此查看文件</a></td>
+  {%else%}
   <td>交易完成</td>
+  {%endif%}
+
   {% elif order.status == 3%}
   <tr class="danger">
   <td>订单状态</td>
@@ -160,7 +165,7 @@
   <div class="charline-right">
   <p class="tm-info">{{tm.sender.username}} {{tm.create_time|date:"Y-m-d H:i:s"}}</p>
   <div class="head-pic-r"><img src="/{{tm.sender.profile_photo}}" style="width:40px;height:40px;"/>
-  <span class=" glyphicon glyphicon-arrow-right" aria-hidden="true" style="color: #78CDF8;position:absolute; top:12px; right:42px;" ></span>
+  <span class=" glyphicon glyphicon-arrow-right" aria-hidden="true" style="color: #78CDF8;position:absolute; top:12px; right:44px;" ></span>
   </div>
 
   <div class="message-r">
@@ -178,7 +183,7 @@
   <p class="tm-info">{{tm.sender.username}} {{tm.create_time|date:"Y-m-d H:i:s"}}</p>
   
   <div class="head-pic-l"><img src="/{{tm.sender.profile_photo}}" style="width:40px;height:40px;"/>
-  <span class=" glyphicon glyphicon-arrow-left" aria-hidden="true" style="color: #CDD7E2;position:absolute; top:12px; left:42px;" ></span>
+  <span class=" glyphicon glyphicon-arrow-left" aria-hidden="true" style="color: #CDD7E2;position:absolute; top:12px; left:44px;" ></span>
   </div>
 
 
@@ -421,6 +426,5 @@
 <a class='btn btn-danger sidebtn'　href="#">查看已购文件</a>
 {% endif%}
 
-
-
 {% endblock %}
+

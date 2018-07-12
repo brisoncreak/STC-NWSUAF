@@ -1,4 +1,18 @@
-{% extends 'market_index.html'%}
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title %}市场 - {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/market_index.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
+    <link rel="stylesheet" href="/merchant/css/magnific-popup.css"/>
+{% endblock %}
+{% block navbar %}
+    <li><a href="{% url 'index' %}">主页</a></li>
+    <li class="selected"><a href="{% url 'market_index' %}">商城</a></li>
+    <li><a href="{% url 'chat_index' %}">社区</a></li>
+    <li><a href="{% url 'share_index' %}">共享文件</a></li>
+{% endblock %}
 {%block body%}
     <div class="add_good">
     <h2 class="title">添加商品</h2>
@@ -27,7 +41,7 @@
     </div>
     <div class="checkbox">
     </div>
-    {%if file == 0%}
+    {%if file == "0"%}
      <div class="form-group">
          <div class="indiv">
              <span>商品图片</span><br><input type="file" name="good_pic" maxlength="20"  　required oninvalid="setCustomValidity('请上传商品图片');" oninput="setCustomValidity('');"/>
@@ -48,14 +62,16 @@
 </script>
 {%endblock%}
 {% block side %}
+<div class="owner">
 <a class='btn btn-info sidebtn' href="{% url 'goodlist'%}">我的商品</a>
 <a class='btn btn-info sidebtn' href="{% url 'ordershow' 0%}">我的订单</a>
+</div>
+<div class="classify">
 <a class='btn btn-default sidebtn ' href="{% url 'goods_index' %}">校园二手</a>
 <a class='btn btn-default sidebtn ' href="{% url 'docs_index' %}">付费文档</a>
-
+</div>
 <br>
-<br>
-<br>
-
+<div class="add">
 <a class='btn btn-info sidebtn' href="{% url 'addgood' 0%}">添加新商品</a>
+</div>
 {% endblock %}

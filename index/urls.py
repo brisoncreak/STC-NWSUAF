@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^check_pass/$',check_pass),
     url(r'^show_goodAdmirenum/$',admire_goodnum_views,name="show_goodadmirenum"),
     url(r'^show_badAdmirenum/$',admire_badnum_views,name="show_badadmirenum"),
-    url(r'^image/$',image_view,name="upload_image")
+    url(r'^image/$',image_view,name="upload_image"),
+    url(r'^search/$', search_index_views, name="search_index"),
 ] 
