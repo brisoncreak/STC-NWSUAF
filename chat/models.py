@@ -36,6 +36,7 @@ class Review(models.Model):
     user=models.ForeignKey(User,null=True)
     article=models.ForeignKey(Article)
     replys=models.TextField(null=True)
+    parent_review=models.ForeignKey('self',related_name='p_comment',null=True,blank=True)
 
     def __str__(self):
         return self.create_date.strftime("%Y-%m-%d-%H")  

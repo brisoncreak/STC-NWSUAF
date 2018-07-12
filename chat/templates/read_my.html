@@ -2,7 +2,8 @@
 
 {% load static %}
 
-{% block title %}{{uname}}的主页 - {% endblock %}
+{% block title %}{{user.username}}的主页 - {% endblock %}
+
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/r_m.css'%}"/>

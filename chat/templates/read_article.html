@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
-
+{% load custom %}
 {% block title %}文章 - {% endblock %}
 
 {% block head %}
@@ -10,7 +10,16 @@
     <link rel="stylesheet" href="{% static 'css/chat_index.css'%}"/>
     <script>admire_pathG = '{%url 'show_goodadmirenum'%}';</script>
     <script>admire_pathB = '{%url 'show_badadmirenum'%}';</script>
-
+    <style>
+        .box{
+            width:650px; margin-top:10%; margin:auto; padding:28px;
+            height:220px; border:1px #111 solid;
+            display:none;            /* 默认对话框隐藏 */
+        }
+        .box.show{display:block;} 
+        .box .x{ font-size:18px; text-align:right; display:block;}
+        .box input{width:90%; font-size:18px; margin-top:18px;}
+    </style>
 {% endblock %}
 
 {% block navbar %}
@@ -63,19 +72,47 @@
                 <p id="rev">评论</p>
             </div>
              <div id="rr" class="r1">
-                <img src="/static/img/reply.png" >
+                <img id="write" src="/static/img/reply.png"  >
                 <a href="{%url 'a_v' a.id%}" id="wr">写评论</a>
             </div>
             <div id="listr">
                 {%for r in listReview%}
                 
-                <div id="review"> 
-                    <a href="{%url 'a_p' r.id%}">•回复  </a>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;{{r.user}}&nbsp;&nbsp;|&nbsp;&nbsp;{{r.create_date}}
-                    <br>
-                    <div id="con">{{r.content | safe}}</div> 
-                
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{r.replys}}
+                <div id="review">
+                    {% build_review_tree reviews %} 
+                    <div id="revi">
+                        
+                    
+                    <div id="le">
+                        <form  action="{%url 'a_p' r.id%}" method="post">
+                    {% csrf_token %}
+                        <input type="button" onClick="msgbox(1)" value="回复">
+
+                        <script>  
+                            function msgbox(n){
+                                document.getElementById('inputbox').style.display=n?'block':'none';     /* 点击按钮打开/关闭 对话框 */
+                            }
+                        
+                         </script>  
+                         
+                         <div id='inputbox' class="box" >
+                            <a class='x' href=''; onclick="msgbox(0); return false;">关闭</a>
+                            <textarea  name="content" cols="30"></textarea>
+                            <input type="submit" value="提交">
+
+                         </div>
+
+                    </form>
+                    </div>
+
+                    <div id="ri">
+                        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;{{r.user}}&nbsp;&nbsp;|&nbsp;&nbsp;{{r.create_date}}
+                        <br>
+
+                        <div id="con">{{r.content | safe}}</div>            
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{r.replys}}
+                    </div>
+                   </div>
                 </div>
 
                 {%endfor%}
