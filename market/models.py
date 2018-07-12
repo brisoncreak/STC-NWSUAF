@@ -119,7 +119,8 @@ class GoodRemark(models.Model):
 
 class TradeMark(models.Model):
     mark_list = ((0, '好评'), (1, '差评'))
-    creator = models.ForeignKey(User, null=False)
+    creator = models.ForeignKey(User, null=False, related_name='mark_from')
+    aim = models.ForeignKey(User, null=True, related_name='mark_to')
     order = models.ForeignKey(Order, null=False)
     content = models.CharField(max_length = 200)
     mark_type = models.IntegerField(choices=mark_list)

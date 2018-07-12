@@ -18,8 +18,13 @@ a:hover {text-transform:uppercase;font-size: 20px;}
 }
 .content{
     height: 800px;
-    background: url(/static/img/bk1.jpg)no-repeat;
+    background-color: rgba(255,255,255,0);
+
 }
+.side{
+    background-color: rgba(255,255,255,0);
+}
+
 .pagination{
     margin:0px,auto !important;
 }

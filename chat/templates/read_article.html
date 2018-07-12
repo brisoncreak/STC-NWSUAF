@@ -34,7 +34,12 @@
     <div id="main" class="body1">
         
         <div id="top" class="body1">           
-            <p id="at" style="font-size:30px; ">{{a.topic}}</p>
+            <div id="at" >
+                <p>{{a.topic}}</p>
+            </div>
+            <div id="al">
+                <a id="back" href="{%url 'articles'%}">< 社区主页</a>
+            </div>
         </div>
         <div id="middle" class="body1">
             <div id="name"><p>{{a.user}}</p></div>  
@@ -67,14 +72,20 @@
 
                     <script language="JavaScript" src="../static/js/admire.js"></script>
             </div>
-        <div id="bottom" class="body1">
-            <div id="rl" class="r1">
+        <div id="bottom" class="body2">
+            <div class="cl">
+                <div id="rl" class="r1">
                 <p id="rev">评论</p>
+                </div>
+                <div id="rr" class="r1">
+                    <img id="write" src="/static/img/reply.png"  >
+                    <a href="{%url 'a_v' a.id%}" id="wr">写评论</a>
+                </div>
             </div>
-             <div id="rr" class="r1">
-                <img id="write" src="/static/img/reply.png"  >
-                <a href="{%url 'a_v' a.id%}" id="wr">写评论</a>
-            </div>
+            <div class="cl">
+                
+            
+            
             <div id="listr">
                 {%for r in listReview%}
                 
@@ -86,7 +97,7 @@
                     <div id="le">
                         <form  action="{%url 'a_p' r.id%}" method="post">
                     {% csrf_token %}
-                        <input type="button" onClick="msgbox(1)" value="回复">
+                        <input id="butt" type="button" onClick="msgbox(1)" value="回复">
 
                         <script>  
                             function msgbox(n){
@@ -97,14 +108,13 @@
                          
                          <div id='inputbox' class="box" >
                             <a class='x' href=''; onclick="msgbox(0); return false;">关闭</a>
-                            <textarea  name="content" cols="30"></textarea>
+                            <textarea  name="content" cols="63"></textarea>
                             <input type="submit" value="提交">
 
                          </div>
 
                     </form>
                     </div>
-
                     <div id="ri">
                         &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;{{r.user}}&nbsp;&nbsp;|&nbsp;&nbsp;{{r.create_date}}
                         <br>
@@ -113,12 +123,12 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{r.replys}}
                     </div>
                    </div>
-                </div>
-
-                {%endfor%}
+                
+            {%endfor%}
             </div>
-           
-            
+           </div>
+           </div>
+        </div>
         </div>
     </div>
 {% endblock %}

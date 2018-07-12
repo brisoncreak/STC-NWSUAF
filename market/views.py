@@ -22,6 +22,9 @@ def index_views(request):
 #付费文档页面
 def docs_views(request):
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        if login_uname:
+            user=User.objects.get(username=login_uname)
         goods = Good.objects.filter(isfile = True).order_by('-create_time') 
         page_now = request.GET.get('page')
         if not page_now:
@@ -52,6 +55,9 @@ def docs_views(request):
 
 def goods_views(request):
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        if login_uname:
+            user=User.objects.get(username=login_uname)
         goods = Good.objects.filter(isfile = False).filter(sell_times=0).order_by('-create_time') 
         page_now = request.GET.get('page')
         if not page_now:
@@ -160,6 +166,7 @@ def new_order_views(request, good_id):
         confirm = request.POST.get('confirm-buy', '')
         if confirm == '':
             messages.warning(request, '你未确认交易信息')
+            user = User.objects.get(username=request.session['username'])
             return render(request, 'ordering.html', locals())
         else:
             good = Good.objects.get(id=good_id)
@@ -235,6 +242,9 @@ def paying_views(request, order_id):
 @login_required
 def add_good_views(request,file):
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        if login_uname:
+            user=User.objects.get(username=login_uname)
         if  int(file)== True :
             filegood = File.objects.get(id = file)
         return render(request,'new_good.html',locals())
@@ -276,6 +286,7 @@ def add_good_views(request,file):
 def order_views(request,orderstate):
     if request.method == 'GET':
         username=request.session['username']
+        user=User.objects.get(username=username)
         order_user = User.objects.get(username  =username)
         order_list =  order_user.orders.all() 
         order_list = order_list.filter(status=orderstate).order_by('create_time')
@@ -310,9 +321,15 @@ def order_views(request,orderstate):
         return render(request,'order_view.html',locals())
 def order_detail_views(request,goodname):
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        if login_uname:
+            user=User.objects.get(username=login_uname)
         return render(request,'order_detail.html',locals())
 def complaint_views(request,orderid):
     if request.method == 'GET':
+        login_uname=request.session.get('username')
+        if login_uname:
+            user=User.objects.get(username=login_uname)
         return render(request,'complaint.html',locals())
 def add_tmessage_views(request, order_id):
     if request.method == 'POST':
@@ -457,6 +474,7 @@ def market_ws_views(request, order_id, uid):
 def good_list_views(request):
     if request.method == 'GET':
         username=request.session['username']
+        user=User.objects.get(username=username)
         page_now = request.GET.get('page')
         good_user = User.objects.get(username=username) 
         goods = good_user.goods.all().order_by('-create_time') 
@@ -535,7 +553,10 @@ def trade_mark_views(request, order_id):
                 mark.mark_type = 0
                 mark.content = mark_content
             except: 
-                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=0)
+                if user == buyer:
+                    mark = TradeMark(creator=user, aim=seller, order=order, content=mark_content, mark_type=0)
+                else:
+                    mark = TradeMark(creator=user, aim=buyer, order=order, content=mark_content, mark_type=0)
 
         elif mark_type == 'option2':
             #print('差评')
@@ -544,13 +565,30 @@ def trade_mark_views(request, order_id):
                 mark.mark_type = 1
                 mark.content = mark_content          
             except:
-                mark = TradeMark(creator=user, order=order, content=mark_content, mark_type=1)
+                if user == buyer:
+                    mark = TradeMark(creator=user, aim=seller, order=order, content=mark_content, mark_type=1)
+                else:
+                    mark = TradeMark(creator=user, aim=buyer, order=order, content=mark_content, mark_type=1)
         mark.save()
         if user == buyer:
             order.buyer_marked = True
         elif user == seller:
             order.seller_marked = True
         order.save()
+
+
+        seller.good_mark = TradeMark.objects.filter(Q(aim=seller)&Q(mark_type=0)).count()
+        seller.bad_mark = TradeMark.objects.filter(Q(aim=seller)&Q(mark_type=1)).count()
+        seller.save()
+
+        buyer.good_mark = TradeMark.objects.filter(Q(aim=buyer)&Q(mark_type=0)).count()
+        buyer.bad_mark = TradeMark.objects.filter(Q(aim=buyer)&Q(mark_type=1)).count()
+        buyer.save()
+
+        seller.degree_good = seller.good_mark/seller.trade_count
+        seller.save()
+        buyer.degree_good = buyer.good_mark/buyer.trade_count
+        buyer.save()
 
         return redirect(reverse('paying', args=(order.id,)))
 

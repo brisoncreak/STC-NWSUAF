@@ -98,7 +98,7 @@ class EvidenceAdmin(admin.ModelAdmin):
     #)
 
 class TradeMarkAdmin(admin.ModelAdmin):
-    list_display = ['id', 'creator', 'order', 'mark_type', 'create_time',]
+    list_display = ['id', 'creator','aim', 'order', 'mark_type', 'create_time',]
     #添加链接
     list_display_links = ['id']
     #添加可编辑字段

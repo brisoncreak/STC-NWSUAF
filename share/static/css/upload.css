@@ -4,7 +4,9 @@ li{
 
 }
 a:hover {text-transform:uppercase;font-size: 20px;}
-
+.beijing{
+    background: url(/static/img/wen.jpg);
+}
 .indiv{
 
     width:500px;
@@ -24,7 +26,6 @@ input,select{
 }
 .content{
     height: 800px;
-    background: url(/static/img/ppt.jpg)no-repeat;
 }
 .upload{
     position: relative;
