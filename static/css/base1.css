@@ -5,6 +5,7 @@ body{
 .logo{
     height:50px;
 }
+a:hover {text-transform:uppercase;font-size: 20px;}
 .side{
     float:right;
     width:300px;

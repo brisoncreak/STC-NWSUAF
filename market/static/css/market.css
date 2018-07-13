@@ -109,7 +109,7 @@ a {
     float: left;
     width: 20%;
 }
-.order_list{
+.m_list{
     width: 80%;
     margin:auto;
 }
@@ -140,7 +140,7 @@ a {
 .order_button{
     margin-top: 60px;
 }
-.order_table{
+.m_table{
     width: 100%;
     float: left;
     margin-top: 30px;

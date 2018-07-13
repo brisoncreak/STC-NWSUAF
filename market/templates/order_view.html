@@ -15,7 +15,7 @@
     <li><a href="#">网盘</a></li>
 {% endblock %}
 {%block body%}
-    <div class="order_list">
+    <div class="m_list">
     <h2 class="title">我的订单</h2>
     {%block order%}
     <div>
@@ -79,17 +79,23 @@
         </ul>
         </div>
         {%endblock%}
-        <div class="order_table" >
+        <div class="m_table" >
             {%for i in order_list%}
             <table class="table table-striped" style="border-top:20px;">
                     <tr>
-                        <td style="border:0px;"><img class="img-circle" src="/{{i.good.image}}" style="width: 80px;height: 80px;"></td>
-                        <td style="border:0px;width:200px; ">
+                        <td style="border:0px;width:100px; ">
+                        {%if i.good.isfile == False%}
+                         <img   class="img-circle" src="/{{i.good.image}}" style="width: 80px;height: 80px;">
+                        {%else%}
+                        <img  class="img-circle" src="/static/文档.jpg" style="width: 80px;height: 80px;">
+                        {%endif%}
+                        </td>
+                        <td style="border:0px;width:100px; ">
                         <font size="4">{{i.good.name}}</font>
                         </td>
-                        <td style="border:0px;width:300px;">{{i.status}}</td>
+                        <td style="border:0px;width:100px;">{{i.status}}</td>
                         <td style="border:0px;width:150px;">{{i.create_time}}</td>
-                         <td style="border:0px;">
+                         <td style="border:0px;width:150px;">
                         {%if orderstate == "1"%}
                         <a class="btn btn-default sidebtn" href="{%url 'paying' i.id%}">详情</a>
                         {%else%}
