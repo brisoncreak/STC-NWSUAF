@@ -172,8 +172,8 @@ def new_order_views(request, good_id):
             good = Good.objects.get(id=good_id)
             user = User.objects.get(username=request.session['username'])
             order = Order.objects.filter(good_id = good_id).filter(creator = user.id)
-            print(order)
-        if good.isfile == True or len(order)==0:
+            order_sta = Order.objects.filter(good_id = good_id).filter(~Q(status=4))
+        if good.isfile == True or len(order)==0 or not order_sta:
             if good.creator == user:
                 messages.warning(request, '不允许购买自己发布的商品')
                 return render(request, 'ordering.html', locals())
@@ -298,7 +298,7 @@ def order_views(request,orderstate):
         if not page_now:
             page_now = 1
         page_now = int(page_now)
-        per_page = 4
+        per_page = 8
         page_sum = len(order_list)//per_page+1
         if page_sum > 6:
             page_sum = len(order_list)//per_page
@@ -432,8 +432,9 @@ def seller_ok_views(request, order_id):
 
 
         #消息处理
-        send_ok = Notification(aim_user=buyer, arg0=20, arg1=order_id, arg4=buyer,content="文件已发放至您的网盘中")
-        send_ok.save()
+        if file:
+            send_ok = Notification(aim_user=buyer, arg0=20, arg1=order_id, arg4=buyer,content="文件已发放至您的网盘中")
+            send_ok.save()
         n = Notification(aim_user=buyer, arg0=3, arg1=order_id, arg4=user)
         n.save()
         return redirect(reverse('paying', args=(order.id,)))
@@ -476,8 +477,9 @@ def good_list_views(request):
         username=request.session['username']
         user=User.objects.get(username=username)
         page_now = request.GET.get('page')
-        good_user = User.objects.get(username=username) 
-        goods = good_user.goods.all().order_by('-create_time') 
+        good_user = User.objects.get(username=username)
+        goods = Good.objects.filter(creator = good_user.id)
+        print(goods) 
         if not page_now:
             page_now = 1
         page_now = int(page_now)

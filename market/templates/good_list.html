@@ -14,11 +14,11 @@
     <li><a href="{% url 'share_index' %}">共享文件</a></li>
 {% endblock %}
 {%block body%}
-<div class="order_list">
+<div class="m_list">
  <h2 class="title">我的商品</h2>
     {%block order%}
         {%endblock%}
-        <div class="order_table" >
+        <div class="m_table" >
         {%for i in goods%}
             <table class="table table-striped" style="border-top:20px;" >
                     <div class="good_tr">

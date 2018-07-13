@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{% static 'css/market.css'%}"/>
     <link rel="stylesheet" href="/merchant/css/magnific-popup.css"/>
     <style type="text/css">
-      a:hover {text-transform:uppercase;font-size: 20px;}
     </style>
 {% endblock %}
 {% block navbar %}
@@ -17,7 +16,7 @@
     <li><a href="{% url 'share_index' %}">共享文件</a></li>
 {% endblock %}
 {%block body%}
-     <div class="goods">
+    <div class="goods">
     <h2 class="title">电子文档</h2>
     {% for good in goods %}
     <a href="{% url 'good_detail' good.id %}">
