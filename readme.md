@@ -8,14 +8,13 @@
 * BeautifulSoap4==4.6.0
 * dwebsocket==0.4.2
 
-#### django-admin
+#### django-admin默认
 用户名:admin
 密码：wasdwasd
 
-#### 数据库
+#### 数据库默认
 数据库名：stcdb
 用户名:root
 密码：123456
 
-数据库迁移直接运行指令 migrate
-遇到冲突可以重建数据库
+数据库迁移指令 migrate
